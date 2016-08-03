@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>督导管理系统</title>
+    <link rel="stylesheet" type="text/css" href="/static/jquery-easyui-1.4.5/themes/default/easyui.css">
+    <link rel="stylesheet" type="text/css" href="/static/jquery-easyui-1.4.5/themes/icon.css">
+    <script type="text/javascript" src="/static/jquery-easyui-1.4.5/jquery.min.js"></script>
+    <script type="text/javascript" src="/static/jquery-easyui-1.4.5/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="/static/jquery-easyui-1.4.5/locale/easyui-lang-zh_CN.js"></script>
+</head>
+<div region="north"  border="false" style="overflow: hidden; height: 30px;
+        background: url(http://10.127.98.246/static/images/layout-browser-hd-bg.gif) #7f99be repeat-x center 50%;
+        line-height: 20px;color: #fff; font-family: Verdana, 微软雅黑,黑体">
+    <span style="float:right; padding-right:20px;" class="head">欢迎 admin <a href="#" id="editpass">修改密码</a> <a href="#" id="loginOut">安全退出</a></span>
+    <span style="padding-left:10px; font-size: 16px; "><img src="/static/images/blocks.gif" width="20" height="20" align="absmiddle" /> 督导管理系统</span>
+</div>
+
+
+    <script type="text/javascript">
+
+	
+	
+        function addTab(title, url){
+            if ($('#sy').tabs('exists', title)){
+                $('#sy').tabs('select', title);
+            } else {
+                var content = '<iframe scrolling="auto" frameborder="0"  src="'+url+'" style="width:100%;height:100%;"></iframe>';
+                $('#sy').tabs('add',{
+                    title:title,
+                    content:content,
+                    closable:true
+                });
+            }
+        }
+        function menuHandler(item){
+            $('#log').prepend('<p>Click Item: '+item.name+'</p>');
+        }
+        $(function(){
+            $(document).bind('contextmenu',function(e){
+                e.preventDefault();
+                e.stopPropagation();
+                $('#bwl_m').menu('show', {
+                    left: e.pageX,
+                    top: e.pageY
+                });
+            });
+        });
+
+
+    </script>
+    <body id="zt" class="easyui-layout" >
+        <div data-options="region:'south',split:true" title="操作记录" style="height:100px;padding:10px;"></div>
+        <div  id="bwl" data-options="region:'east',split:true" title="备忘" style="width:120px;padding:10px;">
+            <div id="bwl_m" class="easyui-menu" data-options="onClick:menuHandler" >
+                <div data-options="name:'new'">新建</div>
+                <div data-options="name:'del'">删除</div>
+                <div data-options="name:'del_all'">清空所有</div>
+                </div>
+        </div>
+        <div data-options="region:'west',split:true" title="系统菜单" style="width:150px">
+            <div class="easyui-accordion" data-options="fit:true,border:false">
+                <div title="菜单一" data-options="selected:true" style="padding-top:1px;padding-right:1px;padding-left:1px">
+                        <a href="#" class="easyui-linkbutton"  plain="true"  style="width:100%" data-options="iconCls:'icon-man'" onclick="addTab('学生信息','index2')">第一个菜单</a>
+                    <br/>
+                       <a href="#" class="easyui-linkbutton" plain="true"  style="width:100%" data-options="iconCls:'icon-man'" onclick="addTab('jquery','http://jquery.com/')">第二个菜单</a><br/>
+                        <a href="#" class="easyui-linkbutton" plain="true"  style="width:100%" data-options="iconCls:'icon-man'" onclick="addTab('easyui','http://jeasyui.com/')">第三个菜单</a>
+                </div>
+                <div title="菜单二"  style="padding:10px;">
+                    content2
+                </div>
+                <div title="菜单三" style="padding:10px">
+                    content3
+                </div>
+            </div>
+        </div>
+        <div data-options="region:'center',title:'操作界面',iconCls:'icon-ok', split:'false'">
+            <div id="sy" class="easyui-tabs" data-options="fit:true,border:false,plain:true">
+                <div title="首页", style="padding:10px">
+                   <p> <h1>欢迎您！admin</h1></p>
+                </div>
+            </div>
+
+        </div>
+
+
+    </body>
+</html>

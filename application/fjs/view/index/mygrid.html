@@ -1,0 +1,37 @@
+    <!DOCTYPE html>
+    <html>
+    <head>
+    	<meta charset="UTF-8">
+    	<title>学生信息</title>
+    	<link rel="stylesheet" type="text/css" href="/static/jquery-easyui-1.4.5/themes/default/easyui.css">
+    	<link rel="stylesheet" type="text/css" href="/static/jquery-easyui-1.4.5/themes/icon.css">
+    	<script type="text/javascript" src="/static/jquery-easyui-1.4.5/jquery.min.js"></script>
+    	<script type="text/javascript" src="/static/jquery-easyui-1.4.5/jquery.easyui.min.js"></script>
+		<script type="text/javascript" src="/static/jquery-easyui-1.4.5/locale/easyui-lang-zh_CN.js"></script>
+		<script>
+		$(document).ready(function(){
+			$('#grid').datagrid({
+				url:'http://10.127.98.246/index.php/fjs/index/index4',
+				method:'get',
+				rownumbers:true,
+				fitcolumns:true,
+				singleSelect:true,
+				collapsible:false,
+				pagination:true,
+				columns:[[
+					{field:'banji',title:'班级'},
+					{field:'student_id',title:'学号'},
+					{field:'name',title:'姓名',sortable:true},
+					{field:'sex',title:'性别'},
+					{field:'id_card',title:'身份证'},
+					{field:'phone',width:'85px',title:'电话'}
+				]]
+			});
+		});
+		</script>
+    </head>
+    <body>
+    	<table id= "grid" class="easyui-datagrid" title="学生信息表单" style="width:100%" >
+    	</table>
+    </body>
+    </html>

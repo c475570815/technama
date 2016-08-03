@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="/static/jquery-easyui-1.4.5/themes/default/easyui.css">
+    <link rel="stylesheet" type="text/css" href="/static/jquery-easyui-1.4.5/themes/icon.css">
+    <script type="text/javascript" src="/static/jquery-easyui-1.4.5/jquery.min.js"></script>
+    <script type="text/javascript" src="/static/jquery-easyui-1.4.5/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="/static/jquery-easyui-1.4.5/locale/easyui-lang-zh_CN.js"></script>
+    <script type="text/javascript" src="/scripts/admin/dict.datagrid.js"></script>
+    <script>
+
+    </script>
+</head>
+<body>
+<div class="easyui-layout" fit="true"  style="padding:10px">
+<!-- 查找的区域 -->
+<div id="searchToolbar" style="padding:2px 5px;">
+    <form id="frm_search" action="http://10.127.98.246/index.php/admin/dict/ac1" method="post">
+    显示值: <input id="v" class="easyui-text" style="width:110px" name="dict[dict_value]">
+    类别:
+    <select id="a" class="easyui-combobox" panelHeight="auto" style="width:100px" name="dict[dict_category]">
+        <option value="全部" selected>全部</option>
+        {volist name="dict_category" id="vo"}
+        <option value="{$vo.dict_category}">{$vo.dict_category}</option>
+        {/volist}
+    </select>
+    <a href="#" class="easyui-linkbutton" iconCls="icon-search" onclick="query()">查找</a>
+        <a href="#" class="easyui-linkbutton" iconCls="icon-search" onclick="update()">修改</a>
+    </form>
+</div>
+
+<table id="datagrd" class="easyui-datagrid" title="Basic DataGrid" style="width:100%;height:500px" toolbar="#searchToolbar">
+
+ </table>
+
+    </div>
+</body>
+</html>

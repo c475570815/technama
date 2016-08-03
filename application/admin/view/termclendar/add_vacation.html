@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Basic PropertyGrid - jQuery EasyUI Demo</title>
+    <link rel="stylesheet" type="text/css" href="/static/jquery-easyui-1.4.5/themes/default/easyui.css">
+    <link rel="stylesheet" type="text/css" href="/static/jquery-easyui-1.4.5/themes/icon.css">
+    <script type="text/javascript" src="/static/jquery-easyui-1.4.5/jquery.min.js"></script>
+    <script type="text/javascript" src="/static/jquery-easyui-1.4.5/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="/static/jquery-easyui-1.4.5/locale/easyui-lang-zh_CN.js"></script>
+    <script type="text/javascript" src="/scripts/cyh/add_vacation.js"></script>
+</head>
+<body>
+<table id="pg" class="easyui-propertygrid" style="width:300px" data-options="
+				url:'/scripts/cyh/add_vacation.json',
+				method:'get',
+				showGroup:true,
+				scrollbarSize:0
+			">
+</table>
+<form id="ff" method="post">
+    <input id="start" name="start" type="hidden">
+    <input id="end" name="end" type="hidden">
+    <button onclick="saveForm()">提交</button>
+</form>
+</body>
+</html>

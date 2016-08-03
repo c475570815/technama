@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>数据表格</title>
+    <link rel="stylesheet" type="text/css" href="/static/jquery-easyui-1.4.5/themes/default/easyui.css">
+    <link rel="stylesheet" type="text/css" href="/static/jquery-easyui-1.4.5/themes/icon.css">
+    <script type="text/javascript" src="/static/jquery-easyui-1.4.5/jquery.min.js"></script>
+    <script type="text/javascript" src="/static/jquery-easyui-1.4.5/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="/static/jquery-easyui-1.4.5/locale/easyui-lang-zh_CN.js"></script>
+    <script type="text/javascript" src="/scripts/comm.js"></script>
+    <script type="text/javascript" src="/scripts/admin/dept.treegrid.js"></script>
+</head>
+<body class="easyui-layout" fit="true" style="padding: 10px">
+<div data-options="region:'north'" border="false" style="height:100px;padding: 10px" >
+    <!-- 查找工具栏 -->
+    <div id="searchToolbar" class="easyui-panel" fit="true" title="筛选条件" data-options="iconCls:'icon-search',plain:true"  style="padding:5px;margin-bottom: 10px">
+        <form id="frm_search" action="" method="post">
+            部门类型:
+            <select id="cc" class="easyui-combobox" panelHeight="auto" style="width:200px" name="dict[dept_category]">
+                <option value="全部" selected>全部</option>
+            </select>
+            部门名称: <input class="easyui-text" style="width:110px" name="dict[dept_name]">
+           <a href="#" class="easyui-linkbutton" iconCls="icon-search" onclick="query()">查找</a>
+        </form>
+    </div>
+</div>
+<div data-options="region:'center'" border="false" style="padding:10px;">
+    <table id="datagrid" title="" class="easyui-treegrid" fit="true">
+    </table>
+</div>
+<div data-options="region:'east',split:true" border="false" style="width: 300px;padding:10px;">
+    <div id="p" class="easyui-panel" title="详细信息" style="background:#fafafa;"
+         data-options="iconCls:'icon-save',closable:false,collapsible:false"  fit="true">
+        <p>panel content.</p>
+        <p>panel content.</p>
+    </div>
+</div>
+</body>
+</html>

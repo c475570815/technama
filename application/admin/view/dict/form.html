@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>数据表格</title>
+    <link rel="stylesheet" type="text/css" href="/static/jquery-easyui-1.4.5/themes/default/easyui.css">
+    <link rel="stylesheet" type="text/css" href="/static/jquery-easyui-1.4.5/themes/icon.css">
+    <script type="text/javascript" src="/static/jquery-easyui-1.4.5/jquery.min.js"></script>
+    <script type="text/javascript" src="/static/jquery-easyui-1.4.5/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="/static/jquery-easyui-1.4.5/locale/easyui-lang-zh_CN.js"></script>
+    <script type="text/javascript" src="/scripts/admin/dict.form.js"></script>
+</head>
+<body>
+
+<div class="easyui-panel" title="{$operation}" style="width:400px">
+    <div style="padding:10px 60px 20px 60px">
+        <form id="ff" method="post">
+            <table cellpadding="5">
+                <tr>
+                    <td>类型:</td>
+                    <td><input class="easyui-textbox" type="text" name="data[dict_category]" data-options="required:true" value="{$record.dict_category}" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>键:</td>
+                    <td><input class="easyui-textbox" type="text" name="data[dict_key]" data-options="required:true" value="{$record.dict_key}" /></td>
+                </tr>
+                <tr>
+                    <td>值</td>
+                    <td><input class="easyui-textbox" type="text" name="data[dict_value]" data-options="required:true" value="{$record.dict_value}" /></td>
+                </tr>
+
+                <tr>
+                    <td></td>
+                    <td>
+                        <input type="hidden" value="{$record.dict_id}"  name="data[dict_id]"/>
+                        <input type="hidden" value="{$operation=='编辑'?'update':'add'}"  name="operation"/>
+                        <a href="javascript:void(0)" class="easyui-linkbutton" onclick="saveForm()">保存</a>
+                        <a href="javascript:void(0)" class="easyui-linkbutton" onclick="clearForm()">取消</a>
+                        <a href="javascript:void(0)" class="easyui-linkbutton" onclick="history.back()">返回</a>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>
+</body>
+</html>

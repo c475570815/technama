@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>数据表格</title>
+    <link rel="stylesheet" type="text/css" href="/static/jquery-easyui-1.4.5/themes/default/easyui.css">
+    <link rel="stylesheet" type="text/css" href="/static/jquery-easyui-1.4.5/themes/icon.css">
+    <script type="text/javascript" src="/static/jquery-easyui-1.4.5/jquery.min.js"></script>
+    <script type="text/javascript" src="/static/jquery-easyui-1.4.5/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="/static/jquery-easyui-1.4.5/locale/easyui-lang-zh_CN.js"></script>
+    <script type="text/javascript" src="/scripts/comm.js"></script>
+    <script type="text/javascript" src="/scripts/admin/classes.form.js"></script>
+</head>
+<body  class="easyui-layout">
+    <div data-options="region:'center',split:true" border="true" style="padding:10px;">
+        <div class="easyui-panel" title="{$operation}"  fit="true">
+            <form id="ff" method="post" style="padding: 10px">
+                <table>
+                    <tr>
+                        <td>系部</td>
+                        <td>
+                            <input id="dept_name" name="data[dept_name]" data-options="required:true"
+                                  value="{$record.dept_name?$record.dept_name:''}"
+                            />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>班级</td>
+                        <td>
+                            <input id="class_name" {$operation=="编辑"?"readonly":''}  class="easyui-textbox" type="text" name="data[class_name]" data-options="required:true" value="{$record.class_name?$record.class_name:''}"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>班级教室</td>
+                        <td><input class="easyui-textbox" type="text" name="data[class_room]"      data-options="required:true" value="{$record.class_room?$record.class_room:''}" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>班级导师</td>
+                        <td><input class="easyui-textbox" name="data[class_supervisor]" data-options=""   value="{$record.class_supervisor?$record.class_supervisor:''}"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>班主任</td>
+                        <td>
+                            <input class="easyui-textbox" name="data[class_adviser]" value="{$record.class_adviser?$record.class_adviser:''}">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>
+                            <input type="hidden" name="operation" value="{$operation=='编辑'?'update':'add'}"/>
+                            <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-save'" onclick="saveForm()">保存</a>
+                            <a href="http://10.127.98.246/index.php/admin/classes/index" class="easyui-linkbutton" data-options="iconCls:'icon-return'">返回</a>
+                            <a href="javascript:void(0)" class="easyui-linkbutton" onclick="clearForm()" data-options="iconCls:'icon-clear'">清除</a>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+
+        </div>
+    </div>
+<!--    <div data-options="region:'north',split:true" border="true" style="background-color: #eee;height:100px;padding:0px;margin-top:10px">
+        <div class="easyui-panel" title="编辑"></div>
+    </div>-->
+</body>
+</html>

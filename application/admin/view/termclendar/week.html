@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" type="text/css" href="/static/jquery-easyui-1.4.5/themes/default/easyui.css">
+    <link rel="stylesheet" type="text/css" href="/static/jquery-easyui-1.4.5/themes/icon.css">
+    <script type="text/javascript" src="/static/jquery-easyui-1.4.5/jquery.min.js"></script>
+    <script type="text/javascript" src="/static/jquery-easyui-1.4.5/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="/static/jquery-easyui-1.4.5/locale/easyui-lang-zh_CN.js"></script>
+    <script type="text/javascript" src="/scripts/cyh/calendar_week.js"></script>
+</head>
+<body>
+<div id="dd" class="easyui-draggable" data-options="handle:'#mytitle'" style="width:541px;border:1px solid #ccc"><!--&lt;!&ndash;width:200px;height:150px;&ndash;&gt;-->
+    <div id="mytitle" style="background:#ddd;padding:5px;">本周校历</div>
+    <table class="easyui-datagrid" id="datagrd" style="width:540px; margin: 0px;" data-options="
+        columns:week_calender
+      "><!--easyui-propertygrid-->
+    </table>
+</div>
+</body>
+</html>

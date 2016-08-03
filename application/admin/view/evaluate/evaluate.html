@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Basic TextBox - jQuery EasyUI Demo</title>
+    <link rel="stylesheet" type="text/css" href="/static/jquery-easyui-1.4.5/themes/default/easyui.css">
+    <link rel="stylesheet" type="text/css" href="/static/jquery-easyui-1.4.5/themes/icon.css">
+    <script type="text/javascript" src="/static/jquery-easyui-1.4.5/jquery.min.js"></script>
+    <script type="text/javascript" src="/static/jquery-easyui-1.4.5/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="/static/jquery-easyui-1.4.5/locale/easyui-lang-zh_CN.js"></script>
+    <script type="text/javascript" src="/scripts/admin/evaluate.form.js"></script>
+    <style>
+        #ff fieldset {
+            border-color: #EEEEEE;
+        }
+
+        #ff fieldset div {
+            margin-top: 5px;
+        }
+
+        #ff fieldset div label {
+            font-weight: bold;
+            /*  width: 100px;
+              display: block;
+              float: left;*/
+            text-align: right;
+        }
+
+        #ff fieldset div label + input, #ff fieldset div label + select {
+            color: #0e90d2;
+            width: 200px;
+        }
+    </style>
+</head>
+<body>
+<div id="class_information" align="center">
+    <div class="easyui-panel" title="" style="">
+        <div style="padding:10px 60px 20px 60px">
+            <form id="ff" method="get">
+                <fieldset>
+                    <legend>课程信息</legend>
+                    <div>
+                        <label>系部:</label>
+                        <select class="easyui-combobox" panelHeight="200" name="data[dept_name]">
+                            <option value="外语系" selected>外语系</option>
+                            {volist name="dept" id="vo"}
+                            <option value="{$vo.dept_name}">{$vo.dept_name}</option>
+                            {/volist}
+                        </select>
+                        <label>
+                            教师姓名:
+                        </label>
+                        <input class="easyui-textbox" type="text" name="data[teacher]" validType=" length[0,6]"
+                               data-options="required:true" missingMessage="教师姓名必须填写" invalidMessage="不能超过6个字"/>
+                        <label>班级:</label>
+                        <input class="easyui-textbox" type="text" name="data[class_name]" validType=" length[0,20]"
+                               data-options="required:true" missingMessage="班级名必须填写" invalidMessage="不能超过20个字"/>
+                        <label>课程名称:</label><input
+                            class="easyui-textbox" type="text" name="data[course_name]" validType=" length[0,20]"
+                            data-options="required:true" missingMessage="课程必须填写" invalidMessage="不能超过20个字"/>
+                    </div>
+                    <div>
+                        <label>日期:</label>
+                        <input class="easyui-datebox" type="text" name="data[term]"
+                               data-options="required:true" missingMessage="日期必须填写" value="1"/>
+                        <label>周次:</label>
+                        <select class="easyui-combobox" panelHeight="200" name="data[week]" width="100">
+                            <option value="1" selected>1</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                        </select>
+                        <label>星期几:</label>
+                        <select class="easyui-combobox" panelHeight="auto" name="data[xing_qi_ji]">
+                            <option value="1" selected>星期一</option>
+                            <option value="1">星期一</option>
+                            <option value="2">星期二</option>
+                            <option value="3">星期三</option>
+                            <option value="4">星期四</option>
+                            <option value="5">星期五</option>
+                            <option value="6">星期六</option>
+                            <option value="7">星期天</option>
+                        </select>
+                        <label>节次:</label>
+                        <select class="easyui-combobox" panelHeight="auto" name="data[section]">
+                            <option value="1" selected>第一节</option>
+                            <option value="1">第一节</option>
+                            <option value="2">第二节</option>
+                            <option value="3">第三节</option>
+                            <option value="4">第四节</option>
+                            <option value="5">其它时段</option>
+                        </select>
+                        <label>教室:</label>
+                        <input type="text" name="data[class_room]" validType="classroom"
+                               data-options="required:true"
+                               missingMessage="教室必须填写" invalidMessage="请填写数据格式如同5c404" value="5c404"/>
+                    </div>
+                    <div>
+                        <label>应到学生:</label>
+                        <input id="stu_due_num" type="text" name="data[stu_due_num]" style="width:50px" value="0"/>
+                        <label>迟到学生:</label>
+                        <input type="text" name="data[stu_late_num]" style="width:50px" value="0"/>
+                        <label>早退学生:</label>
+                        <input type="text" name="data[stu_leave_num]" style="width:50px" value="0"/>
+                        <label>旷课学生:</label>
+                        <input type="text" name="data[stu_cut_num]" style="width:50px" value="0"/>
+                        <label>总体评价: </label>
+                        <select class="easyui-combobox" panelHeight="auto" style="width:64px"
+                                name="data[last_evaluate]">
+                            <option value="优秀" selected>优秀</option>
+                            <option value="良好">良好</option>
+                            <option value="一般">一般</option>
+                            <option value="差">差</option>
+                            <option value="很差">很差</option>
+                        </select>
+                        <label>测试</label>
+                        <input id="vv" type="text">
+                    </div>
+
+                    <div>
+                        <label>课程评价</label>
+                        <input class="easyui-textbox" type="text" name="data[listener]" style="height:60px;width:100%"
+                               data-options="required:true,multiline:true" missingMessage="听课人必须填写"/>
+                    </div>
+                </fieldset>
+                <fieldset>
+                    <legend>详细信息</legend>
+                    <table cellpadding="5">
+                        <tr>
+                            <td>备课充分:</td>
+                            <td>
+                                是<input name="prepare" type="checkbox" value="yes"/>
+                                否<input name="prepare" type="checkbox" value="no"/>
+                            </td>
+                            <td>按时上下课:</td>
+                            <td>
+                                是<input name="ontime" type="checkbox" value="yes"/>
+                                否<input name="ontime" type="checkbox" value="no"/>
+                            </td>
+                            <td>普通话授课:</td>
+                            <td>
+                                是<input name="mandarin" type="checkbox" value="yes"/>
+                                否<input name="mandarin" type="checkbox" value="no"/>
+                            </td>
+                            <td>文字规范:</td>
+                            <td>
+                                是<input name="character" type="checkbox" value="yes"/>
+                                否<input name="character" type="checkbox" value="no"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>建议:</td>
+                            <td COLSPAN="7"><input class="easyui-textbox" name="data[comments]"
+                                                   data-options="multiline:true" style="height:60px" value=""/></td>
+                        </tr>
+                    </table>
+                </fieldset>
+
+                <div style="text-align:center;padding:5px">
+                    <a href="javascript:void(0)" class="easyui-linkbutton" onclick="saveForm()">提交</a>
+                    <a href="javascript:void(0)" class="easyui-linkbutton" onclick="clearForm()">清除</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

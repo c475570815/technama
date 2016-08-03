@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>数据表格</title>
+    <link rel="stylesheet" type="text/css" href="/static/jquery-easyui-1.4.5/themes/default/easyui.css">
+    <link rel="stylesheet" type="text/css" href="/static/jquery-easyui-1.4.5/themes/icon.css">
+    <script type="text/javascript" src="/static/jquery-easyui-1.4.5/jquery.min.js"></script>
+    <script type="text/javascript" src="/static/jquery-easyui-1.4.5/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="/static/jquery-easyui-1.4.5/locale/easyui-lang-zh_CN.js"></script>
+    <script type="text/javascript" src="/scripts/comm.js"></script>
+    <script type="text/javascript" src="/scripts/admin/adjustment.form.js"></script>
+</head>
+<body  class="easyui-layout">
+<div data-options="region:'center',split:true" border="true" style="padding:10px;">
+    <div class="easyui-panel" title="{$operation}"  fit="true">
+    <form id="ff" method="post" style="padding: 10px">
+        <table>
+            <tr>
+                <td>教师编号</td>
+                <td>
+                    <input id="teach_id" class="easyui-textbox" type="text" name="data[teach_id]" data-options=""  value="{$record.teach_id?$record.teach_id:''}"/>
+                </td>
+            </tr>
+            <tr>
+                <td>班级名称</td>
+                <td>
+                    <input  id="class_name" class="easyui-textbox" type="text" name="data[class_name]"  data-options="required:true" value="{$record.class_name?$record.class_name:''}"/>
+                </td>
+            </tr>
+            <tr>
+                <td>班级教室</td>
+                <td><input class="easyui-textbox" type="text" name="data[class_room]" data-options="required:true"value="{$record.class_room?$record.class_room:''}" /></td>
+            </tr>
+            <tr>
+                <td>课程名称</td>
+                <td><input class="easyui-textbox" name="data[course_name]" value="{$record.course_name?$record.course_name:''}" />
+                </td>
+            </tr>
+            <tr>
+                <td>周次</td>
+                <td>
+                    <input class="easyui-textbox" name="data[week]" value="{$record.week?$record.week:''}">
+                </td>
+            </tr>
+            <tr>
+            <tr>
+                <td>星期</td>
+                <td>
+                    <input class="easyui-textbox" name="data[xing_qi_ji]" value="{$record.xing_qi_ji?$record.xing_qi_ji:''}">
+                </td>
+            </tr>
+            <tr>
+            <tr>
+                <td>节次</td>
+                <td>
+                    <input class="easyui-textbox" name="data[section]" value="{$record.section?$record.section:''}">
+                </td>
+            </tr>
+            <tr>
+            <tr>
+                <td>原因</td>
+                <td>
+                    <input class="easyui-textbox" name="data[reason]" value="{$record.reason?$record.reason:''}">
+                </td>
+            </tr>
+            <tr>
+            <tr>
+                <td>调后周次</td>
+                <td>
+                    <input class="easyui-textbox" name="data[alt_week]" value="{$record.alt_week?$record.alt_week:''}">
+                </td>
+            </tr>
+            <tr>
+            <tr>
+                <td>调后星期</td>
+                <td>
+                    <input class="easyui-textbox" name="data[alt_xq]" value="{$record.alt_xq?$record.alt_xq:''}">
+                </td>
+            </tr>
+            <tr>
+            <tr>
+                <td>调后节次</td>
+                <td>
+                    <input class="easyui-textbox" name="data[alt_section]" value="{$record.alt_section?$record.alt_section:''}">
+                </td>
+            </tr>
+            <tr>
+            <tr>
+                <td>调后教室</td>
+                <td>
+                    <input class="easyui-textbox" name="data[alt_class_room]" value="{$record.alt_class_room?$record.alt_class_room:''}">
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    <input type="hidden" name="operation" value="{$operation=='编辑'?'update':'add'}"/>
+                    <a href="javascript:void(0)" class="easyui-linkbutton" onclick="saveForm()">保存</a>
+                    <a href="http://10.127.98.246/index.php/admin/adjustment/index" class="easyui-linkbutton">返回</a>
+                    <a href="javascript:void(0)" class="easyui-linkbutton" onclick="clearForm()">清除</a>
+                </td>
+            </tr>
+        </table>
+    </form>
+
+</div>
+    </div>
+</body>
+</html>

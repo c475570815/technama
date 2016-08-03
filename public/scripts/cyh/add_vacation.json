@@ -1,0 +1,4 @@
+{"total":7,"rows":[
+  {"name":"开始日期","value":"","group":"学期设置","editor":"datebox"},
+  {"name":"结束日期","value":"","group":"学期设置","editor":"datebox"}
+]}

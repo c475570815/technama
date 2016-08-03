@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Basic Form - jQuery EasyUI Demo</title>
+    <link rel="stylesheet" type="text/css" href="/static/jquery-easyui-1.4.5/themes/default/easyui.css">
+    <link rel="stylesheet" type="text/css" href="/static/jquery-easyui-1.4.5/themes/icon.css">
+    <script type="text/javascript" src="/static/jquery-easyui-1.4.5/jquery.min.js"></script>
+    <script type="text/javascript" src="/static/jquery-easyui-1.4.5/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="/static/jquery-easyui-1.4.5/locale/easyui-lang-zh_CN.js"></script>
+</head>
+<body>
+<div align="center" id="main">
+<h2>登录界面</h2>
+<div class="easyui-panel" title="帐号登录" style="width:400px">
+    <div style="padding:10px 60px 20px 60px">
+        <form id="ff" method="get" action="http://10.127.98.246/index.php/cyh/index/pass">
+            <table cellpadding="5">
+                <tr>
+                    <td>
+                        登录选项
+                    </td>
+                    <td>
+                        <select id="statu" class="easyui-combobox" panelHeight="auto" style="width:100px" name="statu">
+                        <option value="teacher" selected>教师登录</option>
+                        <option value="supervisor">督导登录</option>
+                        <option value="Administrator">管理员登录</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>帐号</td>
+                    <td><input class="easyui-textbox" type="text" name="id" id="id" data-options="required:true"></input></td>
+                </tr>
+                <tr>
+                    <td>密码</td>
+                    <td><input class="easyui-textbox" type="password" name="password" id="password" data-options="required:true"></input></td>
+                </tr>
+            </table>
+            <div style="text-align:center;padding:5px">
+                <input type="submit"  value="登录" />
+                <input type="button"  value="清空" onclick="clearForm()" />
+                <input type="reset" name="reset" style="display: none;" />
+            </div>
+        </form>
+    </div>
+</div>
+</div>
+<script>
+    function clearForm(){
+        $('#ff').form('clear');
+    }
+</script>
+<!--<div id="calendar">
+<h2>日历</h2>
+<div style="margin:20px 0"></div>
+<div class="easyui-calendar" style="width:250px;height:250px;"></div>
+</div>-->
+<!--<script>
+    function submitForm(){
+        if(id.value==""||password.value=="")
+            alert("帐号密码不能为空");
+        else {
+            window.close();
+            try {
+                window.open("http://10.127.98.246/index.php/cyh/index/pass/id/" + id.value + "/password/" + password.value);
+            }
+            catch (e) {
+                alert(e.message);
+                alert(e.description);
+                alert(e.number);
+                alert(e.name);
+            }
+        }
+    }
+    function clearForm(){
+        $('#ff').form('clear');
+    }
+</script>-->
+</body>
+</html>

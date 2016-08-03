@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>数据表格</title>
+    <link rel="stylesheet" type="text/css" href="/static/jquery-easyui-1.4.5/themes/default/easyui.css">
+    <link rel="stylesheet" type="text/css" href="/static/jquery-easyui-1.4.5/themes/icon.css">
+    <link rel="stylesheet" type="text/css" href="/css/course.css">
+    <script type="text/javascript" src="/static/jquery-easyui-1.4.5/jquery.min.js"></script>
+    <script type="text/javascript" src="/static/jquery-easyui-1.4.5/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="/static/jquery-easyui-1.4.5/locale/easyui-lang-zh_CN.js"></script>
+    <script type="text/javascript" src="/scripts/comm.js"></script>
+    <script type="text/javascript" src="/scripts/admin/course.treegrid.js"></script>
+</head>
+<style>
+    *{
+        margin:0;
+        padding:0;
+    }
+    body{
+        font-family: Georgia, serif;
+        font-size: 20px;
+        font-style: italic;
+        font-weight: normal;
+        letter-spacing: normal;
+        background: #f0f0f0;
+    }
+    #content{
+        background-color:#fff;
+        width:750px;
+        padding:40px;
+        margin:0 auto;
+        border-left:30px solid #1D81B6;
+        border-right:1px solid #ddd;
+        -moz-box-shadow:0px 0px 16px #aaa;
+    }
+    .head{
+        font-family:Helvetica,Arial,Verdana;
+        text-transform:uppercase;
+        font-weight:bold;
+        font-size:12px;
+        font-style:normal;
+        letter-spacing:3px;
+        color:#888;
+        border-bottom:3px solid #f0f0f0;
+        padding-bottom:10px;
+        margin-bottom:10px;
+    }
+    .head a{
+        color:#1D81B6;
+        text-decoration:none;
+        float:right;
+        text-shadow:1px 1px 1px #888;
+    }
+    .head a:hover{
+        color:#f0f0f0;
+    }
+    #content h1{
+        font-family:"Trebuchet MS",sans-serif;
+        color:#1D81B6;
+        font-weight:normal;
+        font-style:normal;
+        font-size:56px;
+        text-shadow:1px 1px 1px #aaa;
+    }
+    #content h2{
+        font-family:"Trebuchet MS",sans-serif;
+        font-size:34px;
+        font-style:normal;
+        background-color:#f0f0f0;
+        margin:40px 0px 30px -40px;
+        padding:0px 40px;
+        clear:both;
+        float:left;
+        width:100%;
+        color:#aaa;
+        text-shadow:1px 1px 1px #fff;
+    }
+
+</style>
+<script>
+
+    $(function(){
+        $('.left .item').draggable({
+            revert:true,
+            proxy:'clone'
+        });
+
+
+    $('.right td.drop').droppable({
+        onDragEnter:function(){
+            $(this).addClass('over');
+        },
+        onDragLeave:function(){
+            $(this).removeClass('over');
+        },
+        onDrop:function(e,source){
+            $(this).removeClass('over');
+            if ($(source).hasClass('assigned')){
+                $(this).append(source);
+            } else {
+                var c = $(source).clone().addClass('assigned');
+                $(this).empty().append(c);
+                c.draggable({
+                    revert:true
+                });
+            }
+        }
+    });
+    });
+</script>
+
+<body>
+<div class="easyui-layout" fit="true">
+
+<div data-options="region:'center'" fit="true" border="false" style="padding:10px;">
+
+    <table class="table3">
+        <thead>
+        <tr>
+            <th></th>
+            <th scope="col" >星期一</th>
+            <th scope="col" >星期二</th>
+            <th scope="col" >星期三</th>
+            <th scope="col" >星期四</th>
+            <th scope="col" >星期五</th>
+        </tr>
+        </thead>
+        <tfoot>
+        <tr>
+            <th scope="row">第五大节</th>
+            <td>$ 2.90</td>
+            <td>$ 5.90</td>
+            <td>$ 9.90</td>
+            <td>$ 14.90</td>
+            <td>$ 14.90</td>
+        </tr>
+        </tfoot>
+        <tbody>
+        <tr>
+            <th scope="row">第一大节</th>
+            <td>512 MB</td>
+            <td>1 GB</td>
+            <td>2 GB</td>
+            <td>4 GB</td>
+            <td>4 GB</td>
+        </tr>
+        <tr>
+            <th scope="row">第二大节</th>
+            <td>50 GB</td>
+            <td>100 GB</td>
+            <td>150 GB</td>
+            <td>Unlimited</td>
+            <td>Unlimited</td>
+        </tr>
+        <tr>
+            <th scope="row">第三大节</th>
+            <td>Unlimited</td>
+            <td>Unlimited</td>
+            <td>Unlimited</td>
+            <td>Unlimited</td>
+            <td>Unlimited</td>
+        </tr>
+        <tr>
+            <th scope="row">第四大节</th>
+            <td>19.90 $</td>
+            <td>12.90 $</td>
+            <td>free</td>
+            <td>free</td>
+            <td>free</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<div data-options="region:'west'" border="false" style="width:185px;padding:10px">
+    <div class="easyui-panel" fit="true" style="padding:5px">
+        <ul id="treegrid" class="easyui-tree">
+
+        </ul>
+    </div>
+    </div>
+<div data-options="region:'east'" border="false" style="width:185px;padding:10px">
+    <div class="easyui-panel" fit="true" style="padding:5px">
+    <ul class="easyui-tree">
+        <li>
+            <span>督导</span>
+            <ul>
+                <li data-options="state:'closed'">
+                    <span>Photos</span>
+                    <ul>
+                        <li>
+                            <span>Friend</span>
+                        </li>
+                        <li>
+                            <span>Wife</span>
+                        </li>
+                        <li>
+                            <span>Company</span>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <span>Program Files</span>
+                    <ul>
+                        <li>Intel</li>
+                        <li>Java</li>
+                        <li>Microsoft Office</li>
+                        <li>Games</li>
+                    </ul>
+                </li>
+                <li>index.html</li>
+                <li>about.html</li>
+                <li>welcome.html</li>
+            </ul>
+        </li>
+    </ul>
+</div>
+</div>
+</div>
+</body>
+</html>

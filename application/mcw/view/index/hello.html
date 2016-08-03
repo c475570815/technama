@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>学生信息</title>
+    <link rel="stylesheet" type="text/css" href="/static/jquery-easyui-1.4.5/themes/default/easyui.css">
+    <link rel="stylesheet" type="text/css" href="/static/jquery-easyui-1.4.5/themes/icon.css">
+    <link rel="stylesheet" type="text/css" href="/static/jquery-easyui-1.4.5/demo/demo.css">
+    <script type="text/javascript" src="/static/jquery-easyui-1.4.5/jquery.min.js"></script>
+    <script type="text/javascript" src="/static/jquery-easyui-1.4.5/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="/static/jquery-easyui-1.4.5/locale/easyui-lang-zh_CN.js"></script>
+</head>
+<body>
+<table id="dg" title="学生信息表" style=" width:600px;height:300px"
+       data-options="rownumbers:true,singleSelect:true,pagination:true,url:'get',method:'get'">
+    <thead>
+    <tr>
+        <th data-options="field:'name'">姓名</th>
+        <th data-options="field:'phone'">电话</th>
+        <th data-options="field:'KaoDian',align:'right'">考点</th>
+    </tr>
+    </thead>
+</table>
+<script type="text/javascript">
+    $(function(){
+        var pager = $('#dg').datagrid().datagrid('getPager');    // get the pager of datagrid
+        pager.pagination({
+            buttons:[{
+                iconCls:'icon-search',
+                handler:function(){
+                    alert('search');
+                }
+            },{
+                iconCls:'icon-add',
+                handler:function(){
+                    alert('add');
+                }
+            },{
+                iconCls:'icon-edit',
+                handler:function(){
+                    alert('edit');
+                }
+            }]
+        });
+    })
+</script>
+</body>
+</html>

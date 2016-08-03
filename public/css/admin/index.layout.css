@@ -1,0 +1,29 @@
+﻿
+ul.menus{
+    padding: 0px;
+    margin: 0px;
+}
+.menus li{
+    padding: 2px;
+    margin-top: 5px;
+    /*display: list-item;*/
+    display: block;
+}
+.menus li a {
+    width: 100%;
+    text-align: left;
+}
+.logo{
+    font-size:16px;
+    display: inline-block;
+    height:100%;
+    line-height: inherit;
+    padding-left: 20px;
+}
+.icon-block{
+    display: inline-block;
+    float: left;
+    width: 20px;
+    height: 20px;
+}
+

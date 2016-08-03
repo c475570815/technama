@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>数据表格</title>
+    <link rel="stylesheet" type="text/css" href="/static/jquery-easyui-1.4.5/themes/default/easyui.css">
+    <link rel="stylesheet" type="text/css" href="/static/jquery-easyui-1.4.5/themes/icon.css">
+    <script type="text/javascript" src="/static/jquery-easyui-1.4.5/jquery.min.js"></script>
+    <script type="text/javascript" src="/static/jquery-easyui-1.4.5/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="/static/jquery-easyui-1.4.5/locale/easyui-lang-zh_CN.js"></script>
+    <script type="text/javascript" src="/scripts/comm.js"></script>
+    <script type="text/javascript" src="/scripts/cyh/tea.form.js"></script>
+</head>
+<body>
+<div class="easyui-panel" title="{$a}" style="width:600px;padding:10px 20px 20px 20px">
+    <form id="ff" method="post">
+        <table>
+            <tr>
+                <td>系部</td>
+                <td>
+                    <input id="dept_name" class="easyui-textbox" type="text" name="data[dept_name]"   data-options="required:true" />
+                </td>
+            </tr>
+            <tr>
+                <td>教师姓名</td>
+                <td>
+                    <input  id="class_name" class="easyui-textbox" type="text" name="data[teach_name]"  data-options="required:true"/>
+                </td>
+            </tr>
+            <tr>
+                <td>性别</td>
+                <td><input class="easyui-textbox" type="text" name="data[sex]" data-options="required:true"/></td>
+            </tr>
+            <tr>
+                <td>教师编号</td>
+                <td><input class="easyui-textbox" name="data[teach_id]" data-options=""/>
+                </td>
+            </tr>
+            <tr>
+                <td>教师密码</td>
+                <td>
+                    <input class="easyui-textbox" name="data[teach_pass]" value="">
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    <a href="#" class="easyui-linkbutton" onclick="saveForm()">保存</a>
+                    <a href="http://10.127.98.246/index.php/cyh/Tea/index" class="easyui-linkbutton" onclick="saveForm()">保存并返回</a>
+                    <a href="#" class="easyui-linkbutton" onclick="clearForm()">清除</a>
+                </td>
+            </tr>
+        </table>
+    </form>
+
+</div>
+</body>
+</html>
