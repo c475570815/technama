@@ -1,0 +1,31 @@
+* {
+    margin: 0px;
+    padding: 0px;
+}
+
+#p {
+    width: 100%;
+}
+
+#caidan {
+    width: 20%;
+    height: 600px;
+    float: left;
+    background-color: #00bbee;
+}
+
+#caozuo {
+    width: 80%;
+    height: 600px;
+    float: left;
+    background-color: transparent;
+}
+
+.ds_jieshao {
+    width: 100%;
+}
+
+#sy {
+    scrolling: no;
+
+}
