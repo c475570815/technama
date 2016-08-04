@@ -22,6 +22,12 @@ var columns_def = [[
     {field: 'calss_adviser', title: '班级班主任', sortable: true},
     {field:"operation", title: '操作', formatter:formatOptColumn }
 ]];
+/**
+ *  初始化网格对象
+ * @param grid
+ * @param url
+ * @param columns_def
+ */
 function initGrid(grid, url, columns_def) {
     $(grid_id).datagrid({
         url: url_get,
@@ -37,12 +43,6 @@ function initGrid(grid, url, columns_def) {
     });
 }
 /**
- * 当整个页面全部载入后才执行
- */
-$(document).ready(function () {
-    initGrid(grid_id, url_get, columns_def);
-});
-/**
  * 定义列的显示
  * @param val
  * @param row
@@ -50,10 +50,16 @@ $(document).ready(function () {
  */
 function formatOptColumn(val,row,index){
     var updateUrl = url_update + "/pk/" + row.class_name;
-
-       return "<a href='"+updateUrl+"' target='_self'> 操作 </a>";
+    return "<a href='"+updateUrl+"' target='_self'> 操作 </a>";
 
 }
+/**
+ * 当整个页面全部载入后才执行
+ */
+$(document).ready(function () {
+    initGrid(grid_id, url_get, columns_def);
+});
+
 /**
  * 查询
  */
@@ -110,7 +116,6 @@ function removeRecord() {
 function reload() {
     $(grid_id).datagrid('clearSelections');
     $(grid_id).datagrid('reload');
-
 }
 /**
  * 编辑
@@ -144,7 +149,60 @@ function exportXls() {
         onSubmit: function () {
         },
         success: function (data) {
-            alert(data);
+            var dataObj=eval("("+data+")");
+            $.messager.show({
+                msg:'删除成功！',
+                showType:'show',
+                style:{
+                    right:'',
+                    top:document.body.scrollTop+document.documentElement.scrollTop,
+                    bottom:''
+                }
+            });
+            console.log(data);
+
+        }
+    });
+}
+/**
+ *  显示上传窗体
+ */
+function importDialog() {
+    var dialog_id="#dd";
+    $(dialog_id).dialog({
+        title: '导入数据',
+        width: 400,
+        height: 400,
+        closed: false,
+        cache: true,
+       // href: 'get_content.php',
+        modal: true
+    });
+}
+/**
+ * 上传提交
+ */
+function importxls() {
+    var url_import="/index.php/admin/classes/upload";
+    var grid_options = $(grid_id).datagrid('options').queryParams;
+    var acion = {'action': 'import'};
+    var postdata = $.extend({}, grid_options, acion);
+    $("#frm_upload").form('submit', {
+        url: url_import,
+        queryParams: postdata,
+        onSubmit: function () {
+        },
+        success: function (data) {
+            var dataObj=eval("("+data+")");
+            var isok=dataObj.success;
+            var errors=dataObj.data;
+            var message=dataObj.message;
+            for(var key in errors){
+                message=message+"\n "+key+"行："+errors[key];
+            }
+            $("#msgbox").val(message);
+            console.log(dataObj.data);
+            reload();
         }
     });
 }
@@ -157,9 +215,7 @@ function printGrid(){
    //  location.href="http://10.127.98.246/index.php/admin/classes/printgrid";
    //$("#feeds").load("http://10.127.98.246/index.php/admin/classes/printgrid");
    // $("#feeds").print();
-
     /* $.get("http://10.127.98.246/index.php/admin/classes/printgrid",function(data,status){
-
         // console.log($(data).find("h1"))
            // alert($(data).find("#datagrd").html());
     });*/
