@@ -7,6 +7,7 @@ namespace app\common\validate;
  * Time: 22:07
  */
 use think\Validate;
+use think\Db;
 class ClassesValidate  extends Validate
 {
 
@@ -16,21 +17,22 @@ class ClassesValidate  extends Validate
      * 规则的写法有两种
      * (1)  'age'   => 'number|between:1,120',
      * (2)  'age'   => ['number','between'=>'1,120'],
+     * 注意：UTF8格式一个中文为长度为3
      * @var array
      */
     protected $rule = [
-        'class_name'  =>  'require|max:25',
-        'class_room' =>  'require',
-        'class_supervisor' => 'require',
-        'calss_adviser' => 'require'
+        'class_name'  =>  'is_unique:200|max:40',
+        'dept_name' =>  'require',
+
+
     ];
 
     protected $message  =   [
-        'class_name.require' => '名称必须',
-        'class_name.max'     => '名称最多不能超过25个字符',
-        'class_room'   => '不能为空',
-        'class_supervisor'  => '年龄只能在1-120之间',
-        'calss_adviser'        => '邮箱格式错误',
+        'class_name.require' => '班级名不能为空',
+        'class_name.max'     => '班级名称最多不能超过40个字符',
+        'class_name.is_unique' => '班级名已存在',
+        'dept_name'     => '系部不能为空',
+
     ];
 
 
@@ -39,10 +41,38 @@ class ClassesValidate  extends Validate
      * @param $value 实际字段值
      * @param $rule  规则值
      * @param $data  数据
-     * @return bool|string
+     * @return bool|string 通过验证返回true，否则返回错误提示
      */
     protected function checkName($value,$rule,$data)
     {
-        // return $rule == $value ? true : '名称错误';
+         return $rule == $value ? true : '名称错误';
+        //return true;
+    }
+
+    /**
+     * 必须
+     * @param $value
+     * @param $rule
+     * @param $data
+     * @return bool
+     */
+    protected function  is_unique($value,$rule)
+    {
+
+        //$db  = \think\Db::table('tbl_classes');
+        //var_dump( $db->where('class_name',$value)->find());
+        $list=Db::table('tbl_classes')->where('class_name',$value)->find();
+        if($list){
+            return false;
+        }else{
+            return true;
+        }
+    }
+
+    protected function max($value, $rule)
+    {
+       // $length = strlen((string) $value);
+        $length = mb_strlen((string) $value);
+        return $length <= $rule;
     }
 }
