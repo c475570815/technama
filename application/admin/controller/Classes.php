@@ -14,6 +14,7 @@ use app\common\model\ClassesModel;
 use app\common\model\DeptModel;
 use think\Db;
 use  \think\Controller;
+use think\Loader;
 
 /*
  定义Controller类，一个类中有多个方法（Action）
@@ -48,27 +49,7 @@ class Classes extends Controller implements InterfaceDataGrid
         }
     }
 
-    /**
-     * 下载EXCEL文件
-     */
-    public function download(){
-        $request = Request::instance();
-        if($request->method()=='POST'){
-            if($request->post('action')=='export'){
-                $dict_grid= new ClassesDataGrid();
-                $list=$dict_grid->getList();//
-                $xlsName  = "班级表";
-                $xlsCell  = array(
-                    array('dept_name','部门名'),
-                    array('class_name','班级名'),
-                    array('class_room','教室'),
-                    array('class_supervisor','导师'),
-                    array('class_adviser','班主任')
-                );
-                $dict_grid->exportExcel($xlsName,$xlsCell,$list);
-            }
-        }
-    }
+
 
     public function dataValid(){
         $validate = new Validate([
@@ -83,84 +64,8 @@ class Classes extends Controller implements InterfaceDataGrid
             dump($validate->getError());
         }
     }
-    /**
-     * 将EXCEL导入表中
-     * @param $file
-     * @param int $start_row
-     * @param int $title_row
-     * @return bool
-     */
-    public  function excel2db($file,$start_row=2,$title_row=1){
-        $cellName = array('A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','AA','AB','AC','AD','AE','AF','AG','AH','AI','AJ','AK','AL','AM','AN','AO','AP','AQ','AR','AS','AT','AU','AV','AW','AX','AY','AZ');
-        vendor("PHPExcel.PHPExcel");
-        $objReader = \PHPExcel_IOFactory::createReader('Excel5');
-        $objPHPExcel = $objReader->load($file,$encode='utf-8');
-        $sheet = $objPHPExcel->getSheet(0);  //
-        $highestRow = $sheet->getHighestRow(); // 取得总行数
-        $highestColumn = $sheet->getHighestColumn(); // 取得总列数
-        $list=array();
-        for($i=$start_row;$i<=$highestRow;$i++)
-        {
-            $data=array();
-            $data['dept_name']=  $objPHPExcel->getActiveSheet()->getCell("A".$i)->getValue();
-            $data['class_name']=  $objPHPExcel->getActiveSheet()->getCell("B".$i)->getValue();
-            $data['class_room']=  strtotime($objPHPExcel->getActiveSheet()->getCell("C".$i)->getValue());
-            $data['class_supervisor']=  $objPHPExcel->getActiveSheet()->getCell("D".$i)->getValue();
-            $data['class_adviser']=  $objPHPExcel->getActiveSheet()->getCell("E".$i)->getValue();
-            $list[]=$data;
-        }
-        $mo= new ClassesModel();
-        $mo->saveAll($list);
-        $this->success('导入成功！');
-        return true;
-    }
-    public function importExcel(){
-        //定义列和字段对应关系
-        $xlsCell  = array(
-            array('dept_name','部门名'),
-            array('class_name','班级名'),
-            array('class_room','教室'),
-            array('class_supervisor','导师'),
-            array('class_adviser','班主任')
-        );
-        $file = request()->file('image');
-        // 移动到框架应用根目录/public/uploads/ 目录下
-        $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads');
-        if($info){
-            // 成功上传后 获取上传信息
-            $filename=$info->getFilename();
-            vendor("PHPExcel.PHPExcel");
-            $objReader = \PHPExcel_IOFactory::createReader('Excel5');
-            $objPHPExcel = $objReader->load($filename,$encode='utf-8');
-            $sheet = $objPHPExcel->getSheet(0);  //
-            $highestRow = $sheet->getHighestRow(); // 取得总行数
-            $highestColumn = $sheet->getHighestColumn(); // 取得总列数
-            //第三行B列起
-            $cellName = array('A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','AA','AB','AC','AD','AE','AF','AG','AH','AI','AJ','AK','AL','AM','AN','AO','AP','AQ','AR','AS','AT','AU','AV','AW','AX','AY','AZ');
-            $start_row=2;
-
-            $list=array();
-            for($i=$start_row;$i<=$highestRow;$i++)
-            {
-                $data=array();
-                $data['dept_name']=  $objPHPExcel->getActiveSheet()->getCell("A".$i)->getValue();
-                $data['class_name']=  $objPHPExcel->getActiveSheet()->getCell("B".$i)->getValue();
-                $data['class_room']=  strtotime($objPHPExcel->getActiveSheet()->getCell("C".$i)->getValue());
-                $data['class_supervisor']=  $objPHPExcel->getActiveSheet()->getCell("D".$i)->getValue();
-                $data['class_adviser']=  $objPHPExcel->getActiveSheet()->getCell("E".$i)->getValue();
-                $list[]=$data;
-
-            }
-            $mo= new ClassesModel();
-            $mo->saveAll($list);
-            $this->success('导入成功！');
-        }else{
-            // 上传失败获取错误信息
-            echo $file->getError();
-        }
 
 
-    }
     /**
      * 打印网格
      */
@@ -266,6 +171,135 @@ class Classes extends Controller implements InterfaceDataGrid
         return $view->fetch('form');
     }
 
+    /**
+     * 下载EXCEL文件
+     */
+    public function download(){
+        $request = Request::instance();
+        if($request->method()=='POST'){
+            if($request->post('action')=='export'){
+                $dict_grid= new ClassesDataGrid();
+                $list=$dict_grid->getList();//
+                $xlsName  = "班级表";
+                $xlsCell  = array(
+                    array('dept_name','部门名'),
+                    array('class_name','班级名'),
+                    array('class_room','教室'),
+                    array('class_supervisor','导师'),
+                    array('class_adviser','班主任')
+                );
+                $dict_grid->exportExcel($xlsName,$xlsCell,$list);
+            }
+        }
+    }
+
+
+    /**
+     * 将excel文件转换成数组
+     * @param $file
+     * @param $start_row
+     * @param $columns   表格字段定义 ['dept_name'=>'系部名称','dept_id'=>'系部编号']
+     * ['A'=>'dept_name','B'=>'dept_id']
+     * @return array
+     */
+    public function excel2array($file,$start_row,$columns){
+
+        vendor("PHPExcel.PHPExcel");
+        $objReader = \PHPExcel_IOFactory::createReader('Excel5');
+        $objPHPExcel = $objReader->load($file,$encode='utf-8');
+        $sheet = $objPHPExcel->getSheet(0);  // sheet1
+        $highestRow = $sheet->getHighestRow(); // 取得总行数
+        $highestColumn = $sheet->getHighestColumn(); // 取得总列数
+        for($i=$start_row;$i<=$highestColumn;$i++){
+
+        }
+        $list=array();// excel数据二维数组
+        for($i=$start_row;$i<=$highestRow;$i++)
+        {
+            $data=array();
+            // array_flip($columns)['dept_name']  =='A'
+            $data['dept_name']=  $objPHPExcel->getActiveSheet()->getCell("A".$i)->getValue();
+            $data['class_name']=  $objPHPExcel->getActiveSheet()->getCell("B".$i)->getValue();
+            $data['class_room']=  $objPHPExcel->getActiveSheet()->getCell("C".$i)->getValue();
+            $data['class_supervisor']=  $objPHPExcel->getActiveSheet()->getCell("D".$i)->getValue();
+            $data['class_adviser']=  $objPHPExcel->getActiveSheet()->getCell("E".$i)->getValue();
+            $list[]=$data;
+        }
+        return $list;
+    }
+    /**
+     * 对每行数据进行验证，返回验证结果
+     * @param $data  数组，需要验证的数据
+     * @param $validate  验证类
+     * @return array   结果如 [ '1'=>[ '姓名为空','编号不是数字']]
+     */
+    public function excelValidate($datas,$validate){
+        $ret= array();
+        $i=2;
+        foreach ($datas as $current_row){
+            if(!$validate->check($current_row)){
+                //dump($validate->getError());
+                $arr_error=$validate->getError();
+                $ret[$i]=$arr_error;
+            }
+            $i++;
+        }
+        return $ret;
+    }
+
+    /**
+     *  ajax上传/public/uploads/ 目录下并导入
+     */
+    public function upload(){
+         $file = request()->file('file');
+        // 移动到框架应用根目录/public/uploads/ 目录下
+        $tmp_file = $file->move(ROOT_PATH . 'public' . DS . 'uploads');
+        if($tmp_file){
+            if($tmp_file->getExtension()!='xls'){
+                // 上传失败获取错误信息
+                @unlink($tmp_file);
+                $ret1=['success'=>'false','message'=>'文件格式必须是XLS'];
+                //echo $file->getError();
+                return json($ret1);
+            }
+            //获取记录到数组
+            $columns=array(
+                'dept_name'=>'部门名',
+                'class_name'=>'班级名',
+                'class_room'=>'教室',
+                'class_supervisor'=>'导师',
+                'class_adviser'=>'班主任'
+            );
+            $start_row=2;
+            $datas=$this->excel2array($tmp_file,$start_row,$columns);
+            //对数组进行验证
+            $validate = Loader::validate('ClassesValidate');
+            $ret=$this->excelValidate($datas,$validate);
+           // var_dump($ret);
+            if(count($ret)==0){
+                @unlink($tmp_file);
+                $mo= new ClassesModel();
+                $mo->saveAll($datas); //保存数组中的数据到数据库
+                $ret1=['success'=>'true','message'=>'导入成功,共导入'.count($datas).'条记录'];
+                // $this->success('导入成功！');
+                return json($ret1);
+            }else{
+                $ret1=[
+                    'success'=>'false',
+                    'message'=>'导入失败,共有'.count($ret).'记录格式不对',
+                    'data'=>$ret
+                    ];
+                return json($ret1);
+                // $this->success('导入失败！');
+            }
+
+        }else{
+            // 上传失败获取错误信息
+            $ret1=['success'=>'false','message'=>'文件上传失败！'];
+            //echo $file->getError();
+            return json($ret1);
+        }
+    }
 
 }
 
