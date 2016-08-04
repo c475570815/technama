@@ -218,3 +218,9 @@
 .icon-save {
     background: url('icons/save.png') no-repeat center center;
 }
+.icon-download {
+    background: url('icons/download.png') no-repeat center center;
+}
+.icon-upload {
+    background: url('icons/upload.png') no-repeat center center;
+}
