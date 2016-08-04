@@ -2,12 +2,14 @@
  * Created by Administrator on 2016/7/21.
  */
 var grid_id='#datagrd';//表单名
-var url_get='http://10.127.98.246/index.php/admin/Tea/ac1';
-var url_remove='http://10.127.98.246/index.php/admin/Tea/remove';
-var url_update='http://10.127.98.246/index.php/admin/Tea/update';
-var url_tree='http://10.127.98.246/index.php/admin/Tea/ac1';
-var url_export='http://10.127.98.246/index.php/admin/Tea/download';
+var url_get='/index.php/admin/Tea/ac1';
+var url_remove='/index.php/admin/Tea/remove';
+var url_update='/index.php/admin/Tea/update';
+var url_tree='/index.php/admin/Tea/ac1';
+var url_export='/index.php/admin/Tea/download';
 var pk_field='teach_id';
+var cc="#CC";
+var frm_search="#frm_search";
 var columns_def=[[
     {field: 'chkbox', checkbox: true},
     {field:'dept_name',title:'所属系部',sortable:true},
@@ -49,8 +51,8 @@ $(document).ready(function () {
 function query(){
      //var  a=$("#cc").combotree('getText');
     //document.getElementsByName("dict[dept_name]").value=a;
-    var search_filter=$('#frm_search').serializeJson();//把数据做成josn格式
-   $("#datagrd").datagrid(
+    var search_filter=$(frm_search).serializeJson();//把数据做成josn格式
+   $(grid_id).datagrid(
        'load',//利用load方法提交search_filter 控制器ac1方法
        search_filter
     );
@@ -126,17 +128,17 @@ function edit() {
 * 把数据以表格的形式下载
 * */
 function  down() {
-    var url_down="ftp://10.127.98.246/static/picture/logo.png"
+    var url_down="ftp://10.127.98.242/static/picture/logo.png"
     location.href = url_down;
 }
 /**
  * 加载下拉树的josn
  */
 function  load2() {
-   $.getJSON("http://10.127.98.246/index.php/admin/Tea/treejosn",function(data){
+   $.getJSON("http://10.127.98.242/index.php/admin/Tea/treejosn",function(data){
         var str = data.toString();
         var s=eval(str);
-        $('#cc').combotree('loadData',s);
+        $(cc).combotree('loadData',s);
 });
 }
 /**
@@ -149,7 +151,7 @@ function exportXls() {
     var acion = {'action': 'export'};
     var postdata = $.extend({}, grid_options, acion);
     $('#frm_download').form('submit', {
-        url: 'http://10.127.98.246/index.php/admin/Tea/download',
+        url: 'http://10.127.98.242/index.php/admin/Tea/download',
         queryParams: postdata,
         onSubmit: function () {
         },
@@ -174,6 +176,6 @@ function formatOptColumn(val,row,index){
  * 清空
  */
 function clearForm() {
-    $('#frm_search').form('clear');
+    $(frm_search).form('clear');
 }
 
