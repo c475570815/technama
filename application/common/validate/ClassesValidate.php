@@ -12,7 +12,7 @@ class ClassesValidate  extends Validate
 {
 
     /**
-     * 定义规则数组
+     * 定义验证规则数组
      * 一条规则包括 验证字段,验证规则函数,错误提示[,验证条件][,附加规则][,验证时间]
      * 规则的写法有两种
      * (1)  'age'   => 'number|between:1,120',
@@ -21,12 +21,13 @@ class ClassesValidate  extends Validate
      * @var array
      */
     protected $rule = [
-        'class_name'  =>  'is_unique:200|max:40',
+        'class_name'  =>  'is_unique:200|max:40|require',
         'dept_name' =>  'require',
-
-
     ];
-
+    /**
+     * 验证规则的错误提示
+     * @var array
+     */
     protected $message  =   [
         'class_name.require' => '班级名不能为空',
         'class_name.max'     => '班级名称最多不能超过40个字符',
