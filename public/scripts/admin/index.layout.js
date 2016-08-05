@@ -1,7 +1,6 @@
 /**
  * Created by guowushi on 2016/7/21.
  */
-var sy=
 function addTab(title, url){
     if ($('#sy').tabs('exists', title)){
         $('#sy').tabs('select', title);
@@ -16,7 +15,7 @@ function addTab(title, url){
 }
 function loadConent(){
     alert('loading');
-    $("#main").attr('href','http://10.127.98.242/index.php/admin/classes/index');
+    $("#main").attr('href','/index.php/admin/classes/index');
 }
 
 function logout() {
@@ -38,7 +37,7 @@ $(document).ready(function () {
     $("#loginOut").bind("click", function(){
         $.messager.confirm('提示', '是否要退出系统?', function (answer) {
             if (answer) {
-                location.href="http://10.127.98.246/index.php/admin/index/logout";
+                location.href="/index.php/admin/index/logout";
             }else{
                 return false;
             }
