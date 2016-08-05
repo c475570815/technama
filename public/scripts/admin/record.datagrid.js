@@ -160,6 +160,6 @@ function exportXls() {
  */
 function printGrid(){
    // $(grid_id).print();
-    window.open("http://10.127.98.246/index.php/admin/classes/printgrid","_blank")
+    window.open("/index.php/admin/classes/printgrid","_blank")
 
 }

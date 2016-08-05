@@ -5,7 +5,7 @@
  *
  */
 var grid='#datagrd';
-var url='http://10.127.98.242/index.php/admin/classes/ac1';
+var url='/index.php/admin/classes/ac1';
 var columns_def=[[
     {field:'dept_name',title:'所属系部',sortable:true,width:'30%'},
     {field:'class_name',title:'班级名称',sortable:true,width:'10%'},

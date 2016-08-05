@@ -3,7 +3,7 @@
  */
 
 var grid='#datagrd';
-var url='http://10.127.98.242/index.php/admin/schedule/ac1';
+var url='/index.php/admin/schedule/ac1';
 var columns_def=[[
     {field:'term',title:'学期',sortable:true},
     {field:'time',title:'时间',sortable:true},

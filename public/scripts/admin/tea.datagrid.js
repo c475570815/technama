@@ -135,7 +135,7 @@ function  down() {
  * 加载下拉树的josn
  */
 function  load2() {
-   $.getJSON("http://10.127.98.242/index.php/admin/Tea/treejosn",function(data){
+   $.getJSON("/index.php/admin/Tea/treejosn",function(data){
         var str = data.toString();
         var s=eval(str);
         $(cc).combotree('loadData',s);
@@ -151,7 +151,7 @@ function exportXls() {
     var acion = {'action': 'export'};
     var postdata = $.extend({}, grid_options, acion);
     $('#frm_download').form('submit', {
-        url: 'http://10.127.98.242/index.php/admin/Tea/download',
+        url: '/index.php/admin/Tea/download',
         queryParams: postdata,
         onSubmit: function () {
         },

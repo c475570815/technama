@@ -3,7 +3,7 @@
  */
 
 var grid='#datagrd';
-var url='http://10.127.98.242/index.php/admin/schedule/ac1';
+var url='/index.php/admin/schedule/ac1';
 var ff="#ff";
 var class_name="#class_name";
 var frm_search="#frm_search";
@@ -44,7 +44,7 @@ $(document).ready(function () {
 });
 function initForm(){
     $('#dept_name').combobox({
-        url: 'http://10.127.98.242/index.php/admin/schedule/deptinfo',
+        url: '/index.php/admin/schedule/deptinfo',
         valueField: 'dept_name',
         textField: 'dept_name'
     });
@@ -55,7 +55,7 @@ function initForm(){
  */
 function saveForm(){
     $(ff).form({
-        url:'http://10.127.98.242/index.php/admin/schedule/save',
+        url:'/index.php/admin/schedule/save',
         onSubmit: function(){
             // 有效性验证
             var classname=$(class_name).val();
