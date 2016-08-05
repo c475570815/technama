@@ -249,20 +249,28 @@ class Classes extends Controller implements InterfaceDataGrid
 
     /**
      *  ajax上传/public/uploads/ 目录下并导入
+     * {
+        success：true，
+     *   message：‘成功’
+     *  data: {
+                1: '用户名为空',5:'年龄必须是数字'
+     *          }
+     *
+     * }
      */
     public function upload(){
-         $file = request()->file('file');
-        // 移动到框架应用根目录/public/uploads/ 目录下
+        // 获取上传文件并放到/public/uploads/ 目录下
+        $file = request()->file('file');
         $tmp_file = $file->move(ROOT_PATH . 'public' . DS . 'uploads');
         if($tmp_file){
             if($tmp_file->getExtension()!='xls'){
                 // 上传失败获取错误信息
-                @unlink($tmp_file);
+                @unlink($tmp_file);//删除上传的临时文件
                 $ret1=['success'=>'false','message'=>'文件格式必须是XLS'];
                 //echo $file->getError();
                 return json($ret1);
             }
-            //获取记录到数组
+            // (1)将excel记录一次性读入到数组中
             $columns=array(
                 'dept_name'=>'部门名',
                 'class_name'=>'班级名',
@@ -270,16 +278,19 @@ class Classes extends Controller implements InterfaceDataGrid
                 'class_supervisor'=>'导师',
                 'class_adviser'=>'班主任'
             );
+
             $start_row=2;
             $datas=$this->excel2array($tmp_file,$start_row,$columns);
-            //对数组进行验证
+            // (2)对数组进行有效性验证（如是否唯一）,返回验证结果，结果是错误信息的数组
+            //对数组做清除处理
             $validate = Loader::validate('ClassesValidate');
             $ret=$this->excelValidate($datas,$validate);
            // var_dump($ret);
+            @unlink($tmp_file);
             if(count($ret)==0){
-                @unlink($tmp_file);
+                //（3）保存数组中的数据到数据库
                 $mo= new ClassesModel();
-                $mo->saveAll($datas); //保存数组中的数据到数据库
+                $mo->saveAll($datas);
                 $ret1=['success'=>'true','message'=>'导入成功,共导入'.count($datas).'条记录'];
                 // $this->success('导入成功！');
                 return json($ret1);
