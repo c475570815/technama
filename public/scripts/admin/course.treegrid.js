@@ -4,10 +4,10 @@
 var grid_id = '#datagrd';
 var grid = '#datagrd';
 var grid_listener = '#listen';
-var url = 'http://10.127.98.246/index.php/admin/course/ac1';
-var lis_url = 'http://10.127.98.246/index.php/admin/schedule/ac1';
-var url_remove = 'http://10.127.98.246/index.php/admin/course/remove';
-var url_update = 'http://10.127.98.246/index.php/admin/course/update';
+var url = '/index.php/admin/course/ac1';
+var lis_url = '/index.php/admin/schedule/ac1';
+var url_remove = '/index.php/admin/course/remove';
+var url_update = '/index.php/admin/course/update';
 var pk_field = 'adj_id';
 /* 用于课程表的网格列定义 */
 var columns_def = [[

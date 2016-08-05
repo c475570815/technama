@@ -52,6 +52,9 @@ class Dept
         return json($list);
     }
 
+    public function import(){
+
+    }
 }
 
 ?>

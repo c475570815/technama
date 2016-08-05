@@ -24,7 +24,7 @@
 $(document).ready(function () {
     //当整个页面全部载入后才执行
     $('#datagrd').datagrid({
-        url:'http://10.127.98.246/index.php/admin/dict/ac1',
+        url:'http://10.127.98.242/index.php/admin/dict/ac1',
         method:'post',
         title:"详细信息",
         fit:true,
@@ -75,7 +75,7 @@ function update(){
     // 获取该记录的主健值
     var idValue = row['dict_id'];
     // 让页面跳转到指定地址
-    var updateUrl = 'http://10.127.98.246/index.php/admin/dict/update？pk=7';
-    var updateUrl = 'http://10.127.98.246/index.php/admin/dict/update'+"/pk/"+idValue;
+    var updateUrl = 'http://10.127.98.242/index.php/admin/dict/update？pk=7';
+    var updateUrl = 'http://10.127.98.242/index.php/admin/dict/update'+"/pk/"+idValue;
     location.href=updateUrl;
 }

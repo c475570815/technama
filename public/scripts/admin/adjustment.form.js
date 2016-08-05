@@ -4,7 +4,7 @@
 
 var grid_id='#datagrd';
 var grid='#datagrd';
-var url_save='http://10.127.98.246/index.php/admin/adjustment/save';
+var url_save='http://10.127.98.242/index.php/admin/adjustment/save';
 //当整个页面全部载入后才执行
 $(document).ready(function(){
     initForm();
@@ -12,7 +12,7 @@ $(document).ready(function(){
 
 function initForm(){
     $('#dept_name').combobox({
-        url: 'http://10.127.98.246/index.php/admin/adjustment/deptinfo',
+        url: 'http://10.127.98.242/index.php/admin/adjustment/deptinfo',
         valueField: 'dept_name',
         textField: 'dept_name'
     });

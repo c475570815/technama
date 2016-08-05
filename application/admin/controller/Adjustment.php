@@ -1,6 +1,6 @@
 <?php
 namespace app\admin\controller;
-    use app\admin\AdjustmentDataGrid;
+use app\admin\AdjustmentDataGrid;
     use think\View;
     use think\Request;
     use app\common\model\AdjustmentModel;

@@ -3,7 +3,7 @@
  */
 var grid_id="#datagrid";
 var search_form_id="#frm_search";
-var url_get="http://10.127.98.246/index.php/admin/dept/getlist";
+var url_get="/index.php/admin/dept/getlist";
 $(document).ready(function () {
     //当整个页面全部载入后才执行
     initDeptGrid();
@@ -13,7 +13,7 @@ $(document).ready(function () {
 function initDeptGrid(){
 
     $("#datagrid").treegrid({
-        url:"http://10.127.98.246/index.php/admin/dept/getlist",
+        url:"/index.php/admin/dept/getlist",
         method:'post',
         title:"部门信息",
         idField:'dept_name',
@@ -29,7 +29,7 @@ function initDeptGrid(){
 }
 function initCboDeptCategory(){
     $('#cc').combobox({
-        url:'http://10.127.98.246/index.php/admin/dept/deptcat',
+        url:'/index.php/admin/dept/deptcat',
         valueField:'dict_key',
         textField:'dict_value',
         multiple:true

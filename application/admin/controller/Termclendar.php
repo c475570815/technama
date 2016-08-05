@@ -7,10 +7,10 @@
  */
 namespace app\admin\controller;
 
+use app\common\model\ConfigModel;
+use app\common\TermCalendar;
 use think\Controller;
 use think\View;
-use app\common\TermCalendar;
-use app\common\model\ConfigModel;
 
 class Termclendar extends Controller
 {
@@ -75,6 +75,12 @@ class Termclendar extends Controller
             $ret=['success'=>true,'message'=>'添加成功'];
             return json($ret);
     }
+
+    /**把数据处理成数据库需要的格式
+     * @param $start
+     * @param $end
+     * @return string
+     */
     public function  add_josn($start,$end){
         return "{\"start\":\"$start\",\"end\":\"$end\" }";
     }

@@ -5,7 +5,7 @@
  *
  */
 var form_id='#ff'; //表单对象的ID
-var url_save='http://10.127.98.246/index.php/admin/dict/save';  //远程保存数据的Action
+var url_save='http://10.127.98.242/index.php/admin/dict/save';  //远程保存数据的Action
 //当整个页面全部载入后才执行
 $(document).ready(function(){
     initForm();
