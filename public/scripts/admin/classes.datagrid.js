@@ -184,15 +184,16 @@ function importDialog() {
  */
 function importxls() {
     var url_import="/index.php/admin/classes/upload";
-    var grid_options = $(grid_id).datagrid('options').queryParams;
-    var acion = {'action': 'import'};
-    var postdata = $.extend({}, grid_options, acion);
+    var grid_options = $(grid_id).datagrid('options').queryParams; //保存grid原有的参数
+    var acion = {'action': 'import'};// 增加一个参数
+    var postdata = $.extend({}, grid_options, acion); //合并参数
     $("#frm_upload").form('submit', {
         url: url_import,
         queryParams: postdata,
         onSubmit: function () {
         },
         success: function (data) {
+            //解析返回的JSON
             var dataObj=eval("("+data+")");
             var isok=dataObj.success;
             var errors=dataObj.data;
