@@ -45,7 +45,7 @@ $(document).ready(function () {
         });
         return false;
     });
-    //
+    // 绑定上下文菜单
     $(document).bind('contextmenu',function(e){
         e.preventDefault();
         e.stopPropagation();

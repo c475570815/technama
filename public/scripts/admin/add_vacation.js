@@ -1,12 +1,15 @@
 /**
  * Created by Administrator on 2016/8/2.
  */
-var url_save="http://10.127.98.242/index.php/admin/termclendar/add_vacation"
+var url_save="/index.php/admin/termclendar/add_vacation"
 function hideHeader(){
     $('#pg').propertygrid({
         showHeader:false
     });
 }
+/**
+ *
+ */
 $(document).ready(function () {
     //当整个页面全部载入后才执行
     hideHeader();//隐藏头
