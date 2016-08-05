@@ -83,25 +83,53 @@ class Classes extends Controller implements InterfaceDataGrid
             dump($validate->getError());
         }
     }
+
     /**
      * 将EXCEL导入表中
-     * @param $file
-     * @param int $start_row
-     * @param int $title_row
+     * @param $file 文件
+     * @param int $start_row 开始行
+     * @param int $title_row  标题行
      * @return bool
      */
-    public  function excel2db($file,$start_row=2,$title_row=1){
-        $cellName = array('A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','AA','AB','AC','AD','AE','AF','AG','AH','AI','AJ','AK','AL','AM','AN','AO','AP','AQ','AR','AS','AT','AU','AV','AW','AX','AY','AZ');
+    public  function excel2db($file,$start_row=2){
+        $columns=array();
+        $datas=excel2array($file,$start_row,$columns);
+        $validate = Loader::validate('ClassesValidate');
+        $ret=excelValidate($datas,$validate);
+        if(count($ret)>0){
+            $mo= new ClassesModel();
+            $mo->saveAll($datas);
+            // $this->success('导入成功！');
+        }else{
+            //  $this->success('导入失败！');
+        }
+        return true;
+    }
+
+    /**
+     * 将excel文件转换成数组
+     * @param $file
+     * @param $start_row
+     * @param $columns   表格字段定义 ['dept_name'=>'系部名称','dept_id'=>'系部编号']
+     * ['A'=>'dept_name','B'=>'dept_id']
+     * @return array
+     */
+    public function excel2array($file,$start_row,$columns){
+
         vendor("PHPExcel.PHPExcel");
         $objReader = \PHPExcel_IOFactory::createReader('Excel5');
         $objPHPExcel = $objReader->load($file,$encode='utf-8');
-        $sheet = $objPHPExcel->getSheet(0);  //
+        $sheet = $objPHPExcel->getSheet(0);  // sheet1
         $highestRow = $sheet->getHighestRow(); // 取得总行数
         $highestColumn = $sheet->getHighestColumn(); // 取得总列数
-        $list=array();
+        for($i=$start_row;$i<=$highestColumn;$i++){
+
+        }
+        $list=array();// excel数据二维数组
         for($i=$start_row;$i<=$highestRow;$i++)
         {
             $data=array();
+            // array_flip($columns)['dept_name']  =='A'
             $data['dept_name']=  $objPHPExcel->getActiveSheet()->getCell("A".$i)->getValue();
             $data['class_name']=  $objPHPExcel->getActiveSheet()->getCell("B".$i)->getValue();
             $data['class_room']=  strtotime($objPHPExcel->getActiveSheet()->getCell("C".$i)->getValue());
@@ -109,10 +137,33 @@ class Classes extends Controller implements InterfaceDataGrid
             $data['class_adviser']=  $objPHPExcel->getActiveSheet()->getCell("E".$i)->getValue();
             $list[]=$data;
         }
+        return $list;
+    }
+    /**
+     * 对数据进行验证，返回验证结果
+     * @param $data  数组，需要验证的数据
+     * @param $validate  验证类
+     * @return array   结果如 [ '1'=>[ '姓名为空','编号不是数字']]
+     */
+    public function excelValidate($datas,$validate){
+        $ret=array();
+
+        $i=1;
+        foreach ($datas as $current_row){
+
+            if(!$validate->check($current_row)){
+                //dump($validate->getError());
+                $arr_error=$validate->getError();
+            }
+            $ret[$i]=$arr_error;
+            $i++;
+        }
+        /*
         $mo= new ClassesModel();
-        $mo->saveAll($list);
-        $this->success('导入成功！');
-        return true;
+        // 调用当前模型对应的验证器类进行数据验证
+        $result = $mo->validate("ClassesValidate")->getError();
+        */
+        return $ret;
     }
     public function importExcel(){
         //定义列和字段对应关系
