@@ -7,10 +7,10 @@
 var grid_id = '#datagrd';
 var search_form_id="#frm_search";
 var download_form_id="#frm_download";
-var url_get = 'http://10.127.98.242/index.php/admin/record/getlist';
-var url_remove = 'http://10.127.98.242/index.php/admin/classes/remove';
-var url_update = 'http://10.127.98.242/index.php/admin/classes/update';
-var url_export = 'http://10.127.98.242/index.php/admin/classes/download';
+var url_get = '/index.php/admin/record/getlist';
+var url_remove = '/index.php/admin/classes/remove';
+var url_update = '/index.php/admin/classes/update';
+var url_export = '/index.php/admin/classes/download';
 var pk_field = 'class_name';
 var grid_options;
 var columns_def = [[
@@ -160,6 +160,6 @@ function exportXls() {
  */
 function printGrid(){
    // $(grid_id).print();
-    window.open("http://10.127.98.242/index.php/admin/classes/printgrid","_blank")
+    window.open("http://10.127.98.246/index.php/admin/classes/printgrid","_blank")
 
 }
