@@ -2,7 +2,7 @@
  * Created by Administrator on 2016/7/29.
  */
 var grid_id='#datagrd';//表单名
-var url_get='http://10.127.98.246/index.php/admin/termclendar/get_cal_josn';
+var url_get='http://10.127.98.242/index.php/admin/termclendar/get_cal_josn';
 var week_calender=[[
     {field:'Monday',title:'星期一',width:100},//filed:该列对应字段名   title那一列
     {field:'Tuesday',title:'星期二',width:100},

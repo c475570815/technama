@@ -4,10 +4,11 @@
 /**
  * Ajax方式保存
  */
-var url_save='http://10.127.98.246/index.php/admin/Evaluate/save';
+var url_save='http://10.127.98.242/index.php/admin/Evaluate/save';
+var ff="#ff";
 //当整个页面全部载入后才执行
 function saveForm(){
-    $('#ff').form({
+    $(ff).form({
         url:url_save,
         onSubmit: function(){
             var id=document.getElementsByName("data[id]")[0].value;
@@ -26,22 +27,22 @@ function saveForm(){
             $.messager.alert('提示', data.message, 'info');
         }
     });
-    if($('#ff').form('validate'))
-    $('#ff').submit();
+    if($(ff).form('validate'))
+    $(ff).submit();
 
 }
 /**
  * 清空
  */
 function clearForm() {
-    $('#ff').form('clear');
+    $(ff).form('clear');
 }
 /**
  * 删除
  */
 /*function delForm() {
- $('#ff').form({
- url:'http://10.127.98.246/index.php/cyh/Tea/abandon',
+ $(ff).form({
+ url:'http://10.127.98.242/index.php/cyh/Tea/abandon',
  onSubmit: function(){
  var teacherid=$("#tech_id").val();
  if(teacherid==''){
@@ -53,10 +54,10 @@ function clearForm() {
  $.messager.alert('Info', data.message, 'info');
  }
  });
- $('#ff').submit();
+ $(ff).submit();
  }
  function clearForm() {
- $('#ff').form('clear');
+ $(ff).form('clear');
  }*/
 /*
 自定义验证规则

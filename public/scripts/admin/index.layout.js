@@ -1,6 +1,7 @@
 /**
  * Created by guowushi on 2016/7/21.
  */
+var sy=
 function addTab(title, url){
     if ($('#sy').tabs('exists', title)){
         $('#sy').tabs('select', title);
@@ -15,7 +16,7 @@ function addTab(title, url){
 }
 function loadConent(){
     alert('loading');
-    $("#main").attr('href','http://10.127.98.246/index.php/admin/classes/index');
+    $("#main").attr('href','http://10.127.98.242/index.php/admin/classes/index');
 }
 
 function logout() {

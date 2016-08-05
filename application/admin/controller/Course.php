@@ -127,15 +127,6 @@ class Course extends Controller
                  $adjustment_information[]=$adjustment['xing_qi_ji'];
                  $adjustment_information[]=$adjustment['section'];
                  //将数组转化为字符串
-                /* $adj_arr_str = '';
-                 foreach($adjustment_information as $key => $value){
-                     if($key == count($adjustment_information)-1){
-                         $adj_arr_str .= $value;
-                     }else{
-                         $adj_arr_str .= $value.'-';
-                     }
-                 }*/
-                 //$str = unserialize($adjustment_information);
                  $course['adj_exchange']= implode('-',$adjustment_information);
                  $ret_array[]=$course;
                  unset($adjustment_information);
@@ -144,44 +135,6 @@ class Course extends Controller
         return json(['total' => $total, 'rows' => $ret_array]);
 
 
-
-/*
-        $current_table =$this->getCurrentTable();
-        $current_table->where($this->getWhere());
-        //先获取筛选后记录的总数
-        $total = intval($current_table->count());
-        //获取客户端传递过来的参数 page=2&rows=20
-        $page = isset($_POST['page']) ? intval($_POST['page']) : 1;
-        $rows = isset($_POST['rows']) ? intval($_POST['rows']) : 10;
-        $current_table->where($this->getWhere());//重新获取条件
-        $start = ($page - 1) * $rows;
-        $current_table->limit($start, $rows);
-
-        // 排序
-        if(isset($_POST['sort']) &&  isset($_POST['order'])){
-            $sort = $_POST['sort'] ;
-            $order = $_POST['order'];
-            $current_table->order($sort,$order);
-
-        }
-
-        Db::listen(function($sql,$time,$explain){
-            // 记录SQL
-            // echo $sql. ' ['.$time.'s]';
-            // 查看性能分析结果
-            //dump($explain);
-        });
-        // 获取数组
-
-        $list = $current_table->select();
-
-        // 返回JSON
-        return json(['total' => $total, 'rows' => $list]);*/
-
-        /*
-        $dict_grid = new CourseForm();
-        return $dict_grid->dataGridJson();
-       */
     }
     public function ac2()
     {

@@ -178,4 +178,55 @@ function formatOptColumn(val,row,index){
 function clearForm() {
     $(frm_search).form('clear');
 }
+function importDialog() {
+    var dialog_id="#dd";
+    $(dialog_id).dialog({
+        title: '导入数据',
+        width: 400,
+        height: 400,
+        closed: false,
+        cache: true,
+        // href: 'get_content.php',
+        modal: true
+    });
+}
+/**
+ * 上传提交
+ */
+function importxls(){
+    var url_import="/index.php/admin/tea/upload";
+    var grid_options = $(grid_id).datagrid('options').queryParams; //保存grid原有的参数
+    var acion = {'action': 'import'};// 增加一个参数
+    var postdata = $.extend({}, grid_options, acion); //合并参数
+    $("#frm_upload").form('submit', {
+        url: url_import,
+        queryParams: postdata,
+        onSubmit: function () {
+        },
+        success: function (data) {
+            //解析返回的JSON
+            var dataObj=eval("("+data+")");
+            var isok=dataObj.success;
+            var errors=dataObj.data;
+            var message=dataObj.message;
+            for(var key in errors){
+                message=message+"\n "+key+"行："+errors[key];
+            }
+            $("#msgbox").val(message);
+            console.log(dataObj.data);
+            reload();
+        }
+    });
+}
+function printGrid(){
+    // $(grid_id).print();
+    window.open("/index.php/admin/classes/printgrid","_blank")
+    //  location.href="http://10.127.98.246/index.php/admin/classes/printgrid";
+    //$("#feeds").load("http://10.127.98.246/index.php/admin/classes/printgrid");
+    // $("#feeds").print();
+    /* $.get("http://10.127.98.246/index.php/admin/classes/printgrid",function(data,status){
+     // console.log($(data).find("h1"))
+     // alert($(data).find("#datagrd").html());
+     });*/
 
+}

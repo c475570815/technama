@@ -7,10 +7,10 @@
 var grid_id='#datagrd';
 var grid='#datagrd';
 var download_form_id="#frm_download";
-var url='http://10.127.98.246/index.php/admin/adjustment/ac1';
-var url_remove='http://10.127.98.246/index.php/admin/adjustment/remove';
-var url_update='http://10.127.98.246/index.php/admin/adjustment/update';
-var url_export = 'http://10.127.98.246/index.php/admin/classes/download';
+var url='http://10.127.98.242/index.php/admin/adjustment/ac1';
+var url_remove='http://10.127.98.242/index.php/admin/adjustment/remove';
+var url_update='http://10.127.98.242/index.php/admin/adjustment/update';
+var url_export = 'http://10.127.98.242/index.php/admin/classes/download';
 var pk_field='adj_id';
 var grid_options;
 var columns_def=[[
