@@ -39,6 +39,7 @@ function initGrid(grid, url, columns_def) {
         pagination: true,
         fitColumns:true,
         rownumbers: true,
+        pageSize:20,
         columns: columns_def
     });
 }

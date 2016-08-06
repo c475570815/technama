@@ -8,16 +8,21 @@ function hideHeader(){
     });
 }
 /**
- *
+ *当整个页面全部载入后才执行
  */
 $(document).ready(function () {
-    //当整个页面全部载入后才执行
     hideHeader();//隐藏头
 });
+/**
+ * 保存学期参数
+ */
 function  save(){
     $rows=$('#pg').propertygrid('getRows');
     console.log($rows[0]['value']);
 }
+/**
+ * 保存表单
+ */
 function saveForm(){
     $('#ff').form({
         url:url_save,
