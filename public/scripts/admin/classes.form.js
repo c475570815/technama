@@ -32,7 +32,7 @@ function saveForm(){
                    }
              },
             success:function(data){
-                var data = eval('(' + data + ')');  // change the JSON string to javascript object
+                var data = eval('(' + data + ')');
                 $.messager.alert('Info', data.message, 'info');
             }
         });
@@ -43,4 +43,10 @@ function saveForm(){
  */
 function clearForm() {
     $('#ff').form('clear');
+}
+/**
+ * 返回
+ */
+function returnGrid(){
+    history.back();
 }

@@ -6,14 +6,18 @@
  * @param title  Tab 标题
  * @param url     地址
  */
-function addTab(title, url){
+var indexLayout = function() {
+    this.init();
+};
 
-    if ($('#sy').tabs('exists', title)){
+function addTab(title, url){
+    var _easyTabs=$("#sy");
+    if (_easyTabs.tabs('exists', title)){
         //如果存在，则选中刷新
-           //   $('#sy').tabs('select', title);
+        _easyTabs.tabs('select', title);
         refreshTab();
     } else {
-         $('#sy').tabs('add',{
+        _easyTabs.tabs('add',{
             title:title,
             content:createFrame(url),
             closable:true,
@@ -33,8 +37,8 @@ function addTab(title, url){
 }
 function createFrame(url)
 {
-    var s = '<iframe scrolling="auto" frameborder="0"  src="'+url+'" style="width:100%;height:100%;"></iframe>';
-    return s;
+    var iframe = '<iframe scrolling="auto" frameborder="0"  src="'+url+'" style="width:100%;height:100%;"></iframe>';
+    return iframe;
 }
 /**
  * 菜单处理
@@ -57,7 +61,7 @@ $(document).ready(function () {
         addTab($(this).text(), $(this).attr("href"));
         return false;
     });
-    // 初始化Tabs
+    // 初始化Tabs组件
     $('#sy').tabs({
         border: false,
         fit:true,
@@ -118,7 +122,6 @@ $(document).ready(function () {
                 $('#script-warning').show();
             }
         },
-
         loading: function(bool) {
             $('#loading').toggle(bool);
         }

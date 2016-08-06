@@ -370,4 +370,21 @@ class TermCalendar
         return $day;
     }
 
+    /**
+     * 显示一个HTML格式的年历
+     */
+    public function toHTML(){
+        $header="<table width='700px' border='1px'>";
+        $header=$header."<tr>"."<th>周一</th><th>周二</th><th>周三</th><th>周四</th><th>周五</th><th>周六</th><th>周日</th>"."</tr>";
+        foreach ($this->_overall_day as $week){
+            for($i=1;$i<=7;$i++){
+
+            }
+        }
+        $tbody="";
+        $header=$header.$tbody;
+        $header=$header."<table>";
+        return $header;
+    }
+
 }
