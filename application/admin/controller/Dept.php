@@ -66,7 +66,7 @@ class Dept extends Controller implements InterfaceDataGrid
         $request = Request::instance();
         if($request->method()=='POST'){
             if($request->post('action')=='export'){
-                $dict_grid= new DepttreeGrid();
+                $dict_grid= new DeptTreeGrid();
                 $list=$dict_grid->getList();//
                 $xlsName  = "部门表";
                 $xlsCell  = array(
