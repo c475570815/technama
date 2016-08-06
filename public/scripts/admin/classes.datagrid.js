@@ -9,6 +9,7 @@ var search_form_id="#frm_search";
 var download_form_id="#frm_download";
 var url_get = '/index.php/admin/classes/index';
 var url_remove = '/index.php/admin/classes/remove';
+var url_remove_all = '/index.php/admin/classes/removeall';
 var url_update = '/index.php/admin/classes/update';
 var url_export = '/index.php/admin/classes/download';
 var pk_field = 'class_name';
@@ -74,6 +75,31 @@ function query() {
     );
     grid_options = $(grid_id).datagrid('options').queryParams;
     console.log(grid_options);
+}
+/**
+ *  清楚所有记录,清除前提示
+ */
+function removeall(){
+    $.messager.confirm('提示', '是否删除所有的数据?', function (r) {
+        if (!r) {
+            return;
+        }
+        //Ajax提交
+        $.ajax({
+            type: "POST",
+            url: url_remove_all,
+            data: {id: 1},//传递给服务器的参数
+            success: function (jsonresult) {
+                reload();
+                if (jsonresult.isSuccess == true) {
+                    $.messager.alert("提示", jsonresult.message, "info");
+                } else {
+                    $.messager.alert("提示", jsonresult.message, "info");
+                    return;
+                }
+            }
+        });
+    });
 }
 /**
  * 删除选中的记录

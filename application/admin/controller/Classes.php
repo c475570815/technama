@@ -102,7 +102,6 @@ class Classes extends Controller implements InterfaceDataGrid
      * @return \think\Response|\think\response\Json|\think\response\Jsonp|\think\response\Redirect|\think\response\View|\think\response\Xml
      */
     public function save(){
-
         $form_data=$_POST['data'];
         $ret=array(
             'success'=>false,'message'=>'添加失败'
@@ -146,6 +145,21 @@ class Classes extends Controller implements InterfaceDataGrid
         $id=$_POST['id'];
         $mo=new ClassesModel();
          $count= $mo->where('class_name','in',$id)->delete();
+        if($count>0){
+            $ret=['success'=>'true','message'=>'删除成功,共删除'.$count.'条记录'];
+        }else{
+            $ret=['success'=>'false','message'=>'删除失败！'];
+        }
+        return json($ret);
+    }
+
+    /**
+     * 删除所有数据
+     * @return \think\Response|\think\response\Json|\think\response\Jsonp|\think\response\Redirect|\think\response\View|\think\response\Xml
+     */
+    public function removeall(){
+        $mo=new ClassesModel();
+        $count= $mo->where("1=1")->delete();//如果不接条件，则无法删除
         if($count>0){
             $ret=['success'=>'true','message'=>'删除成功,共删除'.$count.'条记录'];
         }else{
