@@ -252,4 +252,13 @@ return [
         'REPLY_EMAIL' => '', //回复EMAIL（留空则为发件人EMAIL）
         'REPLY_NAME'  => '', //回复名称（留空则为发件人名称）
     ),
+    //云通讯SDK参数
+    'yuntongxun'=>[
+        'ACCOUNT_SID'=>'aaf98f894f402f15014f47296f9305b6',
+        'AUTH_TOKEN'=>'4c3bf9a9f1114bd2a85d1de6552a3143',
+        'REST_URL'=>'sandboxapp.cloopen.com',
+        'PORT'=>'8883',
+        'APPID'=>'8a48b5514f49079e014f4ae30b730723',
+        'VERSION'=>'2013-12-26',
+    ]
 ];

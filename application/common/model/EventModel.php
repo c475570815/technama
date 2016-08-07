@@ -15,7 +15,7 @@ use think\Model;
  * Class DictModel
  * @package app\common\model
  */
-class EventModel extends Model
+class EventModel extends \app\common\model\CommonModel
 {
     // 设置当前模型对应的完整数据表名称
     protected $table = 'tbl_event';

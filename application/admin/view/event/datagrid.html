@@ -9,8 +9,14 @@
     <script type="text/javascript" src="/static/jquery-easyui-1.4.5/jquery.easyui.min.js"></script>
     <script type="text/javascript" src="/static/jquery-easyui-1.4.5/locale/easyui-lang-zh_CN.js"></script>
     <script type="text/javascript" src="/scripts/comm.js"></script>
-    <script type="text/javascript" src="/scripts/admin/classes.datagrid.js"></script>
+    <script type="text/javascript" src="/scripts/admin/event.datagrid.js"></script>
     <script type="text/javascript" src="/static/jQuery.print.js"></script>
+    <style>
+        #frm_add { padding: 10px;}
+        #frm_add div  { margin: 5px;padding: 5px;}
+        #frm_add div label{display: block;margin-bottom: 5px}
+        #frm_add div input{ width: 100%}
+    </style>
 </head>
 <body>
 <div class="easyui-panel" data-options="fit:true" style="padding:10px">
@@ -21,24 +27,14 @@
             <!--    <div  class="easyui-panel"
                      data-options="iconCls:'icon-search',plain:true,collapsible:false;" style="padding:5px;margin-bottom: 10px">-->
             <form id="frm_search" action="" method="post">
-                系部:
-                <select id="a" class="easyui-combobox" panelHeight="auto" style="width:200px" name="dict[dept_name]">
-                    <option value="全部" selected>全部</option>
-                    {volist name="dept" id="vo"}
-                    <option value="{$vo.dept_name}">{$vo.dept_name}</option>
-                    {/volist}
-                </select>
-                班级名称: <input class="easyui-text" style="width:110px" name="dict[class_name]">
-                固定教室: <input class="easyui-text" style="width:110px" name="dict[class_room]">
-                导师: <input class="easyui-text" style="width:110px" name="dict[class_supervisor]">
-                班主任: <input class="easyui-text" style="width:110px" name="dict[calss_adviser]">
+                事件:<input class="easyui-text" style="width:110px" name="dict[]">
+                日期: <input class="easyui-text" style="width:110px" name="dict[date]">
                 <a href="#" class="easyui-linkbutton" iconCls="icon-search" onclick="query()">查找</a>
             </form>
             <form id="frm_download" method="post"></form>
             <!--</div>-->
         </div>
         <div data-options="region:'center',plain:true" border="false" style="">
-
             <!-- 操作工具栏 -->
             <div id="editToolbar" style="clear: both">
                 <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true"
@@ -66,7 +62,26 @@
             </table>
 
         </div>
-
+        <div data-options="region:'east',plain:true,hideCollapsedContent:false" title="添加事件" style="width:400px">
+            <form id="frm_add" method="post">
+                <div>
+                    <label>事件:</label>
+                    <input class="easyui-text" style="" name="dict[title]"></div>
+                <div>
+                    <label>开始时间:</label>
+                    <input   class="easyui-datetimebox"  data-options="required:true,showSeconds:false" style="width: 300px" name="dict[start]">
+                </div>
+                <div>
+                    <label>结束时间:</label>
+                 <input class="easyui-datetimebox"  style="width: 300px"  data-options="required:true,showSeconds:false" name="dict[end]">
+                </div>
+                <div>
+                    <label>链接地址: </label>
+                <input class="easyui-text" style="" name="dict[url]">
+                </div>
+                <div> <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add'" onclick="saveForm()">添加</a></div>
+            </form>
+        </div>
 
     </div>
 </div>

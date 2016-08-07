@@ -7,6 +7,7 @@
  */
 namespace app\admin\controller;
 use app\admin\ScheduleDataGrid;
+use app\common\model\TeacherModel;
 use think\View;
 use app\common\model\ScheduleModel;
 use app\common\model\DictCategoryModel;
@@ -53,7 +54,7 @@ class Schedule extends Controller
      * 通过ajax方式从服务器上获取JSON格式的数据给网格显示
      * @return \think\Response|\think\response\Json|\think\response\Jsonp|\think\response\Redirect|\think\response\View|\think\response\Xml
      */
-    public function ac1()
+    public function getlist()
     {
         $dict_grid = new ScheduleDataGrid();
         return $dict_grid->dataGridJson();
@@ -90,6 +91,13 @@ class Schedule extends Controller
         return $view->fetch('form');
     }
 
+    public function teacher_cg()
+    {
+        $q = isset($_POST['q']) ? $_POST['q'] : '';  // the request parameter
+        $mo=new TeacherModel();
+        $list=$mo->where('teach_name','like',"%$q%")->select();
+        return  json($list);
+    }
 
 }
 

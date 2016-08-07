@@ -6,11 +6,9 @@
  */
 namespace app\admin\controller;
 
+use app\common\model\EventModel;
 use think\Controller;
 use think\View;
-use app\common\model\DictModel;
-use app\common\model\DictCategoryModel;
-use app\admin\DictDataGrid;
 use think\Db;
 
 /*
@@ -26,21 +24,49 @@ class Event extends Controller
      * 用于显示、查找、排序
      */
     public function index(){
-
-        $dict= new DictCategoryModel();
-        $dict_category=$dict->select();
         $view = new View();
-        $view->assign("dict_category",  $dict_category);
         return $view->fetch('datagrid');
     }
 
     /**
-     * ajax数据显示
+     * 返回Grid需要的数据
      * @return \think\Response|\think\response\Json|\think\response\Jsonp|\think\response\Redirect|\think\response\View|\think\response\Xml
      */
-    public  function ac1(){
-        $dict_grid= new DictDataGrid();
-        return $dict_grid->dataGridJson();
+    public  function getlist(){
+        $model=new EventModel();
+        $arr_where=array();
+        if(isset($_POST['dict'])){
+            $dict=$_POST['dict'];
+            $arr_where= $model->filer($dict);
+            //print_r($arr_where);
+        }
+        $model->where($arr_where);
+        //先获取筛选后记录的总数
+        $total = intval($model->count());
+        //获取客户端传递过来的参数 page=2&rows=20
+        $page = isset($_POST['page']) ? intval($_POST['page']) : 1;
+        $rows = isset($_POST['rows']) ? intval($_POST['rows']) : 10;
+        $model->where($arr_where);//重新获取条件
+        $start = ($page - 1) * $rows;
+        $model->limit($start, $rows);
+        // 排序
+        if(isset($_POST['sort']) &&  isset($_POST['order'])){
+            $sort = $_POST['sort'] ;
+            $order = $_POST['order'];
+            $model->order($sort,$order);
+
+        }
+
+        Db::listen(function($sql,$time,$explain){
+            // 记录SQL
+             // echo $sql. ' ['.$time.'s]';
+            // 查看性能分析结果
+            //dump($explain);
+        });
+        // 获取数组
+        $list = $model->select();
+        // 返回JSON
+        return json(['total' => $total, 'rows' => $list]);
     }
 
 
@@ -49,27 +75,15 @@ class Event extends Controller
      * @return \think\Response|\think\response\Json|\think\response\Jsonp|\think\response\Redirect|\think\response\View|\think\response\Xml
      */
     public function save(){
-        $form_data=$_POST['data'];
+        $form_data=$_POST['dict'];
         $ret=array(
             'success'=>false,'message'=>'添加失败'
         );
-
-
-
-        //操作是添加还是修改
-        $operation=$_POST['operation'];
-        if($operation=='add'){
-            if( $this->addRecord($form_data) ){
-                $ret=['success'=>true,'message'=>'添加成功'];
-            }else{
-                $ret=['success'=>false,'message'=>'该用户已存在，添加失败！'];
-            }
+        $model=new EventModel();
+        if($model->save($form_data)){
+            $ret=['success'=>true,'message'=>'添加成功'];
         }else{
-            if( $this->updateRecord($form_data)) {
-                $ret = ['success' => true, 'message' => '修改成功'];
-            }else{
-                $ret = ['success' => false, 'message' => '记录已存在！'];
-            }
+            $ret=['success'=>false,'message'=>'添加失败'];
         }
         return json($ret);
     }

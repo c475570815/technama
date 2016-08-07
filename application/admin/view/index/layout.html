@@ -18,6 +18,11 @@
     <script src='/static/fullcalendar-2.9.0/lib/moment.min.js'></script>
     <script src='/static/fullcalendar-2.9.0/fullcalendar.min.js'></script>
     <script src='/static/fullcalendar-2.9.0/lang/zh-cn.js'></script>
+    <style>
+        .head a:visited{ color: #CCE6FF;text-decoration: none }
+        .head a:hover{ color: #ffffff;text-decoration: none }
+        .head a:link{ text-decoration: none;color: #CCE6FF }
+    </style>
 </head>
 <body id="zt" class="easyui-layout">
 <!--  North  -->
@@ -26,21 +31,21 @@
         line-height: 40px;color: #fff; font-family: Verdana, 微软雅黑,黑体">
     <span class="logo">督导管理系统</span>
     <span style="float:right; padding-right:10px;" class="head">
-        <span class="icon-user01">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>欢迎 <a>{$name}</a>
-        <span class="icon-password">&nbsp;&nbsp;&nbsp;&nbsp;</span> <a href="#" id="editpass">修改密码 </a>
-        <span class="icon-logout">&nbsp;&nbsp;&nbsp;&nbsp;</span> <a href="#" id="loginOut"> 安全退出 </a>
+        <span class="icon-user01">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><a href="#" title="修改个人信息">欢迎 {$name}</a>
+        <span class="icon-password">&nbsp;&nbsp;&nbsp;&nbsp;</span> <a href="#" title="修改密码" id="editpass">修改密码 </a>
+        <span class="icon-logout">&nbsp;&nbsp;&nbsp;&nbsp;</span> <a href="#" title="退出系统" id="loginOut"> 安全退出 </a>
     </span>
 
 </div>
 <!--  South  -->
-<div data-options="region:'south',iconCls:'icon-log',split:true" title="操作记录" style="height:100px;padding:10px;">
+<div data-options="region:'south',iconCls:'icon-log',split:true,hideCollapsedContent:false" title="操作记录" style="height:100px;padding:10px;">
 
 </div>
 <!--  East  -->
-<div id="bwl" data-options="region:'east',iconCls:'icon-home',split:true" title="备忘" style="width:120px;padding:10px;">
+<div id="bwl" data-options="region:'east',iconCls:'icon-home',split:true,hideCollapsedContent:false" title="备忘" style="width:120px;padding:10px;">
 </div>
 <!--  West  -->
-<div data-options="region:'west',iconCls:'icon-home',split:true" title="系统菜单" style="width:150px">
+<div data-options="region:'west',iconCls:'icon-home',split:true,hideCollapsedContent:false" title="系统菜单" style="width:150px">
     <div class="easyui-accordion" data-options="fit:true,border:false">
         <div title="基础数据管理" data-options="selected:true,iconCls:'icon-list'"
              style="padding-top:1px;padding-right:1px;padding-left:1px">
@@ -86,10 +91,13 @@
     </div>
 </div>
 <!--  Center Must exist  -->
-<div id="main" data-options="region:'center',title:'操作界面',iconCls:'icon-info'">
+<div id="main" data-options="region:'center',title:'操作界面',iconCls:'icon-grid'">
     <div id="sy" class="easyui-tabs">
-        <div title="学期日历"  style="padding:10px">
-            <div id='calendar' style="width:800px;"></div>
+        <div title="学期日历"   style="padding:20px">
+            <div  style="width:55%;padding:10px;background:#fafafa;float: left;border: dotted cornflowerblue 1px" title="日历"    >
+            <div id='calendar'>
+
+            </div>
             <!--<div id="mytitle" style="background:#ddd;padding:5px;width:735px">本学期校历</div>-->
             <!--<div>-->
                 <!--<div style="float: left">-->
@@ -114,7 +122,14 @@
                 <!--</div>-->
                 <!--&lt;!&ndash;添加学期&ndash;&gt;-->
             </div>
+            <div   title="系统参数" style="width:35%;margin-left:10px;padding:10px;background:#fafafa;float: left;border: dotted cornflowerblue 1px" >
+                当前学期：{$current_term} <a href="#">我要修改</a>
+            </div>
+
+
+
         </div>
+
     </div>
 
 </div>
