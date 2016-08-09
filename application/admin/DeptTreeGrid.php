@@ -16,7 +16,7 @@ use think\Request;
  * Class DictDataGrid
  * @package app\admin
  */
-class DeptTreeGrid  
+class DeptTreeGrid  extends   \app\common\DataGrid
 {
 
 
