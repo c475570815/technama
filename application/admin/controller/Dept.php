@@ -64,18 +64,18 @@ class Dept extends Controller implements InterfaceDataGrid
      */
     public function download(){
         $request = Request::instance();
-        if($request->method()=='POST'){
-            if($request->post('action')=='export'){
-                $dict_grid= new DeptTreeGrid();
-                $list=$dict_grid->getList();//
-                $xlsName  = "部门表";
-                $xlsCell  = array(
-                    array('dept_name','部门名'),
-                    array('dept_staff_number','人数'),
-                    array('dept_category','部门类型')
-                );
-                $dict_grid->exportExcel($xlsName,$xlsCell,$list);
-            }
+            if($request->method()=='POST'){
+                if($request->post('action')=='export'){
+                    $dict_grid= new DeptTreeGrid();
+                    $list=$dict_grid->getList();//
+                    $xlsName  = "部门表";
+                    $xlsCell  = array(
+                        array('dept_name','部门名'),
+                        array('dept_staff_number','人数'),
+                        array('dept_category','部门类型'),
+                    );
+                    $dict_grid->exportExcel($xlsName,$xlsCell,$list);
+                }
         }
     }
 
@@ -170,12 +170,12 @@ public function upload(){
         //对数组做清除处理
         $validate = Loader::validate('DeptValidate');
         $ret=$this->excelValidate($datas,$validate);
-        // var_dump($ret);
+
         @unlink($tmp_file);
         if(count($ret)==0){
             //（3）保存数组中的数据到数据库
             $mo= new DeptModel();
-            $mo->saveAll($datas);
+            $mo->saveAll($datas,true);
             $ret1=['success'=>'true','message'=>'导入成功,共导入'.count($datas).'条记录'];
             // $this->success('导入成功！');
             return json($ret1);
