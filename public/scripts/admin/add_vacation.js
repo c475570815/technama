@@ -1,20 +1,28 @@
 /**
  * Created by Administrator on 2016/8/2.
  */
-var url_save="http://10.127.98.246/index.php/admin/termclendar/add_vacation"
+var url_save="/index.php/admin/termclendar/add_vacation"
 function hideHeader(){
     $('#pg').propertygrid({
         showHeader:false
     });
 }
+/**
+ *当整个页面全部载入后才执行
+ */
 $(document).ready(function () {
-    //当整个页面全部载入后才执行
     hideHeader();//隐藏头
 });
+/**
+ * 保存学期参数
+ */
 function  save(){
     $rows=$('#pg').propertygrid('getRows');
     console.log($rows[0]['value']);
 }
+/**
+ * 保存表单
+ */
 function saveForm(){
     $('#ff').form({
         url:url_save,

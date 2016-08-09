@@ -5,7 +5,7 @@
  *
  */
 var grid_id='#datagrd';
-var url_save='http://10.127.98.246/index.php/admin/classes/save';
+var url_save='/index.php/admin/classes/save';
 //当整个页面全部载入后才执行
 $(document).ready(function(){
     initForm();
@@ -13,7 +13,7 @@ $(document).ready(function(){
 
 function initForm(){
     $('#dept_name').combobox({
-        url: 'http://10.127.98.246/index.php/admin/classes/deptinfo',
+        url: '/index.php/admin/classes/deptinfo',
         valueField: 'dept_name',
         textField: 'dept_name'
     });
@@ -32,7 +32,7 @@ function saveForm(){
                    }
              },
             success:function(data){
-                var data = eval('(' + data + ')');  // change the JSON string to javascript object
+                var data = eval('(' + data + ')');
                 $.messager.alert('Info', data.message, 'info');
             }
         });
@@ -43,4 +43,10 @@ function saveForm(){
  */
 function clearForm() {
     $('#ff').form('clear');
+}
+/**
+ * 返回
+ */
+function returnGrid(){
+    history.back();
 }

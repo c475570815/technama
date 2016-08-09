@@ -2,7 +2,7 @@
  * Created by Administrator on 2016/7/29.
  */
 var grid_id='#datagrd';//表单名
-var url_get='http://10.127.98.246/index.php/admin/termclendar/get_cal_josn';
+var url_get='/index.php/admin/termclendar/get_cal_josn';
 var week_calender=[[
     {field:'Monday',title:'星期一',width:100},//filed:该列对应字段名   title那一列
     {field:'Tuesday',title:'星期二',width:100},
@@ -12,6 +12,12 @@ var week_calender=[[
     {field:'Saturday',title:'星期六',width:100},
     {field:'Sunday',title:'星期天',width:100},
 ]];
+/**
+ *
+ * @param grid_id
+ * @param url_get
+ * @param week_calender
+ */
 function initGrid(grid_id,url_get,week_calender){
     $(grid_id).datagrid({
         url: url_get,

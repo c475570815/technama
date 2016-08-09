@@ -7,7 +7,7 @@
  */
 
 namespace app\common\model;
-use common\model\Scheduel;
+
 
 
 class CourseModel extends \app\common\model\CommonModel

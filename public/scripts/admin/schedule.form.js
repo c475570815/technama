@@ -3,7 +3,10 @@
  */
 
 var grid='#datagrd';
-var url='http://10.127.98.246/index.php/admin/schedule/ac1';
+var url='/index.php/admin/schedule/ac1';
+var ff="#ff";
+var class_name="#class_name";
+var frm_search="#frm_search";
 var columns_def=[[
     {field:'term',title:'学期',sortable:true},
     {field:'time',title:'时间',sortable:true},
@@ -41,7 +44,7 @@ $(document).ready(function () {
 });
 function initForm(){
     $('#dept_name').combobox({
-        url: 'http://10.127.98.246/index.php/admin/schedule/deptinfo',
+        url: '/index.php/admin/schedule/deptinfo',
         valueField: 'dept_name',
         textField: 'dept_name'
     });
@@ -51,11 +54,11 @@ function initForm(){
  * 通过Ajax方式保存
  */
 function saveForm(){
-    $('#ff').form({
-        url:'http://10.127.98.246/index.php/admin/schedule/save',
+    $(ff).form({
+        url:'/index.php/admin/schedule/save',
         onSubmit: function(){
             // 有效性验证
-            var classname=$("#class_name").val();
+            var classname=$(class_name).val();
             if(classname==''){
                 return false ;
             }
@@ -65,17 +68,17 @@ function saveForm(){
             $.messager.alert('Info', data.message, 'info');
         }
     });
-    $('#ff').submit();
+    $(ff).submit();
 }
 function clearForm() {
-    $('#ff').form('clear');
+    $(ff).form('clear');
 }
 /**
  * 查询
  */
 function query(){
-    var search_filter=$('#frm_search').serializeJson();
-    $('#datagrd').datagrid(
+    var search_filter=$(frm_search).serializeJson();
+    $(grid).datagrid(
         'load',
         search_filter
     );

@@ -44,7 +44,6 @@ class TermCalendar
     /**
      * 通过给出的开学日期和结束日期 构造出基本日期数组
      * TermCalendar constructor.
-     *
      * @param $startday 开学日期 2012-1-1
      * @param $endday   结束日期
      */
@@ -90,52 +89,7 @@ class TermCalendar
         $this->_overall_day=$days;
         //dump($all_weeks);
     }
-    /**给出年份判断是否是闰年
-     * @param $year_value  被判断年数
-     * @return bool  判断结果
-     */
-    private function is_leapyear($year_value)
-    {
-        if (($year_value % 4 == 0 && $year_value % 100 != 0) || ($year_value % 400 == 0)) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-    /* 给出月份返回天数
-     * cal_days_in_month()
-     */
-    private function month_to_day($month, $leap)
-    {
-        $day = "月份参数有误,月份转换失败（month_to_day）";
-        switch ($month) {
-            case 1:
-            case 3:
-            case 5:
-            case 7:
-            case 8:
-            case 10:
-            case 12:
-                $day = 31;
-                break;
-            case 2:
-                if ($leap) {
-                    $day = 29;
-                } else {
-                    $day = 28;
-                }
-                break;
-            case 4:
-            case 6:
-            case 9:
-            case 11:
-                $day = 30;
-                break;
-            default:
-                print_r("月份参数有误,月份转换失败（month_to_day）");
-        }
-        return $day;
-    }
+
     /**
      * 根据日期字符串返回该日期是星期几
      * @param $data  日期，如2012-1-2  Date（）
@@ -190,14 +144,23 @@ class TermCalendar
         }
         return $week;
     }
-    /**取得对象的所有日期(数组)
-     * @return array
+    /* 给出月份返回天数
+     * cal_days_in_month()
      */
-    public function get_allarr()
-    {
-        return $this->_overall_object;
 
+    /**给出年份判断是否是闰年
+     * @param $year_value  被判断年数
+     * @return bool  判断结果
+     */
+    private function is_leapyear($year_value)
+    {
+        if (($year_value % 4 == 0 && $year_value % 100 != 0) || ($year_value % 400 == 0)) {
+            return true;
+        } else {
+            return false;
+        }
     }
+
     /**取得当前对象(学期)的总天数
      * @return string  14
      */
@@ -206,6 +169,7 @@ class TermCalendar
     return $this->_overall_day;
 
 }
+
     /**取得当前对象(学期)的总周数
      * @return int
      */
@@ -213,6 +177,7 @@ class TermCalendar
 
         return $this->_overall_week;
     }
+
     /**添加假期 到假期数组  数组格式为   _vacation_data[2015-9-1]=放假原因
      * @param $vacation_day 2015-9-1
      * @param $reason   “劳动节”
@@ -222,6 +187,7 @@ class TermCalendar
             $this->_vacation_data[$vacation_day]="$reason";
         }
     }
+
     /**给出一个日期 16-09-01    得到其在本学期的周次
      * @param $date  给出日期 16-09-01
      * @return int 返回周数
@@ -251,6 +217,16 @@ class TermCalendar
             }
         }
     }
+
+    /**取得对象的所有日期(数组)
+     * @return array
+     */
+    public function get_allarr()
+    {
+        return $this->_overall_object;
+
+    }
+
     /**把做好的 数组转化为适合esayui 表格的josn格式数据
      * @return mixed   esayui 表格的josn格式数据
      */
@@ -313,45 +289,102 @@ class TermCalendar
             $list[] = $week;
         }
         $total=count($this->get_allarr());
-        $this->_overall_josn=json(['total' => $total, 'rows' => $list]);
+        $this->_overall_josn = json(['total' => $total, 'rows' => $list]);
         return $this->_overall_josn;
     }
+
     /**通过给出的周次得到一周的josn   格式
      * @param $week   第几周
      * @return \think\Response|\think\response\Json|\think\response\Jsonp|\think\response\Redirect|\think\response\View|\think\response\Xml   符合easy ui 表格的josn  格式
      */
-    public function  get_weekjosn($week){
+    public function get_weekjosn($week)
+    {
         $calendar = $this->_overall_object;
         $all_array = $this->get_allarr();
         //print_r($all_array);
-        $re_array=array();
+        $re_array = array();
         $i = $week;
-            if ($i == 1) {
-                for ($p = 1; $p <= 7; $p++) {
-                    if (isset($all_array [1][$p])) {
-                        $j = $p;
-                        break;
-                    } else {
-                        continue;
-                    }
+        if ($i == 1) {
+            for ($p = 1; $p <= 7; $p++) {
+                if (isset($all_array [1][$p])) {
+                    $j = $p;
+                    break;
+                } else {
+                    continue;
                 }
-            } else {
-                $j = 1;
             }
-            //为开始日期为星期几做判断赋值
-            $week = array();//置空数组
-            for ( ;$j<=7;$j++) {//$j为星期几
-                $a = $all_array[$i][$j]->format('Y-m-d H:i:s');//对象转换字符串
-                //print_r(date('y-m-d',strtotime($a)));
-                $week[$j]=date('y-m-d',strtotime($a));//在字符串中取年月日
-                //print_r($week);
-            }
-            $week['group'] = "第" . $i . "周";
+        } else {
+            $j = 1;
+        }
+        //为开始日期为星期几做判断赋值
+        $week = array();//置空数组
+        for (; $j <= 7; $j++) {//$j为星期几
+            $a = $all_array[$i][$j]->format('Y-m-d H:i:s');//对象转换字符串
+            //print_r(date('y-m-d',strtotime($a)));
+            $week[$j] = date('y-m-d', strtotime($a));//在字符串中取年月日
+            //print_r($week);
+        }
+        $week['group'] = "第" . $i . "周";
         //print_r($week);
-        $total=1;
+        $total = 1;
         $list[] = $week;
-        $week_josn=json(['total' => $total, 'rows' => $list]);
-       // print_r($week_josn);
+        $week_josn = json(['total' => $total, 'rows' => $list]);
+        // print_r($week_josn);
         return $week_josn;
     }
+    /**给出月份和是否是闰年(bool) 返回当月天数
+     * @param $month
+     *
+     * @param $leap
+     * @return int|string
+    31dasdwa32132sd12    */
+    private function month_to_day($month, $leap)
+    {
+        $day = "月份参数有误,月份转换失败（month_to_day）";
+        switch ($month) {
+            case 1:
+            case 3:
+            case 5:
+            case 7:
+            case 8:
+            case 10:
+            case 12:
+                $day = 31;
+                break;
+            case 2:
+                if ($leap) {
+                    $day = 29;
+                } else {
+                    $day = 28;
+                }
+                break;
+            case 4:
+            case 6:
+            case 9:
+            case 11:
+                $day = 30;
+                break;
+            default:
+                print_r("月份参数有误,月份转换失败（month_to_day）");
+        }
+        return $day;
+    }
+
+    /**
+     * 显示一个HTML格式的年历
+     */
+    public function toHTML(){
+        $header="<table width='700px' border='1px'>";
+        $header=$header."<tr>"."<th>周一</th><th>周二</th><th>周三</th><th>周四</th><th>周五</th><th>周六</th><th>周日</th>"."</tr>";
+        foreach ($this->_overall_day as $week){
+            for($i=1;$i<=7;$i++){
+
+            }
+        }
+        $tbody="";
+        $header=$header.$tbody;
+        $header=$header."<table>";
+        return $header;
+    }
+
 }

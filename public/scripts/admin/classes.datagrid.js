@@ -7,11 +7,12 @@
 var grid_id = '#datagrd';
 var search_form_id="#frm_search";
 var download_form_id="#frm_download";
-var url_get = 'http://10.127.98.246/index.php/admin/classes/index';
-var url_remove = 'http://10.127.98.246/index.php/admin/classes/remove';
-var url_update = 'http://10.127.98.246/index.php/admin/classes/update';
-var url_export = 'http://10.127.98.246/index.php/admin/classes/download';
-var pk_field = 'class_name';
+var url_get = '/index.php/admin/classes/index';
+var url_remove = '/index.php/admin/classes/remove';
+var url_remove_all = '/index.php/admin/classes/removeall';
+var url_update = '/index.php/admin/classes/update';
+var url_export = '/index.php/admin/classes/download';
+var pk_field = 'class_id';
 var grid_options;
 var columns_def = [[
     {field: 'chkbox', checkbox: true},
@@ -22,6 +23,13 @@ var columns_def = [[
     {field: 'calss_adviser', title: '班级班主任', sortable: true},
     {field:"operation", title: '操作', formatter:formatOptColumn }
 ]];
+/**
+ *  初始化网格对象
+ *  idField:主键
+ * @param grid
+ * @param url
+ * @param columns_def
+ */
 function initGrid(grid, url, columns_def) {
     $(grid_id).datagrid({
         url: url_get,
@@ -33,15 +41,10 @@ function initGrid(grid, url, columns_def) {
         pagination: true,
         fitColumns:true,
         rownumbers: true,
+        pageSize:20,
         columns: columns_def
     });
 }
-/**
- * 当整个页面全部载入后才执行
- */
-$(document).ready(function () {
-    initGrid(grid_id, url_get, columns_def);
-});
 /**
  * 定义列的显示
  * @param val
@@ -49,11 +52,18 @@ $(document).ready(function () {
  * @returns {*}
  */
 function formatOptColumn(val,row,index){
-    var updateUrl = url_update + "/pk/" + row.class_name;
-
-       return "<a href='"+updateUrl+"' target='_self'> 操作 </a>";
+    var updateUrl = url_update + "/pk/" + row.class_id;
+    var opt_formatter="<a href='"+updateUrl+"' target='_self' title='编辑当前记录'> 编辑 </a>";
+    return opt_formatter;
 
 }
+/**
+ * 当整个页面全部载入后才执行
+ */
+$(document).ready(function () {
+    initGrid(grid_id, url_get, columns_def);
+});
+
 /**
  * 查询
  */
@@ -67,6 +77,31 @@ function query() {
     );
     grid_options = $(grid_id).datagrid('options').queryParams;
     console.log(grid_options);
+}
+/**
+ *  清楚所有记录,清除前提示
+ */
+function removeall(){
+    $.messager.confirm('提示', '是否删除所有的数据?', function (r) {
+        if (!r) {
+            return;
+        }
+        //Ajax提交
+        $.ajax({
+            type: "POST",
+            url: url_remove_all,
+            data: {id: 1},//传递给服务器的参数
+            success: function (jsonresult) {
+                reload();
+                if (jsonresult.isSuccess == true) {
+                    $.messager.alert("提示", jsonresult.message, "info");
+                } else {
+                    $.messager.alert("提示", jsonresult.message, "info");
+                    return;
+                }
+            }
+        });
+    });
 }
 /**
  * 删除选中的记录
@@ -110,7 +145,6 @@ function removeRecord() {
 function reload() {
     $(grid_id).datagrid('clearSelections');
     $(grid_id).datagrid('reload');
-
 }
 /**
  * 编辑
@@ -144,7 +178,61 @@ function exportXls() {
         onSubmit: function () {
         },
         success: function (data) {
-            alert(data);
+            var dataObj=eval("("+data+")");
+            $.messager.show({
+                msg:'删除成功！',
+                showType:'show',
+                style:{
+                    right:'',
+                    top:document.body.scrollTop+document.documentElement.scrollTop,
+                    bottom:''
+                }
+            });
+            console.log(data);
+
+        }
+    });
+}
+/**
+ *  显示上传窗体
+ */
+function importDialog() {
+    var dialog_id="#dd";
+    $(dialog_id).dialog({
+        title: '导入数据',
+        width: 400,
+        height: 400,
+        closed: false,
+        cache: true,
+       // href: 'get_content.php',
+        modal: true
+    });
+}
+/**
+ * 上传提交
+ */
+function importxls() {
+    var url_import="/index.php/admin/classes/upload";
+    var grid_options = $(grid_id).datagrid('options').queryParams; //保存grid原有的参数
+    var acion = {'action': 'import'};// 增加一个参数
+    var postdata = $.extend({}, grid_options, acion); //合并参数
+    $("#frm_upload").form('submit', {
+        url: url_import,
+        queryParams: postdata,
+        onSubmit: function () {
+        },
+        success: function (data) {
+            //解析返回的JSON
+            var dataObj=eval("("+data+")");
+            var isok=dataObj.success;
+            var errors=dataObj.data;
+            var message=dataObj.message;
+            for(var key in errors){
+                message=message+"\n "+key+"行："+errors[key];
+            }
+            $("#msgbox").val(message);
+            console.log(dataObj.data);
+            reload();
         }
     });
 }
@@ -153,15 +241,20 @@ function exportXls() {
  */
 function printGrid(){
    // $(grid_id).print();
-    window.open("http://10.127.98.246/index.php/admin/classes/printgrid","_blank")
+    window.open("/index.php/admin/classes/printgrid","_blank")
    //  location.href="http://10.127.98.246/index.php/admin/classes/printgrid";
    //$("#feeds").load("http://10.127.98.246/index.php/admin/classes/printgrid");
    // $("#feeds").print();
-
     /* $.get("http://10.127.98.246/index.php/admin/classes/printgrid",function(data,status){
-
         // console.log($(data).find("h1"))
            // alert($(data).find("#datagrd").html());
     });*/
 
+}
+function addRecord(){
+   location.href='/index.php/admin/classes/add';
+}
+
+function reset(){
+    $("#frm_search").form('clear');
 }

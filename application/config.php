@@ -19,7 +19,7 @@ return [
     // 应用调试模式
     'app_debug'              => true,
     // 应用Trace
-    'app_trace'              => false,
+    'app_trace'              => true,
     // 应用模式状态
     'app_status'             => '',
     // 是否支持多模块
@@ -163,7 +163,8 @@ return [
 
     'trace'                  => [
         //支持Html Console
-        'type' => 'Html',
+       // 'type' => 'Html',
+        'type'  =>  'console',
     ],
 
     // +----------------------------------------------------------------------
@@ -240,4 +241,24 @@ return [
         // 验证成功后是否重置
         'reset'    => true
     ],
+    //邮件配置
+    'THINK_EMAIL' => array(
+        'SMTP_HOST'   => 'smtp.qq.com', //SMTP服务器
+        'SMTP_PORT'   => '465', //SMTP服务器端口，使用SSL，端口号465或587
+        'SMTP_USER'   => 'guowushi@qq.com', //SMTP服务器用户名
+        'SMTP_PASS'   => 'opiphlbevgjwbebd', //SMTP服务器密码
+        'FROM_EMAIL'  => 'guowushi@qq.com', //发件人EMAIL
+        'FROM_NAME'   => '郭武士', //发件人名称
+        'REPLY_EMAIL' => '', //回复EMAIL（留空则为发件人EMAIL）
+        'REPLY_NAME'  => '', //回复名称（留空则为发件人名称）
+    ),
+    //云通讯SDK参数
+    'yuntongxun'=>[
+        'ACCOUNT_SID'=>'aaf98f894f402f15014f47296f9305b6',
+        'AUTH_TOKEN'=>'4c3bf9a9f1114bd2a85d1de6552a3143',
+        'REST_URL'=>'sandboxapp.cloopen.com',
+        'PORT'=>'8883',
+        'APPID'=>'8a48b5514f49079e014f4ae30b730723',
+        'VERSION'=>'2013-12-26',
+    ]
 ];

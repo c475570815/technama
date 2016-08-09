@@ -7,9 +7,10 @@
  */
 namespace app\admin\controller;
 use app\admin\ScheduleDataGrid;
+use app\common\model\TeacherModel;
 use think\View;
 use app\common\model\ScheduleModel;
-use app\common\model\DictCategoryModel;
+use app\common\model\ConfigModel;
 use app\common\model\DeptModel;
 use app\admin\DictDataGrid;
 use think\Db;
@@ -34,8 +35,12 @@ class Schedule extends Controller
         $dept = new DeptModel();
         $deptList = $dept->select();
 
+        $model=new ConfigModel();
+        $row= $model->where('cfg_name','current_term')->find();
+
         $view = new View();
         $view->assign("dept", $deptList);
+        $view->assign("current_term", $row['cfg_term']);
         return $view->fetch('datagrid');
     }
     public function cal()
@@ -53,7 +58,7 @@ class Schedule extends Controller
      * 通过ajax方式从服务器上获取JSON格式的数据给网格显示
      * @return \think\Response|\think\response\Json|\think\response\Jsonp|\think\response\Redirect|\think\response\View|\think\response\Xml
      */
-    public function ac1()
+    public function getlist()
     {
         $dict_grid = new ScheduleDataGrid();
         return $dict_grid->dataGridJson();
@@ -90,6 +95,13 @@ class Schedule extends Controller
         return $view->fetch('form');
     }
 
+    public function teacher_cg()
+    {
+        $q = isset($_POST['q']) ? $_POST['q'] : '';  // the request parameter
+        $mo=new TeacherModel();
+        $list=$mo->where('teach_name','like',"%$q%")->select();
+        return  json($list);
+    }
 
 }
 

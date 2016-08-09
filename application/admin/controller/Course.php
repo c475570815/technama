@@ -18,6 +18,11 @@ use app\common\model\CourseModel;
 use think\Db;
 use  \think\Controller;
 
+/**
+ * 课表控制器类
+ * Class Course
+ * @package app\admin\controller
+ */
 class Course extends Controller
 {
 
@@ -36,11 +41,21 @@ class Course extends Controller
         return $view->fetch('datagrid');
     }
 
-
+    /**
+     *   根据id获取教师
+     * @param $teacher_id
+     * @return array|false|\PDOStatement|string|\think\Model
+     */
     public function getTeacherById($teacher_id){
         $model_techer=new TeaModel();
         return  $model_techer->where('teach_id',$teacher_id)->find();
     }
+
+    /**
+     * 根据教师编号，获取该教师对应的排课记录
+     * @param $teacher_id
+     * @return array|false|\PDOStatement|string|\think\Model
+     */
     public function getScheduleById($teacher_id){
         $model_techer=new ScheduleModel();
         return  $model_techer->where('teacher_no',$teacher_id)->find();
@@ -85,9 +100,23 @@ class Course extends Controller
     public function ac1()
     {
 
-          //（1）先从tbl_course 表中查所有记录的条数
+
          $model_course= new CourseModel();
-         $total = intval($model_course->count());
+        //（1）先从tbl_course 表中查所有记录的条数
+        $arr_where=array();
+        if(isset($_POST['dict'])){
+            $dict=$_POST['dict'];
+            $arr_where= $model_course->filer($dict);
+            //print_r($arr_where);
+        }
+        // 周查询
+/*        if(isset($_POST['week'])){
+            $week=$_POST['week'];
+            $arr_where= [];
+            //print_r($arr_where);
+        }
+        $model_course->where($arr_where);*/
+        $total = intval($model_course->count());
 
         // (2) 获取分页信息，设置分页条件
         $page = isset($_POST['page']) ? intval($_POST['page']) : 1;
@@ -127,15 +156,6 @@ class Course extends Controller
                  $adjustment_information[]=$adjustment['xing_qi_ji'];
                  $adjustment_information[]=$adjustment['section'];
                  //将数组转化为字符串
-                /* $adj_arr_str = '';
-                 foreach($adjustment_information as $key => $value){
-                     if($key == count($adjustment_information)-1){
-                         $adj_arr_str .= $value;
-                     }else{
-                         $adj_arr_str .= $value.'-';
-                     }
-                 }*/
-                 //$str = unserialize($adjustment_information);
                  $course['adj_exchange']= implode('-',$adjustment_information);
                  $ret_array[]=$course;
                  unset($adjustment_information);
@@ -144,44 +164,6 @@ class Course extends Controller
         return json(['total' => $total, 'rows' => $ret_array]);
 
 
-
-/*
-        $current_table =$this->getCurrentTable();
-        $current_table->where($this->getWhere());
-        //先获取筛选后记录的总数
-        $total = intval($current_table->count());
-        //获取客户端传递过来的参数 page=2&rows=20
-        $page = isset($_POST['page']) ? intval($_POST['page']) : 1;
-        $rows = isset($_POST['rows']) ? intval($_POST['rows']) : 10;
-        $current_table->where($this->getWhere());//重新获取条件
-        $start = ($page - 1) * $rows;
-        $current_table->limit($start, $rows);
-
-        // 排序
-        if(isset($_POST['sort']) &&  isset($_POST['order'])){
-            $sort = $_POST['sort'] ;
-            $order = $_POST['order'];
-            $current_table->order($sort,$order);
-
-        }
-
-        Db::listen(function($sql,$time,$explain){
-            // 记录SQL
-            // echo $sql. ' ['.$time.'s]';
-            // 查看性能分析结果
-            //dump($explain);
-        });
-        // 获取数组
-
-        $list = $current_table->select();
-
-        // 返回JSON
-        return json(['total' => $total, 'rows' => $list]);*/
-
-        /*
-        $dict_grid = new CourseForm();
-        return $dict_grid->dataGridJson();
-       */
     }
     public function ac2()
     {

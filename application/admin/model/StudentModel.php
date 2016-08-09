@@ -13,7 +13,7 @@ class StudentModel extends \think\Model
 {
     // 设置当前模型对应的完整数据表名称
     protected $table = '学生花名册';
-    
+
 
 
 }

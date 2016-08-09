@@ -31,8 +31,20 @@ class DeptTreeGrid  extends   \app\common\DataGrid
             $id='';
         }
         $result = array();
-        $dept=new DeptModel();
-        $children=$dept->where('dept_parent',$id)->select();
+        $tbl=new DeptModel();
+        // 筛选
+//        if(isset($_POST['sort']) &&  isset($_POST['order'])){
+//            $sort = $_POST['sort'] ;
+//            $order = $_POST['order'];
+//            $tbl->order($sort,$order);
+//        }
+        // 排序
+        if(isset($_POST['sort']) &&  isset($_POST['order'])){
+            $sort = $_POST['sort'] ;
+            $order = $_POST['order'];
+            $tbl->order($sort,$order);
+        }
+        $children=$tbl->where('dept_parent',$id)->select();
         foreach ($children as $child){
             $child['state'] = $this->has_child($child['dept_name']) ? 'closed' : 'open';
             array_push($result, $child);

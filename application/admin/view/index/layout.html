@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>督导管理系统</title>
+    <title> 督导管理系统</title>
     <link rel="stylesheet" type="text/css" href="/static/jquery-easyui-1.4.5/themes/default/easyui.css">
     <link rel="stylesheet" type="text/css" href="/static/jquery-easyui-1.4.5/themes/icon.css">
     <link rel="stylesheet" type="text/css" href="/css/admin/index.layout.css">
@@ -11,105 +11,136 @@
     <script type="text/javascript" src="/static/jquery-easyui-1.4.5/locale/easyui-lang-zh_CN.js"></script>
     <script type="text/javascript" src="/scripts/comm.js"></script>
     <script type="text/javascript" src="/scripts/admin/index.layout.js"></script>
-    <script type="text/javascript" src="/scripts/cyh/calendar.js"></script>
-    <script type="text/javascript" src="/scripts/cyh/add_vacation.js"></script>
+    <script type="text/javascript" src="/scripts/admin/calendar.js"></script>
+    <script type="text/javascript" src="/scripts/admin/add_vacation.js"></script>
+    <link href='/static/fullcalendar-2.9.0/fullcalendar.css' rel='stylesheet' />
+    <link href='/static/fullcalendar-2.9.0/fullcalendar.print.css' rel='stylesheet' media='print' />
+    <script src='/static/fullcalendar-2.9.0/lib/moment.min.js'></script>
+    <script src='/static/fullcalendar-2.9.0/fullcalendar.min.js'></script>
+    <script src='/static/fullcalendar-2.9.0/lang/zh-cn.js'></script>
+    <style>
+        .head a:visited{ color: #CCE6FF;text-decoration: none }
+        .head a:hover{ color: #ffffff;text-decoration: none }
+        .head a:link{ text-decoration: none;color: #CCE6FF }
+    </style>
 </head>
-
 <body id="zt" class="easyui-layout">
 <!--  North  -->
 <div region="north" split="false" border="false" style="overflow: hidden; height: 40px;
         background: #7f99be repeat-x center 100%;
         line-height: 40px;color: #fff; font-family: Verdana, 微软雅黑,黑体">
-        <span class="logo">
-         督导管理系统
-     </span>
+    <span class="logo">督导管理系统</span>
     <span style="float:right; padding-right:10px;" class="head">
-        <span class="icon-user01">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>欢迎 <a>{$name}</a>
-        <span class="icon-password">&nbsp;&nbsp;&nbsp;&nbsp;</span> <a href="#" id="editpass" >修改密码 </a>
-        <span class="icon-logout">&nbsp;&nbsp;&nbsp;&nbsp;</span> <a href="#"  id="loginOut"> 安全退出 </a>
+        <span class="icon-user01">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><a href="#" title="修改个人信息">欢迎 {$name}</a>
+        <span class="icon-password">&nbsp;&nbsp;&nbsp;&nbsp;</span> <a href="#" title="修改密码" id="editpass">修改密码 </a>
+        <span class="icon-logout">&nbsp;&nbsp;&nbsp;&nbsp;</span> <a href="#" title="退出系统" id="loginOut"> 安全退出 </a>
     </span>
 
 </div>
 <!--  South  -->
-<div data-options="region:'south',iconCls:'icon-log',split:true" title="操作记录" style="height:100px;padding:10px;">
+<div data-options="region:'south',iconCls:'icon-log',split:true,hideCollapsedContent:false" title="操作记录" style="height:100px;padding:10px;">
 
 </div>
 <!--  East  -->
-<div id="bwl" data-options="region:'east',iconCls:'icon-home',split:true" title="备忘" style="width:120px;padding:10px;">
-    <div id="bwl_m" class="easyui-menu" data-options="onClick:menuHandler">
-        <div data-options="name:'new'">新建</div>
-        <div data-options="name:'del'">删除</div>
-        <div data-options="name:'del_all'">清空所有</div>
-    </div>
+<div id="bwl" data-options="region:'east',iconCls:'icon-home',split:true,hideCollapsedContent:false" title="备忘" style="width:120px;padding:10px;">
 </div>
 <!--  West  -->
-<div data-options="region:'west',iconCls:'icon-home',split:true" title="系统菜单" style="width:150px">
+<div data-options="region:'west',iconCls:'icon-home',split:true,hideCollapsedContent:false" title="系统菜单" style="width:150px">
     <div class="easyui-accordion" data-options="fit:true,border:false">
-        <div title="基础数据管理" data-options="selected:true,iconCls:'icon-list'" style="padding-top:1px;padding-right:1px;padding-left:1px">
+        <div title="基础数据管理" data-options="selected:true,iconCls:'icon-list'"
+             style="padding-top:1px;padding-right:1px;padding-left:1px">
             <ul class="menus">
-                <li> <a href="/index.php/admin/dept/index" data-options="iconCls:'icon-structure',plain:true" class="easyui-linkbutton" >部门信息</a></li>
-                <li> <a href="/index.php/admin/classes/index" data-options="iconCls:'icon-user',plain:true" class="easyui-linkbutton">班级信息</a></li>
-                <li><a href="/index.php/admin/tea/index" data-options="iconCls:'icon-teach',plain:true" class="easyui-linkbutton" >教师信息</a></li>
-                <li><a href="/index.php/admin/course/index" data-options="iconCls:'icon-timetable',plain:true" class="easyui-linkbutton"  >课程课表信息</a></li>
-                <li><a href="/index.php/admin/adjustment/index"  data-options="iconCls:'icon-exchange',plain:true" class="easyui-linkbutton" >调课记录</a></li>
-                <li><a href="/index.php/admin/dict/index"  data-options="iconCls:'icon-dictionary',plain:true" class="easyui-linkbutton" >字典数据</a></li>
+                <li><a href="/index.php/admin/dept/index" data-options="iconCls:'icon-structure',plain:true"
+                       class="easyui-linkbutton">部门信息</a></li>
+                <li><a href="/index.php/admin/classes/index" data-options="iconCls:'icon-user',plain:true"
+                       class="easyui-linkbutton">班级信息</a></li>
+                <li><a href="/index.php/admin/tea/index" data-options="iconCls:'icon-teach',plain:true"
+                       class="easyui-linkbutton">教师信息</a></li>
+                <li><a href="/index.php/admin/course/index" data-options="iconCls:'icon-timetable',plain:true"
+                       class="easyui-linkbutton">课程课表信息</a></li>
+                <li><a href="/index.php/admin/adjustment/index" data-options="iconCls:'icon-exchange',plain:true"   class="easyui-linkbutton">调课记录</a></li>
+                <li><a href="/index.php/admin/dict/index" data-options="iconCls:'icon-dictionary',plain:true"
+                       class="easyui-linkbutton">字典数据</a></li>
+                <li><a href="/index.php/admin/event/index" data-options="iconCls:'icon-timetable',plain:true"
+                       class="easyui-linkbutton">事件数据</a></li>
             </ul>
 
         </div>
-        <div title="系统管理" style="padding:10px;" data-options="iconCls:'icon-list'" >
+        <div title="系统管理" style="padding:10px;" data-options="iconCls:'icon-list'">
             <ul class="menus">
-                <li><a href="" data-options="iconCls:'icon-government',plain:true" class="easyui-linkbutton">权限管理</a></li>
-                <li> <a href="" data-options="iconCls:'icon-mask',plain:true" class="easyui-linkbutton">角色分配</a></li>
+                <li><a href="" data-options="iconCls:'icon-government',plain:true" class="easyui-linkbutton">权限管理</a>
+                </li>
+                <li><a href="" data-options="iconCls:'icon-mask',plain:true" class="easyui-linkbutton">角色分配</a></li>
                 <li><a href="" data-options="iconCls:'icon-item',plain:true" class="easyui-linkbutton">考核项目管理</a></li>
             </ul>
         </div>
         <?php
-
         ?>
         <div title="督导工作" style="padding:10px" data-options="iconCls:'icon-list'">
             <ul class="menus">
-                <li><a href="/index.php/admin/schedule/index" data-options="iconCls:'icon-alphabet',plain:true" class="easyui-linkbutton">听课任务安排</a></li>
-                <li> <a href="/index.php/admin/evaluate/add" data-options="iconCls:'icon-input',plain:true" class="easyui-linkbutton">督导结果录入</a></li>
-                <li><a href="/index.php/admin/record/index" data-options="iconCls:'icon-data',plain:true" class="easyui-linkbutton">听课记录</a></li>
-                <li><a href="/index.php/admin/index/chart" data-options="iconCls:'icon-statistics',plain:true" class="easyui-linkbutton">数据统计</a></li>
+                <li><a href="/index.php/admin/weekcourse/index" data-options="iconCls:'icon-alphabet',plain:true"
+                       class="easyui-linkbutton">周课程表</a></li>
+                <li><a href="/index.php/admin/schedule/index" data-options="iconCls:'icon-alphabet',plain:true"
+                       class="easyui-linkbutton">听课任务安排</a></li>
+                <li><a href="/index.php/admin/evaluate/add" data-options="iconCls:'icon-input',plain:true"
+                       class="easyui-linkbutton">督导结果录入</a></li>
+                <li><a href="/index.php/admin/record/index" data-options="iconCls:'icon-data',plain:true"
+                       class="easyui-linkbutton">听课记录</a></li>
+                <li><a href="/index.php/admin/index/chart" data-options="iconCls:'icon-statistics',plain:true"
+                       class="easyui-linkbutton">数据统计</a></li>
             </ul>
         </div>
     </div>
 </div>
 <!--  Center Must exist  -->
-<div id="main" data-options="region:'center',title:'操作界面',iconCls:'icon-info'">
-    <div id="sy" class="easyui-tabs" data-options="fit:true,border:false,plain:true">
-        <div title="首页" , style="padding:10px">
-            <p>
-            <h1>欢迎您！admin</h1></p>
-            <div id="mytitle" style="background:#ddd;padding:5px;width:735px">本学期校历</div>
-            <div>
-                <div style="float: left">
-            <table class="easyui-datagrid" id="datagrd" style="width:745px; margin: 0px; " data-options="
-        columns:week_calender
-      "><!--easyui-propertygrid-->
+<div id="main" data-options="region:'center',title:'操作界面',iconCls:'icon-grid'">
+    <div id="sy" class="easyui-tabs">
+        <div title="学期日历"   style="padding:20px">
+            <div  style="width:55%;padding:10px;background:#fafafa;float: left;border: dotted cornflowerblue 1px" title="日历"    >
+            <div id='calendar'>
 
-            </table></div>
-            <!--添加学期-->
-            <div style=" float: left;margin-top: -23px;">
-                <table id="pg" style="width:300px;" data-options="
-				url:'/scripts/cyh/add_vacation.json',
-				method:'get',
-				showGroup:true,
-				scrollbarSize:0
-			">
-                </table>
-                <form id="ff" method="post">
-                    <input id="start" name="start" type="hidden">
-                    <input id="end" name="end" type="hidden">
-                    <button onclick="saveForm()">提交</button>
-                </form>
             </div>
-            <!--添加学期-->
+            <!--<div id="mytitle" style="background:#ddd;padding:5px;width:735px">本学期校历</div>-->
+            <!--<div>-->
+                <!--<div style="float: left">-->
+                    <!--<table class="easyui-datagrid" id="datagrd" style="width:745px; margin: 0px; " data-options="-->
+        <!--columns:week_calender">&lt;!&ndash;easyui-propertygrid&ndash;&gt;-->
+                    <!--</table>-->
+                <!--</div>-->
+                <!--&lt;!&ndash;添加学期&ndash;&gt;-->
+                <!--<div style=" float: left;margin-top: -23px;">-->
+                    <!--<table id="pg" style="width:300px;" data-options="-->
+				<!--url:'/scripts/admin/add_vacation.json',-->
+				<!--method:'get',-->
+				<!--showGroup:true,-->
+				<!--scrollbarSize:0-->
+			<!--">-->
+                    <!--</table>-->
+                    <!--<form id="ff" method="post">-->
+                        <!--<input id="start" name="start" type="hidden">-->
+                        <!--<input id="end" name="end" type="hidden">-->
+                        <!--<button onclick="saveForm()">提交</button>-->
+                    <!--</form>-->
+                <!--</div>-->
+                <!--&lt;!&ndash;添加学期&ndash;&gt;-->
             </div>
+            <div   title="系统参数" style="width:35%;margin-left:10px;padding:10px;background:#fafafa;float: left;border: dotted cornflowerblue 1px" >
+                当前学期：{$current_term} <a href="#">我要修改</a>
+            </div>
+
+
+
         </div>
+
     </div>
 
+</div>
+
+<!-- Comtext Menu -->
+<div id="bwl_m" class="easyui-menu" data-options="onClick:menuHandler">
+    <div data-options="name:'new'">新建</div>
+    <div data-options="name:'del'">删除</div>
+    <div data-options="name:'del_all'">清空所有</div>
 </div>
 </body>
 </html>

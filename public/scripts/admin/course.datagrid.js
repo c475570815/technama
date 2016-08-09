@@ -2,7 +2,7 @@
  * Created by FuJinsong on 2016/7/25.
  */
 var grid_id = '#datagrd';
-var url = 'http://10.127.98.246/index.php/admin/course/ac1';
+var url = '/index.php/admin/course/ac1';
 var columns_def = [[
    /* {field: 'checkbox', checkbox: true},*/
     {field: 'term', title: '学期', sortable: true},
