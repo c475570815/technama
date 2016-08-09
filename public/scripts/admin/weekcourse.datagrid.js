@@ -18,9 +18,24 @@ var columns_def = [[
     {field: 'xing_qi_ji', title: '星期', sortable: true},
     {field: 'section', title: '节次', sortable: true},
     {field: 'free', title: '是否免听', sortable: true},
-    {field: 'onduty', title: '没有调停课', sortable: true},
-    {field: 'check_times', title: '已听课次数', sortable: true},
-    {field: 'status', title: '听课情况', sortable: true},
+    {field: 'onduty', title: '没有调停/停课', sortable: true},
+    {field: 'check_times', title: '已完成的听课次数', sortable: true,styler:function(value,row,index){
+        if(value >=1){
+            return 'color:red;';
+        }
+    }},
+    {field: 'plan_times', title: '已计划听课的次数', sortable: true,styler:function(value,row,index){
+        if(value >1){
+            return 'color:#ad6704;';
+        }
+    }},
+    {field: 'status', title: '听课情况', sortable: true,styler:function(value,row,index){
+        if(value =='已安排'){
+            return 'color:red;';
+        }else{
+            return 'color:green;';
+        }
+    }},
     {field:'operation', title: '操作', formatter:formatOptColumn }
     /*    {field:'class_room',title:'教室',sortable:true},
      {field:'state',title:'已听课',sortable:true},//数据读取听课表
@@ -68,7 +83,6 @@ function onSelectHandler(rowIndex, rowData){
 }
 //当整个页面全部载入后才执行
 $(document).ready(function () {
-
     initGrid(grid_id, url, columns_def);
    // listen(grid, url, columns_listen);
     $('#dialog_listen').window({
@@ -130,7 +144,6 @@ function selectTech(id) {
     //打开对话框
     $('#dialog_listen').window('open');
     // 获取当前行
-
     $(grid_id).datagrid('selectRow',id);
     var selectedRow=$(grid_id).datagrid('getSelected');
     var param={
@@ -145,7 +158,6 @@ function selectTech(id) {
     var columns_listen = [[
         {field: 'chkbox', checkbox: true},
         {field: 'dept_name', title: '部门', sortable: true},
-
         {field: 'teach_id', title: '教师编号', sortable: true},
         {field: 'teach_name', title: '教师', sortable: true},
         {field: 'has_lesson', title: '是否有课', sortable: true},
@@ -191,5 +203,66 @@ function query() {
     console.log(grid_options);
 }
 function load(){
+
+}
+
+/*
+ *  提交听课人
+ * */
+function affirm() {
+    // 获取周课表当前行
+    //$(grid_id).datagrid('selectRow',id);
+    var selectedRow=$(grid_id).datagrid('getSelected');
+    var param={
+        'teach_id':selectedRow.teach_id,
+        'class_name':selectedRow.class_name,
+        'course_name':selectedRow.course_name,
+        'week':selectedRow.week,
+        'xing_qi_ji':selectedRow.xing_qi_ji,
+        'section':selectedRow.section
+    };
+
+    //(1)获取听课人网格中选中行的数量
+    var checkedItems = $('#listen').datagrid('getChecked');
+    //(2) 判断是否选择的是两条记录
+    if (checkedItems.length != 2) {
+        $.messager.alert("提示", "请选择2位听课教师！", "info");
+        return;
+    }
+    //(3) 获取听课人工号
+    var teacher_ids = [];
+    $.each(checkedItems, function (index, item) {
+        teacher_ids.push(item.teach_id);
+    });
+    //（4） 提示是否安排指定的听课人
+    $.messager.confirm('提示', '是否安排指定听课人？', function (r) {
+        if (!r) {
+            return;
+        }else{
+            // （5）将听课人数据，当前行数据AJAX提交到服务器
+            var params= {
+                'lesson': param,
+                'teachers': teacher_ids
+            };
+            $.ajax({
+                type: "POST",
+                dataType: 'json',
+                url: "/index.php/admin/weekcourse/addlisteners",
+                data: params,//传递给服务器的参数
+                success: function (jsonresult) {
+                    reload();//放在提示消息之前
+                    if (jsonresult.issuccess == 'true') {
+                        $.messager.alert("提示", '设置成功！', "info");
+                        // (6)通知 课程表Grid 刷新数据
+                    } else {
+                        $.messager.alert("提示", '设置失败', "info");
+                        return;
+                    }
+                }
+            });
+
+        }
+    });
+
 
 }

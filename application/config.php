@@ -260,5 +260,11 @@ return [
         'PORT'=>'8883',
         'APPID'=>'8a48b5514f49079e014f4ae30b730723',
         'VERSION'=>'2013-12-26',
+    ],
+    //网易云信SDK参数
+    'neteaseim'=>[
+    'appkey'=>'95045d170ba8dbaee0913e49a33c3ebb',
+    'appsecret'=>'aabd9274f8b1',
+    'sms_url'=>'https://api.netease.im/sms/sendtemplate.action',
     ]
 ];

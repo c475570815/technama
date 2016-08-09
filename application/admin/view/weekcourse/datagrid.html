@@ -67,14 +67,16 @@
                 </select>
                 教师: <input class="easyui-text" style="width:110px" name="dict[teach_id]" />
                 听课状态：<select class="easyui-combobox" name="dict[status]" style="width:80px;">
-                <option value="全部" selected>全部</option>
-                    <option value="未听">未听课</option>
-                    <option value="准备听">准备听课</option>
-                    <option value="以听">以听</option>
-
+                    <option value="全部" selected>全部</option>
+                    <option value="已安排" >已安排</option>
+                    <option value="未安排">未安排</option>
                 </select>
-                <input type="checkbox" name="dict[free]" />免听课
-                <input type="checkbox" name="dict[onduty]" />调停课
+
+                没有调课/停课
+                <select class="easyui-combobox" name="dict[onduty]" style="width:150px;">
+                    <option value="是" selected>没有调课/没有停课</option>
+                    <option value="否">有调课或已停课</option>
+                </select>
                 <a href="#" class="easyui-linkbutton" iconCls="icon-search" onclick="query()">查找</a>
             </form>
             <form id="frm_download" method="post"></form>
