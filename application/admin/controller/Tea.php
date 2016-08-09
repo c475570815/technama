@@ -316,5 +316,11 @@ public function upload(){
         return json($ret1);
     }
 }
-
+    public function removeall(){
+        //$mo = new ClassesModel();
+        //$count = $mo->where("1=1")->delete();//如果不接条件，则无法删除
+        $result=Db::execute("TRUNCATE tbl_teacher");
+        $ret = ['success' => 'true', 'message' => '清除成功！'];
+        return json($ret);
+    }
 }

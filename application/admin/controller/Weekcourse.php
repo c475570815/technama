@@ -8,7 +8,6 @@
 
 namespace app\admin\controller;
 
-use app\admin\AdjustmentDataGrid;
 use app\admin\CourseForm;
 use app\common\model\AdjustmentModel;
 use app\common\model\RecordModel;
@@ -80,14 +79,13 @@ class WeekCourse extends Controller
                     $weekcouse['comment'] = $course['comment'];
                     $weekcouse['dept_name'] = $course['dept_name'];
                     $weekcouse['free'] = '否'; //是否免听
-                    if ($this->onduty($course['teach_id'], $course['course_name'], $course['class_name'], $week, $course['xing_qi_ji'], $course['section']) == true && $this->isfinished($course['teach_id'], $course['course_name'], $course['class_name'], $week, $course['xing_qi_ji'], $course['section']) == false) {
+                    if ($this->onduty($course['teach_id'], $course['course_name'], $course['class_name'], $course['week'], $course['xing_qi_ji'], $course['section']) == true && $this->isfinished($course['teach_id'], $course['course_name'], $course['class_name'], $course['week'], $course['xing_qi_ji'], $course['section']) == false) {
                         $weekcouse['onduty'] = '是'; //没有调课，课没有结束
                     } else {
                         $weekcouse['onduty'] = '否';
                     }
-//                    $weekcouse['onduty'] =$this->onduty($course['teach_id'], $course['course_name'], $course['class_name'],$week , $course['xing_qi_ji'], $course['section']);
                     $weekcouse['check_times'] = $this->checktimes($course['teach_id'], $course['course_name'], $course['class_name'], $course['week'], $course['xing_qi_ji'], $course['section']);//已被听课次数
-                    $weekcouse['status'] = $this->isPlaned($course['teach_id'], $course['course_name'], $course['class_name'], $course['week'], $course['xing_qi_ji'], $course['section'])>0?"已安排":"未安排";// 听课情况
+                    $weekcouse['status'] = $this->listenStatus($course['teach_id'], $course['course_name'], $course['class_name'], $course['week'], $course['xing_qi_ji'], $course['section']);// 听课情况
                     $arr_weekcouse[] = $weekcouse;
                 }
             }
@@ -128,26 +126,16 @@ class WeekCourse extends Controller
      * @param $weekday
      * @param $section
      */
-    /**
-     * 教师在本学期已被听课的次数
-     * @param $teacherid
-     * @param $course
-     * @param $clazz
-     * @param $week
-     * @param $weekday
-     * @param $section
-     * @return int
-     */
     public function checktimes($teacherid, $course, $clazz, $week, $weekday, $section)
     {
         $model = new RecordModel();
         $map = array();
         $map['teacher_id'] = $teacherid;
-//        $map['course_name'] = $course;
-//        $map['class_name'] = $clazz;
-//        $map['week'] = $week;
-//        $map['xing_qi_ji'] = $weekday;
-//        $map['section'] = $section;
+        $map['course_name'] = $course;
+        $map['class_name'] = $clazz;
+        $map['week'] = $week;
+        $map['xing_qi_ji'] = $weekday;
+        $map['section'] = $section;
         return $model->where($map)->count();
     }
 
@@ -203,27 +191,27 @@ class WeekCourse extends Controller
         $model = new ScheduleModel();
         $map = array();
         $map['teacher_no'] = $teacherid;
-/*        $map['course_name'] = $course;
+        $map['course_name'] = $course;
         $map['class_name'] = $clazz;
         $map['week'] = $week;
         $map['xing_qi_ji'] = $weekday;
-        $map['section'] = $section;*/
+        $map['section'] = $section;
         return $model->where($map)->count();
     }
 
     /**
-     * 判断教师在指定的时间，指定班级，指定课程，是否有调课
-     * @param $teacherid  教师工号
-     * @param $course  课程名
-     * @param $clazz 班级名
-     * @param $week  周
-     * @param $weekday  星期
-     * @param $section  节次
+     * 判断教师是否有调课
+     * @param $teacherid
+     * @param $course
+     * @param $clazz
+     * @param $week
+     * @param $weekday
+     * @param $section
      * @return bool
      */
     public function onduty($teacherid, $course, $clazz, $week, $weekday, $section)
     {
-        $model = new AdjustmentModel();//调课表
+        $model = new AdjustmentModel();
         $map = array();
         $map['teach_id'] = $teacherid;
         $map['course_name'] = $course;
@@ -233,25 +221,19 @@ class WeekCourse extends Controller
         $map['section'] = $section;
         $map['reason'] = array("<>", "课程结束");
         $row = $model->where($map)->find();
-
-       // return AdjustmentModel::getLastSql();
         if ($row) {
-            return false;//有调课，不在岗
+            return false;
         } else {
-            return true;   // 在岗
+            return true;
         }
     }
 
-
     /**
-     * 该教师某课程某班级是否有停课
+     * 是否有停课
      * @param $teacherid
-     * @param $course
-     * @param $clazz
-     * @param $week  当前周
+     * @param $week
      * @param $weekday
      * @param $section
-     * @return bool
      */
     public function isfinished($teacherid, $course, $clazz, $week, $weekday, $section)
     {

@@ -9,11 +9,6 @@
 namespace app\common\model;
 use think\Model;
 
-/**
- * 教师模型
- * Class TeaModel
- * @package app\common\model
- */
 class TeaModel extends \app\common\model\CommonModel
 {
     protected $table = 'tbl_teacher';
