@@ -18,7 +18,7 @@ var columns_def = [[
     {field: 'xing_qi_ji', title: '星期', sortable: true},
     {field: 'section', title: '节次', sortable: true},
     {field: 'free', title: '是否免听', sortable: true},
-    {field: 'onduty', title: '是否有调停课', sortable: true},
+    {field: 'onduty', title: '没有调停课', sortable: true},
     {field: 'check_times', title: '已听课次数', sortable: true},
     {field: 'status', title: '听课情况', sortable: true},
     {field:'operation', title: '操作', formatter:formatOptColumn }

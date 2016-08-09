@@ -65,9 +65,11 @@
                     <option value="5">第5大节</option>
                 </select>
                 教师: <input class="easyui-text" style="width:110px" name="dict[teach_id]">
-                <input type="checkbox" name="Have_a_class"/>已听课
-                <input type="checkbox" name="No_listen" />免听课
-                <input type="checkbox" name="The_class"/>调停课
+                调停课
+                <select class="easyui-combobox" name="dict[onduty]" style="width:100px;">
+                    <option value="是" selected>是</option>
+                    <option value="否">否</option>
+                </select>
                 <a href="#" class="easyui-linkbutton" iconCls="icon-search" onclick="query()">查找</a>
             </form>
             <form id="frm_download" method="post"></form>

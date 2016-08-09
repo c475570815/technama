@@ -104,4 +104,48 @@ function ldapValid($userid,$pass){
         return false;
     }
 }
+/**
+ * 网易云信发送短信
+ * http://dev.netease.im/docs?doc=server&#发送模板短信
+ * @param string $mobile
+ * @param string $params
+ * @param string $templateid
+ * @return array
+ */
+function yx_sendsms($mobile='',$params='',$templateid=''){
+    header("Content-Type:text/html; charset=utf-8");
+    $AppKey =config('neteaseim.appkey');
+    $AppSecret = config('neteaseim.appsecret');
+    $Nonce = rand(100000,999999);
+    $CurTime = time();
+    $CheckSum = strtolower(sha1($AppSecret.$Nonce.$CurTime));
+    $url =  config('neteaseim.sms_url');
+    $head_arr = array();
+    $head_arr[] = 'Content-Type: application/x-www-form-urlencoded';
+    $head_arr[] = 'charset: utf-8';
+    $head_arr[] = 'AppKey:'.$AppKey;
+    $head_arr[] = 'Nonce:'.$Nonce;
+    $head_arr[] = 'CurTime:'.$CurTime;
+    $head_arr[] = 'CheckSum:'.$CheckSum;
+    $data = array();
+    $data['templateid'] = $templateid;
+    $data['mobiles'] = $mobile;
+    $data['params'] = $params;
+    //var_dump($data);
+
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, $head_arr);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
+    curl_setopt($ch, CURLOPT_TIMEOUT, 120);
+    $result = curl_exec($ch);
+    curl_close($ch);
+    $resArr = (array) json_decode($result);
+    //$resArr = (array) json_decode('{"code":200,"msg":"sendid","obj":1}');
+    //var_dump($resArr);
+    //echo $resArr['code'];
+    return $resArr;
+}
 ?>
