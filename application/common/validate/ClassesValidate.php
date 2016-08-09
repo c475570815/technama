@@ -72,7 +72,7 @@ class ClassesValidate  extends Validate
 
     protected function max($value, $rule)
     {
-       // $length = strlen((string) $value);
+//        $length = strlen((string) $value);
         $length = mb_strlen((string) $value);
         return $length <= $rule;
     }
