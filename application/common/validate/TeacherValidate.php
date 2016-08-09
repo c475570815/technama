@@ -25,18 +25,12 @@ class TeacherValidate  extends Validate
      * @var array
      */
     protected $rule = [
-        'class_name'  =>  'require|max:25',
-        'class_room' =>  'require',
-        'class_supervisor' => 'require',
-        'calss_adviser' => 'require'
+        'teach_id'=> 'require|length:6',
+        'dept_name'  =>  'require|max:25',
     ];
 
     protected $message  =   [
-        'class_name.require' => '名称必须',
-        'class_name.max'     => '名称最多不能超过25个字符',
-        'age.number'   => '年龄必须是数字',
-        'age.between'  => '年龄只能在1-120之间',
-        'email'        => '邮箱格式错误',
+
     ];
 
 
@@ -47,7 +41,7 @@ class TeacherValidate  extends Validate
      * @param $data  数据
      * @return bool|string
      */
-    protected function checkName($value,$rule,$data)
+    protected function checkDeptName($value,$rule,$data)
     {
         // return $rule == $value ? true : '名称错误';
     }

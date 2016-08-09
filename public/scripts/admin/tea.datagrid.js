@@ -8,7 +8,7 @@ var url_update='/index.php/admin/Tea/update';
 var url_tree='/index.php/admin/Tea/ac1';
 var url_export='/index.php/admin/Tea/download';
 var pk_field='teach_id';
-var cc="#CC";
+var cc="#cc";
 var frm_search="#frm_search";
 var columns_def=[[
     {field: 'chkbox', checkbox: true},
@@ -135,7 +135,7 @@ function  down() {
  * 加载下拉树的josn
  */
 function  load2() {
-   $.getJSON("/index.php/admin/Tea/treejosn",function(data){
+   $.getJSON("http://10.127.98.242/index.php/admin/Tea/treejosn",function(data){
         var str = data.toString();
         var s=eval(str);
         $(cc).combotree('loadData',s);
@@ -151,7 +151,7 @@ function exportXls() {
     var acion = {'action': 'export'};
     var postdata = $.extend({}, grid_options, acion);
     $('#frm_download').form('submit', {
-        url: '/index.php/admin/Tea/download',
+        url: 'http://10.127.98.242/index.php/admin/Tea/download',
         queryParams: postdata,
         onSubmit: function () {
         },

@@ -14,16 +14,18 @@ use app\common\model\DeptModel;
 use think\View;
 use think\Db;
 use think\Request;
+use think\Loader;
 class Tea extends Controller
 {
     /**s
      * 用于显示Grid
      */
     public function index(){
-        // 获取系部名称
+        // 从教师表中获取系部名称
         $dept=new TeaModel();
         $deptList=$dept->distinct(true)->field('dept_name')->select();
         $view = new View();
+        //
         $tree=$this->treejosn();
         $view->assign("dept",$deptList);
         $view->assign("tree",$tree);
@@ -113,37 +115,52 @@ class Tea extends Controller
         $deptList=$dept->select();
         return json($deptList);
     }
-    /*
-     *返回树状图josn
+
+    /**
+     * 返回部门表中树状图josn
+     * @return string  json格式数据
+     * [{
+            "id":1,
+            "text":"My Documents",
+            "children":[{
+                "id":11,
+                "text":"Photos",
+                "state":"closed",
+                "children":[{
+                "id":111,
+                "text":"Friend"
+                },{
+                "id":112,
+                "text":"Wife"
+                },{
+                "id":113,
+                "text":"Company"
+                }]
+    }]
+     *
      */
     public   function  treejosn(){
         $dept=new DeptModel();
-        $de=$dept->field('dept_name')->select();
-        $n=count($de);
-        //dump($m);
-        //系部
-        $a="[{
-         \"id\":0,
-         \"state\":\"closed\",
-        \"text\":\"全部系部\",
-        \"checked\":\"true\",
-        \"state\":\"open\",
-         \"children\":[";
-        for($i=0;$i<$n;$i++) {
-            $deptList=$dept->field('dept_name')->where("dept_id",$i+1)->select();
-                $a=$a."{
-		      \"id\":".($i+1).",
-		      \"text\":"."\"".$deptList[0]['dept_name']."\""."";
-		       if($i+1==$n){
-		          $a=$a."}";
-		       }
-		       else{
-		           $a=$a."},";
-               }
-                }
-            $a=$a."]}]";//]
-       // print_r($a);
-        return $a;
+        $de=$dept->field('dept_name,dept_id')->select();
+        $tree_root=array(
+            'id'=>0,
+            'state'=>'closed',
+            'text'=>'全部系部',
+            'checked'=>'true'
+        );
+
+        $childrens=array();
+        foreach($de as $current_dept){
+            $child=array(
+                'id'=>$current_dept['dept_id'],
+                'text'=>$current_dept['dept_name']
+            );
+            $childrens[]=$child;
+        }
+        $tree_root['children']= $childrens;
+
+        return json([$tree_root]);
+
     }
     /**
      * 跳转打印a
@@ -242,8 +259,8 @@ class Tea extends Controller
 public function upload(){
     // 获取上传文件并放到/public/uploads/ 目录下
     $file = request()->file('file');
-    $tmp_file = $file->move(ROOT_PATH . 'public' . DS . 'uploads');
-    if($tmp_file){
+    if($file){
+        $tmp_file = $file->move(ROOT_PATH  . 'public' . DS . 'uploads');
         if($tmp_file->getExtension()!='xls'){
             // 上传失败获取错误信息
             @unlink($tmp_file);//删除上传的临时文件
@@ -271,13 +288,13 @@ public function upload(){
         $datas=$this->excel2array($tmp_file,$start_row,$columns);
         // (2)对数组进行有效性验证（如是否唯一）,返回验证结果，结果是错误信息的数组
         //对数组做清除处理
-        $validate = Loader::validate('ClassesValidate');
+        $validate = Loader::validate('TeacherValidate');
         $ret=$this->excelValidate($datas,$validate);
         // var_dump($ret);
         @unlink($tmp_file);
         if(count($ret)==0){
             //（3）保存数组中的数据到数据库
-            $mo= new ClassesModel();
+            $mo= new TeaModel();
             $mo->saveAll($datas);
             $ret1=['success'=>'true','message'=>'导入成功,共导入'.count($datas).'条记录'];
             // $this->success('导入成功！');
