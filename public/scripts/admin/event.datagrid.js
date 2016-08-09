@@ -1,26 +1,23 @@
-/**
- * Created by guowushi on 2016/7/20.
- */
-/**
- *
- */
+
+
 var grid_id = '#datagrd';
 var search_form_id="#frm_search";
 var download_form_id="#frm_download";
-var url_get = '/index.php/admin/classes/index';
-var url_remove = '/index.php/admin/classes/remove';
-var url_remove_all = '/index.php/admin/classes/removeall';
-var url_update = '/index.php/admin/classes/update';
-var url_export = '/index.php/admin/classes/download';
-var pk_field = 'class_id';
+var url_get = '/index.php/admin/event/getlist';
+var url_remove = '/index.php/admin/event/remove';
+var url_remove_all = '/index.php/admin/event/removeall';
+var url_update = '/index.php/admin/event/update';
+var url_save = '/index.php/admin/event/save';
+var url_export = '/index.php/admin/event/download';
+var pk_field = 'id';
 var grid_options;
 var columns_def = [[
     {field: 'chkbox', checkbox: true},
-    {field: 'dept_name', title: '所属系部', sortable: true},
-    {field: 'class_name', title: '班级名称', sortable: true},
-    {field: 'class_room', title: '班级固定教室', sortable: true},
-    {field: 'class_supervisor', title: '班级导师编号', sortable: true},
-    {field: 'calss_adviser', title: '班级班主任', sortable: true},
+    {field: 'title', title: '事件', sortable: true},
+    {field: 'start', title: '开始时间', sortable: true},
+    {field: 'end', title: '结束时间', sortable: true},
+    {field: 'url', title: '链接', sortable: true},
+    {field: 'css', title: '样式', sortable: true},
     {field:"operation", title: '操作', formatter:formatOptColumn }
 ]];
 /**
@@ -52,8 +49,9 @@ function initGrid(grid, url, columns_def) {
  * @returns {*}
  */
 function formatOptColumn(val,row,index){
-    var updateUrl = url_update + "/pk/" + row.class_id;
-    return "<a href='"+updateUrl+"' target='_self'> 操作 </a>";
+    var updateUrl = url_update + "/pk/" + row.id;
+    var row_format="<a href='"+updateUrl+"' target='_self' title='编辑'>编辑 </a>";
+    return row_format;
 
 }
 /**
@@ -252,4 +250,31 @@ function printGrid(){
 }
 function addRecord(){
    location.href='/index.php/admin/classes/add';
+}
+/**
+ * 通过Ajax方式保存
+ */
+function saveForm(){
+    $('#frm_add').form({
+        url:url_save,
+        onSubmit: function(){
+            // 有效性验证
+            /*var classname=$("#class_name").val();
+            if(classname==''){
+                return false ;
+            }*/
+        },
+        success:function(data){
+            var data = eval('(' + data + ')');
+            $.messager.alert('Info', data.message, 'info');
+            reload();
+        }
+    });
+    $('#frm_add').submit();
+}
+/**
+ * 清除表单
+ */
+function clearForm() {
+    $('#ff').form('clear');
 }

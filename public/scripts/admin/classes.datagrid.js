@@ -53,7 +53,8 @@ function initGrid(grid, url, columns_def) {
  */
 function formatOptColumn(val,row,index){
     var updateUrl = url_update + "/pk/" + row.class_id;
-    return "<a href='"+updateUrl+"' target='_self'> 操作 </a>";
+    var opt_formatter="<a href='"+updateUrl+"' target='_self' title='编辑当前记录'> 编辑 </a>";
+    return opt_formatter;
 
 }
 /**
@@ -252,4 +253,8 @@ function printGrid(){
 }
 function addRecord(){
    location.href='/index.php/admin/classes/add';
+}
+
+function reset(){
+    $("#frm_search").form('clear');
 }

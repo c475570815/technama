@@ -11,12 +11,13 @@
     <script type="text/javascript" src="/scripts/comm.js"></script>
     <script type="text/javascript" src="/scripts/admin/schedule.datagrid.js"></script>
 </head>
-<body>
+<body style="height:100%">
 
 <!-- 查找工具栏 -->
-<div id="searchToolbar" class="easyui-panel" title="筛选条件" data-options="iconCls:'icon-search',plain:true" style="padding:5px;margin-bottom: 10px">
+<div id="searchToolbar" class="easyui-panel" title="筛选条件" data-options="iconCls:'icon-search',plain:true" style="padding:5px;margin-bottom: 10px;height:100px;">
     <form id="frm_search" action="" method="post">
-        教师名字: <input id="cbogrid_of_teacher" class="easyui-text" style="width:110px" name="dict[teacher_no]">
+        学期: <input  class="easyui-text" style="width:110px" name="dict[term]" value="{$current_term?$current_term:''}">
+        教师名字: <input id="cbogrid_of_teacher" class="easyui-text" style="width:110px" name="dict[teacher_no]" >
         班级名称: <input  class="easyui-text" style="width:110px" name="dict[class_name]">
         固定教室: <input  class="easyui-text" style="width:110px" name="dict[class_room]">
         课程名称: <input  class="easyui-text" style="width:110px" name="dict[course_name]">

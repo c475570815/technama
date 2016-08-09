@@ -10,7 +10,7 @@ use app\admin\ScheduleDataGrid;
 use app\common\model\TeacherModel;
 use think\View;
 use app\common\model\ScheduleModel;
-use app\common\model\DictCategoryModel;
+use app\common\model\ConfigModel;
 use app\common\model\DeptModel;
 use app\admin\DictDataGrid;
 use think\Db;
@@ -35,8 +35,12 @@ class Schedule extends Controller
         $dept = new DeptModel();
         $deptList = $dept->select();
 
+        $model=new ConfigModel();
+        $row= $model->where('cfg_name','current_term')->find();
+
         $view = new View();
         $view->assign("dept", $deptList);
+        $view->assign("current_term", $row['cfg_term']);
         return $view->fetch('datagrid');
     }
     public function cal()

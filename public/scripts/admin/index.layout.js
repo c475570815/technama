@@ -65,6 +65,7 @@ $(document).ready(function () {
     $('#sy').tabs({
         border: false,
         fit:true,
+
         plain:true,
         pill:false,
         onBeforeClose: function(title,index){

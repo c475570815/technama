@@ -18,6 +18,11 @@ use app\common\model\CourseModel;
 use think\Db;
 use  \think\Controller;
 
+/**
+ * 课表控制器类
+ * Class Course
+ * @package app\admin\controller
+ */
 class Course extends Controller
 {
 
@@ -36,11 +41,21 @@ class Course extends Controller
         return $view->fetch('datagrid');
     }
 
-
+    /**
+     *   根据id获取教师
+     * @param $teacher_id
+     * @return array|false|\PDOStatement|string|\think\Model
+     */
     public function getTeacherById($teacher_id){
         $model_techer=new TeaModel();
         return  $model_techer->where('teach_id',$teacher_id)->find();
     }
+
+    /**
+     * 根据教师编号，获取该教师对应的排课记录
+     * @param $teacher_id
+     * @return array|false|\PDOStatement|string|\think\Model
+     */
     public function getScheduleById($teacher_id){
         $model_techer=new ScheduleModel();
         return  $model_techer->where('teacher_no',$teacher_id)->find();
@@ -85,9 +100,23 @@ class Course extends Controller
     public function ac1()
     {
 
-          //（1）先从tbl_course 表中查所有记录的条数
+
          $model_course= new CourseModel();
-         $total = intval($model_course->count());
+        //（1）先从tbl_course 表中查所有记录的条数
+        $arr_where=array();
+        if(isset($_POST['dict'])){
+            $dict=$_POST['dict'];
+            $arr_where= $model_course->filer($dict);
+            //print_r($arr_where);
+        }
+        // 周查询
+/*        if(isset($_POST['week'])){
+            $week=$_POST['week'];
+            $arr_where= [];
+            //print_r($arr_where);
+        }
+        $model_course->where($arr_where);*/
+        $total = intval($model_course->count());
 
         // (2) 获取分页信息，设置分页条件
         $page = isset($_POST['page']) ? intval($_POST['page']) : 1;

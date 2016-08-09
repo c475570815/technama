@@ -10,11 +10,12 @@ namespace app\common\model;
 
 
 
-class CourseModel extends \app\common\model\CommonModel
+class WeekcourseModel extends \app\common\model\CommonModel
 {
-    protected $table = 'tbl_course';
+    protected $table = 'tbl_course_week';
 
     protected $defaults = [
+        'teach_name' => 'like',
 
     ];
 }

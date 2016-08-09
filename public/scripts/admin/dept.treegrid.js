@@ -21,9 +21,9 @@ function initDeptGrid(){
         checkbox:false,
         rownumbers:true,
         columns:[[
-            {field:'dept_name',title:'部门'},
-            {field:'dept_staff_number',title:'人数'},
-            {field:'dept_category',title:'部门类型'}
+            {field:'dept_name',title:'部门',sortable: true},
+            {field:'dept_staff_number',title:'人数',sortable: true},
+            {field:'dept_category',title:'部门类型',sortable: true}
         ]]
     });
 }
