@@ -26,13 +26,6 @@ var columns_def=[[
     {field:'limit',title:'听课限制',sortable:true},
     {field:"op", title: '操作', formatter:formatOptColumn }
 ]];
-
-/**
- * 初始化
- * @param grid_id
- * @param url_get
- * @param columns_def
- */
 function initGrid(grid_id,url_get,columns_def){
     $(grid_id).datagrid({
         url:url_get,
@@ -46,10 +39,8 @@ function initGrid(grid_id,url_get,columns_def){
         columns:columns_def
     });
 }
-/**
- * 当整个页面全部载入后才执行
- */
 $(document).ready(function () {
+    //当整个页面全部载入后才执行
     initGrid(grid_id,url_get,columns_def);
     load2();
     //console.log(111111111111);
@@ -145,10 +136,9 @@ function  down() {
  */
 function  load2() {
    $.getJSON("http://10.127.98.242/index.php/admin/Tea/treejosn",function(data){
-        //var str = data.toString();
-        //var s=eval(str);
-       //console.log(data[0].text);
-      $(cc).combotree('loadData',data);
+        var str = data.toString();
+        var s=eval(str);
+        $(cc).combotree('loadData',s);
 });
 }
 /**

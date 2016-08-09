@@ -10,15 +10,16 @@
     <script type="text/javascript" src="/static/jquery-easyui-1.4.5/locale/easyui-lang-zh_CN.js"></script>
     <script type="text/javascript" src="/scripts/comm.js"></script>
     <script type="text/javascript" src="/scripts/admin/classes.datagrid.js"></script>
-    <!--    <script src="http://code.jquery.com/jquery-migrate-1.1.0.js"></script>-->
     <script type="text/javascript" src="/static/jQuery.print.js"></script>
 </head>
 <body>
-<div class="easyui-layout" fit="true">
-    <div data-options="region:'north'" border="false" style="height:100px;padding: 10px">
-        <!-- 查找工具栏 -->
-        <div id="searchToolbar" class="easyui-panel" fit="true" title="筛选条件"
-             data-options="iconCls:'icon-search',plain:true" style="padding:5px;margin-bottom: 10px">
+<div class="easyui-panel" data-options="fit:true" style="padding:10px">
+    <div class="easyui-layout" fit="true" style="">
+
+        <div id="searchToolbar" data-options="region:'north',iconCls:'icon-search',collapsible:true,plain:true,split:false,hideCollapsedContent:false"
+             style="height:100px;padding:10px" title="筛选条件">
+            <!--    <div  class="easyui-panel"
+                     data-options="iconCls:'icon-search',plain:true,collapsible:false;" style="padding:5px;margin-bottom: 10px">-->
             <form id="frm_search" action="" method="post">
                 系部:
                 <select id="a" class="easyui-combobox" panelHeight="auto" style="width:200px" name="dict[dept_name]">
@@ -32,48 +33,58 @@
                 导师: <input class="easyui-text" style="width:110px" name="dict[class_supervisor]">
                 班主任: <input class="easyui-text" style="width:110px" name="dict[calss_adviser]">
                 <a href="#" class="easyui-linkbutton" iconCls="icon-search" onclick="query()">查找</a>
-
-            </form>
-
+                <a href="#" class="easyui-linkbutton" iconCls="icon-search" onclick="reset()">清空条件</a>
+                </form>
             <form id="frm_download" method="post"></form>
+            <!--</div>-->
         </div>
-    </div>
-    <div data-options="region:'center'" border="false" style="padding:10px;">
-        <!-- 操作工具栏 -->
-        <div id="editToolbar" style="clear: both">
-            <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true" onclick="edit()">编辑</a>
-            <a href="http://10.127.98.246/index.php/admin/classes/add" class="easyui-linkbutton"
-               data-options="iconCls:'icon-add',plain:true">添加</a>
-            <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true" onclick="removeRecord()">删除</a>
-            <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-download',plain:true" onclick="exportXls()">导出</a>
-            <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-upload',plain:true" onclick="importDialog()">导入</a>
-            <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-print',plain:true" onclick="printGrid()">打印</a>
-            <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-reload',plain:true"
-               onclick="reload()">刷新</a>
-            <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-help',plain:true">帮助</a>
+        <div data-options="region:'center',plain:true" border="false" style="">
+
+            <!-- 操作工具栏 -->
+            <div id="editToolbar" style="clear: both">
+                <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true"
+                   onclick="edit()">编辑</a>
+                <a href="#" class="easyui-linkbutton"
+                   data-options="iconCls:'icon-add',plain:true" onclick="addRecord()">添加</a>
+                <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true"
+                   onclick="removeRecord()">删除</a>
+                <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-download',plain:true"
+                   onclick="exportXls()">导出</a>
+                <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-upload',plain:true"
+                   onclick="importDialog()">导入</a>
+                <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-print',plain:true"
+                   onclick="printGrid()">打印</a>
+                <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-trashcan',plain:true"
+                   onclick="removeall()">清除所有记录</a>
+                <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-reload',plain:true"
+                   onclick="reload()">刷新</a>
+                <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-help',plain:true">帮助</a>
+            </div>
+            <!-- DataGrid -->
+
+            <table id="datagrd" class="easyui-datagrid" title="数据表格" toolbar="#editToolbar"
+                   data-options="iconCls:'icon-more',plain:true,fit:true">
+            </table>
 
         </div>
-        <!-- DataGrid -->
-        <table id="datagrd" class="easyui-datagrid" title="数据表格" toolbar="#editToolbar"
-               data-options="iconCls:'icon-more',plain:true" fit="true">
-        </table>
+
+
     </div>
-    <!-- Dialog -->
-    <div id="dd" data-options="buttons:'#bb'">
-        <form id="frm_upload" action="" enctype="multipart/form-data" method="post"   style="padding: 10px">
-             <input type="file" name="file"/>
-           <!-- <input class="easyui-filebox" style="width:300px" name="file" buttonText="选择文件"/>-->
-            <textarea rows="5" style="width: 100%" style="margin-top: 5px" id="msgbox">
+</div>
+<!-- Dialog -->
+<div id="dd" data-options="buttons:'#bb'">
+    <form id="frm_upload" action="" enctype="multipart/form-data" method="post"   style="padding: 10px">
+        <input type="file" name="file"/>
+        <!-- <input class="easyui-filebox" style="width:300px" name="file" buttonText="选择文件"/>-->
+        <textarea rows="5" style="width: 100%" style="margin-top: 5px" id="msgbox">
 
             </textarea>
-            <div id="bb">
-                <input type="submit" value="上传" onclick="importxls()"/>
-               <!-- <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-ok'" >确定</a>
-                <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-cancel'">取消</a>-->
-            </div>
-        </form>
-    </div>
-
+        <div id="bb">
+            <input type="submit" value="上传" onclick="importxls()"/>
+            <!-- <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-ok'" >确定</a>
+             <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-cancel'">取消</a>-->
+        </div>
+    </form>
 </div>
 </body>
 </html>

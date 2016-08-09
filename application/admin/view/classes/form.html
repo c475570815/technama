@@ -49,9 +49,10 @@
                     <tr>
                         <td></td>
                         <td>
+                            <input type="hidden" name="data[class_id]" value="{$record.class_id?$record.class_id:''}"/>
                             <input type="hidden" name="operation" value="{$operation=='编辑'?'update':'add'}"/>
                             <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-save'" onclick="saveForm()">保存</a>
-                            <a href="http://10.127.98.246/index.php/admin/classes/index" class="easyui-linkbutton" data-options="iconCls:'icon-return'">返回</a>
+                            <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-return'" onclick="returnGrid()">返回</a>
                             <a href="javascript:void(0)" class="easyui-linkbutton" onclick="clearForm()" data-options="iconCls:'icon-clear'">清除</a>
                         </td>
                     </tr>

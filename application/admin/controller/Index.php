@@ -1,6 +1,8 @@
 <?php
 namespace app\admin\controller;
 
+use app\common\model\ConfigModel;
+use think\Config;
 use think\Controller;
 use app\common\model\TeaModel;
 use think\View;
@@ -40,11 +42,22 @@ class Index extends Controller
         $view = new View();
         $view->name = Session::get('name');
         $view->roles = Session::get('roles');
+        $view->current_term =$this->getCurrentTerm();
         // 模板输出
+
         return $view->fetch('layout');
 
     }
 
+    /**
+     * 获取当前学期
+     * @return mixed
+     */
+    public function getCurrentTerm(){
+        $model=new ConfigModel();
+        $row= $model->where('cfg_name','current_term')->find();
+        return $row['cfg_term'];
+    }
     public function chart()
     {
         return view('chart');

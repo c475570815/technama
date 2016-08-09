@@ -24,7 +24,7 @@ class Dept
 {
 
     /**
-     * 用于显示、查找、排序
+     * 显示dataGrid
      */
     public function index(){
 

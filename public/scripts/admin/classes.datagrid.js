@@ -9,9 +9,10 @@ var search_form_id="#frm_search";
 var download_form_id="#frm_download";
 var url_get = '/index.php/admin/classes/index';
 var url_remove = '/index.php/admin/classes/remove';
+var url_remove_all = '/index.php/admin/classes/removeall';
 var url_update = '/index.php/admin/classes/update';
 var url_export = '/index.php/admin/classes/download';
-var pk_field = 'class_name';
+var pk_field = 'class_id';
 var grid_options;
 var columns_def = [[
     {field: 'chkbox', checkbox: true},
@@ -24,6 +25,7 @@ var columns_def = [[
 ]];
 /**
  *  初始化网格对象
+ *  idField:主键
  * @param grid
  * @param url
  * @param columns_def
@@ -39,6 +41,7 @@ function initGrid(grid, url, columns_def) {
         pagination: true,
         fitColumns:true,
         rownumbers: true,
+        pageSize:20,
         columns: columns_def
     });
 }
@@ -49,8 +52,9 @@ function initGrid(grid, url, columns_def) {
  * @returns {*}
  */
 function formatOptColumn(val,row,index){
-    var updateUrl = url_update + "/pk/" + row.class_name;
-    return "<a href='"+updateUrl+"' target='_self'> 操作 </a>";
+    var updateUrl = url_update + "/pk/" + row.class_id;
+    var opt_formatter="<a href='"+updateUrl+"' target='_self' title='编辑当前记录'> 编辑 </a>";
+    return opt_formatter;
 
 }
 /**
@@ -73,6 +77,31 @@ function query() {
     );
     grid_options = $(grid_id).datagrid('options').queryParams;
     console.log(grid_options);
+}
+/**
+ *  清楚所有记录,清除前提示
+ */
+function removeall(){
+    $.messager.confirm('提示', '是否删除所有的数据?', function (r) {
+        if (!r) {
+            return;
+        }
+        //Ajax提交
+        $.ajax({
+            type: "POST",
+            url: url_remove_all,
+            data: {id: 1},//传递给服务器的参数
+            success: function (jsonresult) {
+                reload();
+                if (jsonresult.isSuccess == true) {
+                    $.messager.alert("提示", jsonresult.message, "info");
+                } else {
+                    $.messager.alert("提示", jsonresult.message, "info");
+                    return;
+                }
+            }
+        });
+    });
 }
 /**
  * 删除选中的记录
@@ -221,4 +250,11 @@ function printGrid(){
            // alert($(data).find("#datagrd").html());
     });*/
 
+}
+function addRecord(){
+   location.href='/index.php/admin/classes/add';
+}
+
+function reset(){
+    $("#frm_search").form('clear');
 }

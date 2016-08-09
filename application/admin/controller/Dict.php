@@ -26,9 +26,10 @@ class Dict extends Controller
      * 用于显示、查找、排序
      */
     public function index(){
-
-        $dict= new DictCategoryModel();
-        $dict_category=$dict->select();
+        // 获取字典类型
+        $dict= new DictModel();
+        $dict_category= $dict->distinct(true)->field('dict_category')->select();
+        // 视图显示
         $view = new View();
         $view->assign("dict_category",  $dict_category);
         return $view->fetch('datagrid');

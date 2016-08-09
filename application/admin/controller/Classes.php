@@ -102,7 +102,6 @@ class Classes extends Controller implements InterfaceDataGrid
      * @return \think\Response|\think\response\Json|\think\response\Jsonp|\think\response\Redirect|\think\response\View|\think\response\Xml
      */
     public function save(){
-
         $form_data=$_POST['data'];
         $ret=array(
             'success'=>false,'message'=>'添加失败'
@@ -155,16 +154,33 @@ class Classes extends Controller implements InterfaceDataGrid
     }
 
     /**
-     * 显示修改页面
-     * @param $pk
+     * 删除所有数据
+     * @return \think\Response|\think\response\Json|\think\response\Jsonp|\think\response\Redirect|\think\response\View|\think\response\Xml
+     */
+    public function removeall(){
+        //$mo = new ClassesModel();
+        //$count = $mo->where("1=1")->delete();//如果不接条件，则无法删除
+        $result=Db::execute("TRUNCATE tbl_classes");
+        $ret = ['success' => 'true', 'message' => '清除成功！'];
+        return json($ret);
+    }
+
+    /**
+     * 显示修改页面 index.php/admin/classes/update/pk/2
+     * @param $pk  自动获取pk参数的值
      * @return string
      */
     public function update($pk){
-        $view = new View();
-        $mo=new ClassesModel();
-        $record=$mo->where('class_name',$pk)->find();
+        // 根据主键获取一条记录
+
+//        $record=$mo->where('class_name',$pk)->find();
+        $record=ClassesModel::get($pk);
+
+        // 编辑页面的部门信息
         $dept=new DeptModel();
         $deptList=$dept->select();
+        // 视图页面
+        $view = new View();
         $view->assign("dept",  $deptList);
         $view->assign("operation",  '编辑');
         $view->assign("record",  $record);

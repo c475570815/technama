@@ -31,6 +31,10 @@ class ScheduleDataGrid extends   \app\common\DataGrid
             $model=new ScheduleModel();
             $arr_where= $model->filer($dict);
             //print_r($arr_where);
+        }else{
+            $dict=array('term'=>'2015-2016-1');
+            $model=new ScheduleModel();
+            $arr_where= $model->filer($dict);
         }
         return $arr_where;
     }
