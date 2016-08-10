@@ -27,7 +27,8 @@
             <!--    <div  class="easyui-panel"
                      data-options="iconCls:'icon-search',plain:true,collapsible:false;" style="padding:5px;margin-bottom: 10px">-->
             <form id="frm_search" action="" method="post">
-                事件:<input class="easyui-text" style="width:110px" name="dict[]">
+                学期: <input class="easyui-text" style="width:80px" name="dict[term]"  value="{$current_term?$current_term:''}">
+                事件:<input class="easyui-text" style="width:110px" name="dict[title]">
                 日期: <input class="easyui-text" style="width:110px" name="dict[date]">
                 <a href="#" class="easyui-linkbutton" iconCls="icon-search" onclick="query()">查找</a>
             </form>

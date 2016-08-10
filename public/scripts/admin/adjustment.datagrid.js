@@ -15,6 +15,7 @@ var pk_field='adj_id';
 var grid_options;
 var columns_def=[[
     {field:'chkbox',checkbox:true },
+    {field:'term',title:'学期',sortable:true},
     {field:'teach_id',title:'教师编号',sortable:true},
     {field:'class_name',title:'班级名称',sortable:true},
     {field:'class_room',title:'班级固定教室',sortable:true},

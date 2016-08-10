@@ -18,6 +18,7 @@
         <!-- 查找工具栏 -->
         <div id="searchToolbar" class="easyui-panel" fit="true" title="筛选条件" data-options="iconCls:'icon-search',plain:true"  style="padding:5px;margin-bottom: 10px">
             <form id="frm_search" action="" method="post">
+                学期: <input  class="easyui-text" style="width:110px" name="dict[term]" value="{$current_term?$current_term:''}">
                 系部:
                 <select id="a" class="easyui-combobox" panelHeight="auto" style="width:200px" name="dict[dept_name]">
                     <option value="全部" selected>全部</option>
@@ -25,10 +26,12 @@
                     <option value="{$vo.dept_name}">{$vo.dept_name}</option>
                     {/volist}
                 </select>
-                班级名称: <input class="easyui-text" style="width:110px" name="dict[class_name]">
-                固定教室: <input class="easyui-text" style="width:110px" name="dict[class_room]">
-                导师: <input class="easyui-text" style="width:110px" name="dict[class_supervisor]">
-                班主任: <input class="easyui-text" style="width:110px" name="dict[calss_adviser]">
+
+                教师名字: <input id="cbogrid_of_teacher" class="easyui-text" style="width:110px" name="dict[teacher_no]" >
+                <!--班级名称: <input  class="easyui-text" style="width:110px" name="dict[class_name]">-->
+                课程名称: <input  class="easyui-text" style="width:110px" name="dict[course_name]">
+                周次: <input  class="easyui-text" style="width:50px" name="dict[week]">
+                星期: <input  class="easyui-text" style="width:50px" name="dict[xing_qi_ji]">
                 <a href="#" class="easyui-linkbutton" iconCls="icon-search" onclick="query()">查找</a>
                 <a href="#" class="easyui-linkbutton" iconCls="icon-search" onclick="reset()">清空条件</a>
             </form>

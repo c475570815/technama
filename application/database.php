@@ -13,13 +13,13 @@ return [
     // 数据库类型为mysql
     'type'           => 'mysql',
     // 服务器地址
-    'hostname'       => '127.0.0.1',
+    'hostname'       => 'localhost',
     // 数据库名
     'database'       => 'techman',
     // 用户名
     'username'       => 'root',
     // 密码
-    'password'       => 'guowushi',
+    'password'       => '',
     // 端口
     'hostport'       => '',
     // 连接dsn

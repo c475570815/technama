@@ -22,12 +22,12 @@ var columns_def = [[
     {field: 'class_week', title: '上课周次', sortable: true},
     {field: 'xing_qi_ji', title: '星期', sortable: true},
     {field: 'section', title: '节次', sortable: true},
-    {field:'class_room',title:'教室',sortable:true},
-    {field:'state',title:'已听课',sortable:true},//数据读取听课表
+    {field:'class_room',title:'教室',sortable:true}
+/*    {field:'state',title:'已听课',sortable:true},//数据读取听课表
     {field:'passed',title:'免听课',sortable:true},//数据读取听课表
     {field:'adj_exchange',title:'调停课',sortable:true},//数据读取调课表
     {field:'opt',title:'听课',width:80,align:'center', formatter:optFormater   },
-    {field: 'teach_dd', title: '听课教师', sortable: true}//数据录入听课表
+    {field: 'teach_dd', title: '听课教师', sortable: true}//数据录入听课表*/
 ]];
 
 function optFormater(value, row, index) {
