@@ -4,7 +4,7 @@
 
 var grid='#datagrd';
 var url='/index.php/admin/schedule/getlist';
-var url_update='/index.php/admin/schedule/update';
+var url_record='/index.php/admin/evaluate/add';
 var columns_def=[[
     {field: 'chkbox', checkbox: true},
     {field:'term',title:'学期',sortable:true},
@@ -22,7 +22,7 @@ var columns_def=[[
     {field:'conuncilor',title:'督导',sortable:true},
     {field:'state',title:'状态',sortable:true},
     {field:'operation',title:'操作',formatter:function(val,row,index){
-        var updateUrl = url_update + "/pk/" + row.id;
+        var updateUrl = url_record + "/pk/" + row.id;
         var opt_formatter="<a class='link-edit' href='"+updateUrl+"' target='_self' title='编辑当前记录'> 编辑 </a>";
         opt_formatter=opt_formatter+"<a class='link-edit' href='"+updateUrl+"' target='_self' title='录入听课结果'> 录入结果 </a>";
         return opt_formatter;

@@ -233,3 +233,15 @@
 .icon-calendar{
     background: url('icons/calendar.png') no-repeat center center;
 }
+.icon-weekday{
+    background: url('icons/weekday.png') no-repeat center center;
+}
+.icon-detail{
+    background: url('icons/detail.png') no-repeat center center;
+}
+.icon-group{
+    background: url('icons/group.png') no-repeat center center;
+}
+.icon-staff{
+    background: url('icons/staff.png') no-repeat center center;
+}

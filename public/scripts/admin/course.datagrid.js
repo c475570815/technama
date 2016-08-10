@@ -14,6 +14,7 @@ var columns_def = [[
     {field: 'week', title: '周次', sortable: true},
     {field: 'xing_qi_ji', title: '星期', sortable: true},
     {field: 'section', title: '节次', sortable: true}
+
     /*    {field:'class_room',title:'教室',sortable:true},
      {field:'state',title:'已听课',sortable:true},//数据读取听课表
      {field:'passed',title:'免听课',sortable:true},//数据读取听课表
