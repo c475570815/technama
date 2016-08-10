@@ -13,6 +13,7 @@ use app\common\model\DictCategoryModel;
 use app\admin\DictDataGrid;
 use think\Db;
 
+
 /*
  定义Controller类，一个类中有多个方法（Action）
  类名应与文件名一致，且首字母大写
