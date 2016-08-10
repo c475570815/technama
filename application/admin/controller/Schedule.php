@@ -60,8 +60,48 @@ class Schedule extends Controller
      */
     public function getlist()
     {
-        $dict_grid = new ScheduleDataGrid();
-        return $dict_grid->dataGridJson();
+//        $dict_grid = new ScheduleDataGrid();
+//        return $dict_grid->dataGridJson();
+        $current_table=new ScheduleModel();
+        $arr_where=array();
+        if (isset($_POST['dict'])) {
+            $dict = $_POST['dict'];
+            $arr_where=$current_table->filer($dict);
+            $current_table->where($arr_where);
+        }
+        //先获取筛选后记录的总数
+        $total = intval($current_table->count());
+        //重新获取条件
+        $current_table->where($arr_where);
+        //获取客户端传递过来的参数 page=2&rows=20
+        $page = isset($_POST['page']) ? intval($_POST['page']) : 1;
+        $rows = isset($_POST['rows']) ? intval($_POST['rows']) : 10;
+        $start = ($page - 1) * $rows;
+        $current_table->limit($start, $rows);
+        // 排序
+        if(isset($_POST['sort']) &&  isset($_POST['order'])){
+            $sort = $_POST['sort'] ;
+            $order = $_POST['order'];
+            $current_table->order($sort,$order);
+        }
+        // 获取数组
+        $list = $current_table->select();
+        $list_hand=array();
+        foreach ($list as $row){
+            $conuncilor=$row['conuncilor'];
+            $arr=explode('|',$conuncilor) ;
+            $teacher_name=array();
+            foreach ($arr as $teacher_no){
+               $teacher= TeacherModel::get(['teach_id' =>$teacher_no]);
+              // $teacher_name[]=$teacher_no;
+               $teacher_name[]=$teacher['teach_name'];
+            }
+            $row['conuncilor']=implode(',',$teacher_name);
+            $list_hand[]=$row;
+        }
+        // 返回JSON
+        return json(['total' => $total, 'rows' => $list_hand]);
+
     }
 
     /**
@@ -75,6 +115,9 @@ class Schedule extends Controller
         return json($deptList);
     }
 
+    public function tip(){
+        echo "ddsdsdsdds";
+    }
     /* 保存数据 */
     public function save()
     {

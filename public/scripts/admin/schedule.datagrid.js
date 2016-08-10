@@ -4,7 +4,9 @@
 
 var grid='#datagrd';
 var url='/index.php/admin/schedule/getlist';
+var url_update='/index.php/admin/schedule/update';
 var columns_def=[[
+    {field: 'chkbox', checkbox: true},
     {field:'term',title:'学期',sortable:true},
     {field:'time',title:'时间',sortable:true},
     {field:'week',title:'周次',sortable:true},
@@ -19,7 +21,12 @@ var columns_def=[[
     {field:'stu_due_number',title:'学生人数',sortable:true},
     {field:'conuncilor',title:'督导',sortable:true},
     {field:'state',title:'状态',sortable:true},
-
+    {field:'operation',title:'操作',formatter:function(val,row,index){
+        var updateUrl = url_update + "/pk/" + row.id;
+        var opt_formatter="<a class='link-edit' href='"+updateUrl+"' target='_self' title='编辑当前记录'> 编辑 </a>";
+        opt_formatter=opt_formatter+"<a class='link-edit' href='"+updateUrl+"' target='_self' title='录入听课结果'> 录入结果 </a>";
+        return opt_formatter;
+    }}
 
 ]];
 function initGrid(grid,url,columns_def){
@@ -32,8 +39,40 @@ function initGrid(grid,url,columns_def){
         pagination:true,
         rownumbers:true,
         columns:columns_def
+        //onLoadSuccess:loadSuccessHandler
     });
 }
+function loadSuccessHandler(data){
+    $(".note").tooltip({
+            content: $('<div></div>'),
+            onShow: function(){
+                /*$(this).tooltip('arrow').css('left', 20);
+                $(this).tooltip('tip').css('left', $(this).offset().left);*/
+                $(this).tooltip('tip').css({
+                    width:'300',
+                    boxShadow: '1px 1px 3px #292929'
+                });
+            },
+            onUpdate: function(cc){
+ /*               cc.panel({
+                    width: 500,
+                    height: 'auto',
+                    border: false,
+                    cache:false,
+                    href: '/index.php/admin/schedule/tip'
+                });*/
+                cc.html("sasasasas");
+            }
+        });
+}
+function listenerFormater(value,row,index){
+    var abValue = value;
+    if (value.length>=22) {
+        abValue = value.substring(0,19) + "...";
+    }
+    return "<a href='/index.php/admin/schedule/tip/id/"+index+"' class='note'>"+value+"</a>";
+}
+
 $(document).ready(function () {
     //当整个页面全部载入后才执行
     initGrid(grid,url,columns_def);

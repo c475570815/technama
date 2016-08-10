@@ -10,6 +10,17 @@
     <script type="text/javascript" src="/static/jquery-easyui-1.4.5/locale/easyui-lang-zh_CN.js"></script>
     <script type="text/javascript" src="/scripts/comm.js"></script>
     <script type="text/javascript" src="/scripts/admin/schedule.datagrid.js"></script>
+    <style>
+        .link-edit{
+            display: block;height:auto;width:auto;padding-left:7px;padding-right:7px;background-color: #7f77ff;float: left;text-align: center;color: whitesmoke;padding-top: 2px;padding-bottom: 2px;
+            text-decoration: none;
+            margin-left: 5px;margin-right: 5px;
+            margin-top: 2px;margin-bottom: 2px;
+        }
+        .link-edit:hover{
+             background-color: #9f8855; color: white;
+        }
+    </style>
 </head>
 <body style="height:100%">
 
@@ -17,9 +28,15 @@
 <div id="searchToolbar" class="easyui-panel" title="筛选条件" data-options="iconCls:'icon-search',plain:true" style="padding:5px;margin-bottom: 10px;height:100px;">
     <form id="frm_search" action="" method="post">
         学期: <input  class="easyui-text" style="width:110px" name="dict[term]" value="{$current_term?$current_term:''}">
+        系部:
+        <select id="a" class="easyui-combobox" panelHeight="auto" style="width:200px" name="dict[dept_name]">
+            <option value="全部" selected>全部</option>
+            {volist name="dept" id="vo"}
+            <option value="{$vo.dept_name}">{$vo.dept_name}</option>
+            {/volist}
+        </select>
         教师名字: <input id="cbogrid_of_teacher" class="easyui-text" style="width:110px" name="dict[teacher_no]" >
-        班级名称: <input  class="easyui-text" style="width:110px" name="dict[class_name]">
-        固定教室: <input  class="easyui-text" style="width:110px" name="dict[class_room]">
+        <!--班级名称: <input  class="easyui-text" style="width:110px" name="dict[class_name]">-->
         课程名称: <input  class="easyui-text" style="width:110px" name="dict[course_name]">
         周次: <input  class="easyui-text" style="width:50px" name="dict[week]">
         星期: <input  class="easyui-text" style="width:50px" name="dict[xing_qi_ji]">
@@ -28,8 +45,8 @@
 </div>
 <!-- 操作工具栏 -->
 <div id="editToolbar" style="clear: both">
-    <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true">编辑</a>
-    <a href="http://10.127.98.246/index.php/admin/schedule/add" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true">添加</a>
+  <!--  <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true">编辑</a>
+    <a href="http://10.127.98.246/index.php/admin/schedule/add" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true">添加</a>-->
     <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true">删除</a>
     <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-reload',plain:true">刷新</a>
     <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-help',plain:true">帮助</a>

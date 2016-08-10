@@ -13,6 +13,7 @@ var pk_field = 'id';
 var grid_options;
 var columns_def = [[
     {field: 'chkbox', checkbox: true},
+    {field:'term',title:'学期',sortable:true},
     {field: 'title', title: '事件', sortable: true},
     {field: 'start', title: '开始时间', sortable: true},
     {field: 'end', title: '结束时间', sortable: true},
