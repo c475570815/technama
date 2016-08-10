@@ -257,4 +257,5 @@ function addRecord(){
 
 function reset(){
     $("#frm_search").form('clear');
+    $("option[name='all']").attr("selected","selected");
 }

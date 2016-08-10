@@ -174,7 +174,10 @@ function formatOptColumn(val,row,index){
  * 清空
  */
 function clearForm() {
-    $(frm_search).form('clear');
+    $("input[name='dict[sex]']").val("");
+    $("input[name='dict[profess_duty]']").val("");
+    $("input[name='dict[teach_name]']").val("");
+    $("input[name='dict[teach_id]']").val("");
 }
 function importDialog() {
     var dialog_id="#dd";
