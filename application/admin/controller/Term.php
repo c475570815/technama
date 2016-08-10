@@ -115,7 +115,7 @@ class Term extends Controller implements InterfaceDataGrid
     public function remove(){
         $id=$_POST['id'];
         $mo=new TermModel();
-        $count= $mo->where('term_name','in',$id)->delete();
+        $count= $mo->where('id','in',$id)->delete();
         if($count>0){
             $ret=['success'=>'true','message'=>'删除成功,共删除'.$count.'条记录'];
         }else{

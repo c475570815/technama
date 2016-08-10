@@ -5,13 +5,13 @@
 var grid_id='#datagrd';
 var url_save='/index.php/admin/term/save';
 var form_id='#ff';
+//当整个页面全部载入后才执行
 
 /**
  * 通过Ajax方式保存
  */
 function saveForm(){
     $(form_id).form({
-        type:'POST',
         url:url_save,
         onSubmit: function(){
             // 有效性验证

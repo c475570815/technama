@@ -144,7 +144,7 @@ class Classes extends Controller implements InterfaceDataGrid
     public function remove(){
         $id=$_POST['id'];
         $mo=new ClassesModel();
-         $count= $mo->where('class_name','in',$id)->delete();
+         $count= $mo->where('class_id','in',$id)->delete();
         if($count>0){
             $ret=['success'=>'true','message'=>'删除成功,共删除'.$count.'条记录'];
         }else{
