@@ -10,7 +10,14 @@ var columns_def=[[
     {field:'term_name',title:'学期',sortable:true},
     {field:'start',title:'开始时间',sortable:true},
     {field:'end',title:'结束时间',sortable:true},
-    {field:'default_str',title:'当前学期',sortable:true}
+    {field:'default',title:'当前学期',formatter: function(value,row,index){
+        if (row.default==1){
+            return row.default='是'
+        } else {
+            return row.default='否'
+        }
+    },
+    sortable:true}
 ]];
 
 function initGrid(grid,url,columns_def){
@@ -27,6 +34,7 @@ function initGrid(grid,url,columns_def){
         columns:columns_def
     });
 }
+
 
 $(document).ready(function () {
     //当整个页面全部载入后才执行
