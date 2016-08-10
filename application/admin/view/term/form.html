@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="save" content="history" charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="/static/jquery-easyui-1.4.5/themes/default/easyui.css">
+    <link rel="stylesheet" type="text/css" href="/static/jquery-easyui-1.4.5/themes/icon.css">
+    <script type="text/javascript" src="/static/jquery-easyui-1.4.5/jquery.min.js"></script>
+    <script type="text/javascript" src="/static/jquery-easyui-1.4.5/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="/static/jquery-easyui-1.4.5/locale/easyui-lang-zh_CN.js"></script>
+    <script type="text/javascript" src="/scripts/comm.js"></script>
+    <script type="text/javascript" src="/scripts/admin/term.form.js"></script>
+</head>
+<body>
+<div class="easyui-panel" title="添加" style="width:600px;padding:10px 20px 20px 20px">
+    <form id="ff" method="post">
+        <table>
+            <tr>
+                <td>学期</td>
+                <td>
+                    <input id="term_name" class="easyui-textbox" type="text" name="data[term_name]" data-options="required:true"  style="behavior:url(#default#savehistory)"/>
+                </td>
+            </tr>
+            <tr>
+                <td>开始时间</td>
+                <td>
+                    <input  id="start" class="easyui-textbox" type="date" name="data[start]"  data-options="required:true" style="behavior:url(#default#savehistory)"/>
+                </td>
+            </tr>
+            <tr>
+                <td>结束时间</td>
+                <td><input class="easyui-textbox" type="date" name="data[end]" data-options="required:true" style="behavior:url(#default#savehistory)"/></td>
+            </tr>
+            <tr>
+                <td>当前学期</td>
+                <td><select class="easyui-combobox" name="data[default]" data-options="required:true,panelHeight:'auto'"  style="behavior:url(#default#savehistory)">
+                    <option value="1">是</option>
+                    <option value="0">否</option>
+                    </select>
+                </td>
+            </tr>
+                <td>
+                    <a href="javascript:void(0)" class="easyui-linkbutton" onclick="saveForm()">保存并继续添加</a>
+                    <a href="http://10.127.98.242/index.php/admin/term/index" class="easyui-linkbutton" >返回</a>
+                    <a href="javascript:void(0)" class="easyui-linkbutton" onclick="clearForm()">清除</a>
+                </td>
+            </tr>
+        </table>
+    </form>
+
+</div>
+</body>
+</html>
