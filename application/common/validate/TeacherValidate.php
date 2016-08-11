@@ -26,11 +26,13 @@ class TeacherValidate  extends Validate
      */
     protected $rule = [
         'teach_id'=> 'require|length:6',
-        'dept_name'  =>  'require|max:25',
+//        'dept_name'  =>  'checkDeptName',
+
     ];
 
     protected $message  =   [
-
+        'teach_id'=>'教师工号必须填6位数字',
+        'dept_name'=>'找不到此系部'
     ];
 
 
@@ -43,6 +45,14 @@ class TeacherValidate  extends Validate
      */
     protected function checkDeptName($value,$rule,$data)
     {
-        // return $rule == $value ? true : '名称错误';
+
+//        $dept=Db::table('tbl_department')->where('dept_name',$data)->select();
+//        if($dept==null){
+//            $value=false;
+//        }else{
+//            $value=true;
+//        }
+        $value=true;
+        return $rule == $value ? true : '名称错误';
     }
 }

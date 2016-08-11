@@ -87,8 +87,7 @@ class WeekCourse extends Controller
                     }
 //                    $weekcouse['onduty'] =$this->onduty($course['teach_id'], $course['course_name'], $course['class_name'],$week , $course['xing_qi_ji'], $course['section']);
                     $weekcouse['check_times'] = $this->checktimes($course['teach_id'], $course['course_name'], $course['class_name'], $course['week'], $course['xing_qi_ji'], $course['section']);//已被听课次数
-                    $weekcouse['plan_times'] = $this->plantimes($course['teach_id'], $course['course_name'], $course['class_name'], $course['week'], $course['xing_qi_ji'], $course['section']);//已安排被听课的次数
-                    $weekcouse['status'] = $this->isPlaned($course['teach_id'], $course['course_name'], $course['class_name'], $week, $course['xing_qi_ji'], $course['section'])>0?"已安排":"未安排";// 听课情况
+                    $weekcouse['status'] = $this->isPlaned($course['teach_id'], $course['course_name'], $course['class_name'], $course['week'], $course['xing_qi_ji'], $course['section'])>0?"已安排":"未安排";// 听课情况
                     $arr_weekcouse[] = $weekcouse;
                 }
             }
@@ -153,24 +152,6 @@ class WeekCourse extends Controller
     }
 
     /**
-     *
-     * @param $teacherid
-     * @param $course
-     * @param $clazz
-     * @param $week
-     * @param $weekday
-     * @param $section
-     * @return int
-     */
-    public function plantimes($teacherid, $course, $clazz, $week, $weekday, $section)
-    {
-        $model = new ScheduleModel();
-        $map = array();
-        $map['teacher_no'] = $teacherid;
-        return $model->where($map)->count();
-    }
-
-    /**
      * 听课人本学期的听课次数
      * @param $listener_no
      * @return int
@@ -209,12 +190,12 @@ class WeekCourse extends Controller
 
     /**
      * 返回已有听课计划数量
-     * @param $teacherid 教师工号
-     * @param $course  课程名
-     * @param $clazz   班级名
-     * @param $week   周
-     * @param $weekday  星期
-     * @param $section   节次
+     * @param $teacherid
+     * @param $course
+     * @param $clazz
+     * @param $week
+     * @param $weekday
+     * @param $section
      * @return int
      */
     public function isPlaned($teacherid, $course, $clazz, $week, $weekday, $section)
@@ -222,11 +203,11 @@ class WeekCourse extends Controller
         $model = new ScheduleModel();
         $map = array();
         $map['teacher_no'] = $teacherid;
-        $map['course_name'] = $course;
+/*        $map['course_name'] = $course;
         $map['class_name'] = $clazz;
         $map['week'] = $week;
         $map['xing_qi_ji'] = $weekday;
-        $map['section'] = $section;
+        $map['section'] = $section;*/
         return $model->where($map)->count();
     }
 
@@ -451,58 +432,16 @@ class WeekCourse extends Controller
     public function addlisteners()
     {
         $model_course = new CourseModel();
-        $model_weekcourse = new WeekcourseModel();
-        //(1) 获取POST数据
-        $lesson = $_POST['lesson'];
-        $teachers = $_POST['teachers'];
-        //（2）根据编号从周课表中获取详细的课表信息
-        $where=array();
-        $where['teach_id']=$lesson['teach_id'];
-        $where['class_name']=$lesson['class_name'];
-        $where['course_name']=$lesson['course_name'];
-        $where['week']=$lesson['week'];
-        $where['xing_qi_ji']=$lesson['xing_qi_ji'];
-        $where['section']=$lesson['section'];
-        $lesson_information = $model_weekcourse->where($where)->find();
-         $model_weekcourse->where($where)->update(['status' => '已安排']);;
-        // (3) 如果不存在，则向tbl_schedule中添加数据；否则修改
         $model_schedule = new ScheduleModel();
-        $where=array();
-        $where['teacher_no']=$lesson['teach_id'];
-        $where['class_name']=$lesson['class_name'];
-        $where['course_name']=$lesson['course_name'];
-        $where['week']=$lesson['week'];
-        $where['xing_qi_ji']=$lesson['xing_qi_ji'];
-        $where['section']=$lesson['section'];
-        $record=$model_schedule->where($where)->find();
-        if($record){
-            // 修改
-            $record->conuncilor=implode("|",$teachers);//数组转字符串
-            $record->save();
-            $ret = ['issuccess' => 'true', 'message' => '修改成功！'];
-        }else{
-            $record=array();
-            $record['teacher_no']=$lesson_information['teach_id'];
+        //(1) 获取POST数据
+        $course_id = $_POST['courseid'];
+        $teachers = $_POST['teachers'];
+        //（2）根据编号从Courses表中获取详细的课表信息
+        $listen_teach_information = $model_course->where('c_id', $course_id)->find();
 
-            $record['term']=$lesson_information['term'];
-            $record['week']=$lesson_information['week'];
-            $record['xing_qi_ji']=$lesson_information['xing_qi_ji'];
-            $record['section']=$lesson_information['section'];
-            $record['class_name']=$lesson_information['class_name'];
-            $record['class_room']=$lesson_information['class_room'];
-            $record['teacher']=$lesson_information['teach_name'];
-            $record['course_name']=$lesson_information['course_name'];
-            $record['teacher_info']='';
-            $record['stu_due_number']=1;
-            $record['dept_name']=$lesson_information['dept_name'];
-            $record['state']='未完成';
-            $record['conuncilor']=implode("|",$teachers);//数组转字符串
-            // 新增
-            $model_schedule->save($record);
-            $ret = ['issuccess' => 'true', 'message' => '添加成功！'];
-        }
-       return json($ret);
-
+        // (3) 向tbl_schedule中添加数据
+        $techer_id = $listen_teach_information['teach_id'];
+        $model_schedule->where("teacher_no", $techer_id)->setField('conuncilor', implode('|', $teachers));
     }
 
     public function removeall()

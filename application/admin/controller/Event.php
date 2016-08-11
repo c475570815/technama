@@ -7,6 +7,7 @@
 namespace app\admin\controller;
 
 use app\common\model\EventModel;
+use app\common\model\DictModel;
 use think\Controller;
 use think\View;
 use think\Db;

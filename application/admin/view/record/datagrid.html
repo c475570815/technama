@@ -33,7 +33,7 @@
                 周次: <input  class="easyui-text" style="width:50px" name="dict[week]">
                 星期: <input  class="easyui-text" style="width:50px" name="dict[xing_qi_ji]">
                 <a href="#" class="easyui-linkbutton" iconCls="icon-search" onclick="query()">查找</a>
-
+                <a href="#" class="easyui-linkbutton" iconCls="icon-search" onclick="reset()">清空条件</a>
             </form>
             <form id="frm_download" method="post"></form>
         </div>
@@ -45,7 +45,7 @@
         <a href="http://10.127.98.246/index.php/admin/classes/add" class="easyui-linkbutton"
            data-options="iconCls:'icon-add',plain:true">添加</a>
         <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true" onclick="removeRecord()" >删除</a>
-        <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-reload',plain:true" onclick="exportXls()">导出</a>
+        <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-download',plain:true" onclick="exportXls()">导出</a>
         <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-print',plain:true" onclick="printGrid()">打印</a>
         <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-reload',plain:true" onclick="reload()">刷新</a>
         <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-help',plain:true">帮助</a>

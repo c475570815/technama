@@ -78,6 +78,7 @@
                     <option value="否">有调课或已停课</option>
                 </select>
                 <a href="#" class="easyui-linkbutton" iconCls="icon-search" onclick="query()">查找</a>
+                <a href="#" class="easyui-linkbutton" iconCls="icon-search" onclick="reset()">清空条件</a>
             </form>
             <form id="frm_download" method="post"></form>
         </div>
@@ -85,7 +86,7 @@
     <div data-options="region:'center'"  border="false" style="padding:10px">
         <!-- 操作工具栏 -->
         <div id="editToolbar" style="clear: both">
-            <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-reload',plain:true" onclick="exportXls()">导出</a>
+            <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-download',plain:true" onclick="exportXls()">导出</a>
             <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-trashcan',plain:true"
                onclick="removeall()">清除所有记录</a>
             <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-reload',plain:true" onclick="reload()">刷新</a>

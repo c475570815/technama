@@ -115,8 +115,9 @@ function removeRecord() {
     //将数组中的主健值放到一个数组中 ,['软件1','网络1']
     var removeID = [];
     $.each(checkedItems, function (index, item) {
-        removeID.push(item.pk_field);
+        removeID.push(item.class_id);
     });
+    console.log(removeID);
     $.messager.confirm('提示', '是否删除选中数据?', function (r) {
         if (!r) {
             return;
@@ -257,4 +258,5 @@ function addRecord(){
 
 function reset(){
     $("#frm_search").form('clear');
+    $("option[name='all']").attr("selected","selected");
 }

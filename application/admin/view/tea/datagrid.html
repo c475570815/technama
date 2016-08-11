@@ -34,7 +34,7 @@
                     教师名: <input class="easyui-text" style="width:110px" name="dict[teach_name]">
                     教师编号: <input class="easyui-text" style="width:110px" name="dict[teach_id]">
                     <a href="#" class="easyui-linkbutton" iconCls="icon-search" onclick="query()">查找</a>
-                    <a href="#" class="easyui-linkbutton" iconCls="icon-clear" onclick="clearForm()">清除</a>
+                    <a href="#" class="easyui-linkbutton" iconCls="icon-search" onclick="clearForm()">清空条件</a>
                 </div>
                 <!--系部: <input class="easyui-text" style="width:110px" name="dict[dept_name]">-->
                 <!-- url:'http://10.127.98.246/index.php/admin/Tea/tree_josn',-->
@@ -52,8 +52,9 @@
             <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-reload',plain:true" onclick="reload()">刷新</a>
             <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-help',plain:true">帮助</a>
             <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-upload',plain:true" onclick="importDialog()">导入</a>
-            <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-undo',plain:true" onclick="exportXls()">导出</a>
+            <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-download',plain:true" onclick="exportXls()">导出</a>
             <a href="/index.php/admin/Tea/pt" class="easyui-linkbutton" data-options="iconCls:'icon-print',plain:true">打印</a>
+            <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-trashcan',plain:true" onclick="removeall()">清除所有记录</a>
         </div>
         <!-- DataGrid -->
         <table id="datagrd" class="easyui-datagrid" title="Basic DataGrid" style="width:100%;height:500px;"

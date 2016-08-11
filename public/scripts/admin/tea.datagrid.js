@@ -10,6 +10,7 @@ var url_export='/index.php/admin/Tea/download';
 var pk_field='teach_id';
 var cc="#cc";
 var frm_search="#frm_search";
+var url_remove_all = '/index.php/admin/tea/removeall';
 var columns_def=[[
     {field: 'chkbox', checkbox: true},
     {field:'dept_name',title:'所属系部',sortable:true},
@@ -136,9 +137,7 @@ function  down() {
  */
 function  load2() {
    $.getJSON("http://10.127.98.242/index.php/admin/Tea/treejosn",function(data){
-        var str = data.toString();
-        var s=eval(str);
-        $(cc).combotree('loadData',s);
+        $(cc).combotree('loadData',data);
 });
 }
 /**
@@ -146,7 +145,6 @@ function  load2() {
  */
 
 function exportXls() {
-    console.log("llll");
     var grid_options = $(grid_id).datagrid('options').queryParams;
     var acion = {'action': 'export'};
     var postdata = $.extend({}, grid_options, acion);
@@ -176,7 +174,10 @@ function formatOptColumn(val,row,index){
  * 清空
  */
 function clearForm() {
-    $(frm_search).form('clear');
+    $("input[name='dict[sex]']").val("");
+    $("input[name='dict[profess_duty]']").val("");
+    $("input[name='dict[teach_name]']").val("");
+    $("input[name='dict[teach_id]']").val("");
 }
 function importDialog() {
     var dialog_id="#dd";
@@ -218,6 +219,27 @@ function importxls(){
         }
     });
 }
+function removeall(){
+    $.messager.confirm('提示', '是否删除所有的数据?', function (r) {
+        if (!r) {
+            return;
+        }
+        //Ajax提交
+        $.ajax({
+            type: "POST",
+            url: url_remove_all,
+            data: {id: 1},//传递给服务器的参数
+            success: function (jsonresult) {
+                reload();
+                if (jsonresult.isSuccess == true) {
+                    $.messager.alert("提示", jsonresult.message, "info");
+                } else {
+                    $.messager.alert("提示", jsonresult.message, "info");
+                    return;
+                }
+            }
+        });
+    });
 function printGrid(){
     // $(grid_id).print();
     window.open("/index.php/admin/classes/printgrid","_blank")
@@ -228,5 +250,7 @@ function printGrid(){
      // console.log($(data).find("h1"))
      // alert($(data).find("#datagrd").html());
      });*/
+
+}
 
 }
