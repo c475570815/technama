@@ -174,10 +174,10 @@ function formatOptColumn(val,row,index){
  * 清空
  */
 function clearForm() {
-    $("input[name='dict[sex]']").val("");
+    $("input[name='dict[passed]']").val("");
     $("input[name='dict[profess_duty]']").val("");
     $("input[name='dict[teach_name]']").val("");
-    $("input[name='dict[teach_id]']").val("");
+    $("input[name='dict[location]']").val("");
 }
 function importDialog() {
     var dialog_id="#dd";

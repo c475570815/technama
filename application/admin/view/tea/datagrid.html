@@ -29,10 +29,13 @@
                                style="width:75%;">
                      </div>
                 <div style="">
-                    性别: <input class="easyui-text"style="width:110px" name="dict[sex]">
+                    职位: <input class="easyui-text"style="width:110px" name="dict[location]">
                     专业: <input class="easyui-text" style="width:110px" name="dict[profess_duty]">
                     教师名: <input class="easyui-text" style="width:110px" name="dict[teach_name]">
-                    教师编号: <input class="easyui-text" style="width:110px" name="dict[teach_id]">
+                    是否免听: <select class="easyui-text" style="width:110px" name="dict[passed]">
+                                <option value="是">是</option>
+                                <option value="否">否</option>
+                             </select>
                     <a href="#" class="easyui-linkbutton" iconCls="icon-search" onclick="query()">查找</a>
                     <a href="#" class="easyui-linkbutton" iconCls="icon-search" onclick="clearForm()">清空条件</a>
                 </div>

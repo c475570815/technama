@@ -1,5 +1,6 @@
 <?php
 namespace app\common\validate;
+use think\Db;
 /**
  * Created by PhpStorm.
  * User: guowushi
@@ -26,13 +27,15 @@ class TeacherValidate  extends Validate
      */
     protected $rule = [
         'teach_id'=> 'require|length:6',
-//        'dept_name'  =>  'checkDeptName',
+        'dept_name'  =>  'is_unique:200|require',
+        'email'=>'email'
 
     ];
 
     protected $message  =   [
         'teach_id'=>'教师工号必须填6位数字',
-        'dept_name'=>'找不到此系部'
+        'dept_name.is_unique'=>'找不到此系部',
+        'email'=>'不是邮箱格式'
     ];
 
 
@@ -43,16 +46,16 @@ class TeacherValidate  extends Validate
      * @param $data  数据
      * @return bool|string
      */
-    protected function checkDeptName($value,$rule,$data)
+    protected function  is_unique($value,$rule)
     {
 
-//        $dept=Db::table('tbl_department')->where('dept_name',$data)->select();
-//        if($dept==null){
-//            $value=false;
-//        }else{
-//            $value=true;
-//        }
-        $value=true;
-        return $rule == $value ? true : '名称错误';
+        //$db  = \think\Db::table('tbl_classes');
+        //var_dump( $db->where('class_name',$value)->find());
+        $list=Db::table('tbl_department')->where('dept_name',$value)->find();
+        if($list){
+            return true;
+        }else{
+            return false;
+        }
     }
 }

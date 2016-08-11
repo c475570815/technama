@@ -256,7 +256,8 @@ class Tea extends Controller
         }
         return $ret;
     }
-public function upload(){
+
+    public function upload(){
     // 获取上传文件并放到/public/uploads/ 目录下
     $file = request()->file('file');
     if($file){
