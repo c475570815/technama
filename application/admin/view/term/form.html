@@ -9,7 +9,29 @@
     <script type="text/javascript" src="/static/jquery-easyui-1.4.5/locale/easyui-lang-zh_CN.js"></script>
     <script type="text/javascript" src="/scripts/comm.js"></script>
     <script type="text/javascript" src="/scripts/admin/term.form.js"></script>
+
 </head>
+<!--<script>
+    /*$.extend($.fn.validatebox.defaults.rules, {
+        term_name_vali: {
+            validator: function(value, param){
+                //验证电话号码："/^(\(\d{3,4}-)|\d{3.4}-)?\d{7,8}$/"正确格式为："XXX-XXXXXXX"、"XXXX-XXXXXXXX"、"XXX-XXXXXXX"、"XXX-XXXXXXXX"、"XXXXXXX"和"XXXXXXXX"。
+                // /^(?:13\d|15\d|18\d)-?\d{5}(\d{3}|\*{3})$/.test(value);
+
+                return value=/^20\d{2}-20\d{2}-[1-2]$/;
+            },
+            message: '请输入当前学期，例如：2015-2016-2'
+        }
+    });*/
+    $.extend($.fn.validatebox.defaults.rules, {
+        minLength: {
+            validator: function(value, param){
+                return value.length >= param[0];
+            },
+            message: 'Please enter at least {0} characters.'
+        }
+    });
+</script>-->
 <body  class="easyui-layout">
 <div data-options="region:'center',split:true" border="true" style="padding:10px;">
     <div class="easyui-panel" title="{$operation}"  fit="true">
@@ -18,7 +40,7 @@
                 <tr>
                     <td>学期</td>
                     <td>
-                        <input id="term_name"  class="easyui-textbox" type="text" name="data[term_name]" data-options="required:true,validType:TermValidate()" value="{$record.term_name?$record.term_name:''}"/>
+                        <input id="term_name"  class="easyui-validatebox" type="text" name="data[term_name]" data-options="required:true,validType:'minLength[5]'" value="{$record.term_name?$record.term_name:''}"/>
                     </td>
                 </tr>
                 <tr>
@@ -34,10 +56,7 @@
                 <tr>
                     <td>当前学期</td>
                     <td>
-                        <select class="easyui-combobox" name="data[default]"  data-options="required:true,panelHeight:'auto'" value="{$record.default?$record.default:''}">
-                            <option value="1">是</option>
-                            <option value="0">否</option>
-                        </select>
+                        <input  name="data[default]"   value="{$record.default?$record.default:''}" />
                     </td>
                 </tr>
                 <tr>
