@@ -8,6 +8,7 @@ namespace app\admin\controller;
 
 use app\common\model\EventModel;
 use app\common\model\DictModel;
+use app\common\model\TermModel;
 use think\Controller;
 use think\View;
 use think\Db;
@@ -26,6 +27,9 @@ class Event extends Controller
      */
     public function index(){
         $view = new View();
+        $mo=new TermModel();
+        $rec= $record=$mo->where('default',1)->find();
+        $view->assign('current_term',$rec['term_name']);
         return $view->fetch('datagrid');
     }
 
@@ -145,6 +149,8 @@ class Event extends Controller
         return $view->fetch('form');
 
     }
+
+
 
 }
 

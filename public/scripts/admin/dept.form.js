@@ -8,6 +8,9 @@ var url_save='/index.php/admin/dept/save';
 /**
  * 通过Ajax方式保存
  */
+$(document).ready(function(){
+    initForm();
+});
 function saveForm(){
     $(form_id).form({
         url:url_save,
@@ -36,4 +39,16 @@ function clearForm() {
  */
 function returnGrid(){
     history.back();
+}
+
+function initForm(){
+    $("input[name=data\\[dept_category\\]]").combobox({
+        url: '/index.php/admin/dict/getDictByCategory',
+        method:'POST',
+        queryParams:{category:'部门类型'},
+        valueField: 'dict_value',
+        textField: 'dict_key',
+        multiple:false
+    });
+
 }

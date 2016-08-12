@@ -39,6 +39,7 @@ function initGrid(grid,url,columns_def){
 $(document).ready(function () {
     //当整个页面全部载入后才执行
     initGrid(grid_id,url,columns_def);
+
 });
 
 /**

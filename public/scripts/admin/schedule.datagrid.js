@@ -77,6 +77,15 @@ $(document).ready(function () {
     //当整个页面全部载入后才执行
     initGrid(grid,url,columns_def);
     initCbGrid('#cbogrid_of_teacher','/index.php/admin/schedule/teacher_cg');
+    // 学期列表初始化
+    var dept=$("input[name=dict\\[term\\]]").val();
+    $("input[name=dict\\[term\\]]").combobox({
+        url: '/index.php/admin/term/getterm',
+        method:'POST',
+        valueField: 'term_name',
+        textField: 'term_name',
+        limitToList:false
+    });
 });
 
 /**

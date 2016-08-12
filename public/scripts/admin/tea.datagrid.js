@@ -14,6 +14,7 @@ var url_remove_all = '/index.php/admin/tea/removeall';
 var columns_def=[[
     {field: 'chkbox', checkbox: true},
     {field:'dept_name',title:'所属系部',sortable:true},
+    {field:'sub_dept',title:'子部门',sortable:true},
     {field:'teach_name',title:'教师名',sortable:true,},
     {field:'sex',title:'性别',sortable:true},
     {field:'teach_id',title:'教师编号',sortable:true},
@@ -37,7 +38,8 @@ function initGrid(grid_id,url_get,columns_def){
         collapsible:false,
         pagination:true,
         rownumbers:true,
-        height:345,
+        pageSize:20,
+        iconCls:'icon-more',
         columns:columns_def
     });
 }
@@ -65,10 +67,10 @@ function query(){
        'load',//利用load方法提交search_filter 控制器ac1方法
        search_filter
     );
-}/**
+}
+/**
  删除
  */
-
 function removeRecord() {
     var checkedItems = $(grid_id).datagrid('getChecked');//返回选中记录的数组
     if (checkedItems.length == 0) {
