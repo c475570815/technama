@@ -77,8 +77,28 @@ function removeRecord() {
     });
 }
 
+/**
+ * 编辑
+ */
+function edit() {
+    var rows = $(grid_id).datagrid('getSelections');
+    if (rows.length != 1) {
+        $.messager.show({
+            title: "",
+            msg: "请选择一条记录"
+        });
+        return;
+    }
+    var row = $(grid_id).datagrid('getSelected');
+    //console.log(row);
+    var idValue = row['id'];
+   // console.log(idValue);
+    var updateUrl = url_update + "/pk/" + idValue;
+    location.href = updateUrl;
+}
+
 function reload(){
     $(grid_id).datagrid('clearSelections');
-    $(grid_id).datagrid('reload',{'nnn':'aaa'});
+    $(grid_id).datagrid('reload');
 
 }
