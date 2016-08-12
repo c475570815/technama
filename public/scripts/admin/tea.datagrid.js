@@ -39,6 +39,7 @@ function initGrid(grid_id,url_get,columns_def){
         pagination:true,
         rownumbers:true,
         pageSize:20,
+        iconCls:'icon-more',
         columns:columns_def
     });
 }
