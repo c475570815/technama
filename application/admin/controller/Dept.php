@@ -279,6 +279,15 @@ public function upload(){
     }
 }
 
+    /**
+     * 返回子部门
+     * @return false|\PDOStatement|string|\think\Collection
+     */
+   public  function getSubDept(){
+       $parent=$_POST['parent'];
+       $mo=new DeptModel();
+       return $mo->where('dept_parent',$parent)->select();
+   }
 }
 
 ?>

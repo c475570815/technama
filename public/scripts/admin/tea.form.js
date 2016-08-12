@@ -11,22 +11,81 @@ var form_id="#ff";
 $(document).ready(function(){
     initForm();
 });
-
+// 初始化表单
 function initForm(){
-    $('#dept_name').combobox({
+    // 系部
+    $("input[name=data\\[dept_name\\]]").combobox({
         url: '/index.php/admin/Tea/deptinfo',
         valueField: 'dept_name',
-        textField: 'dept_name'
+        textField: 'dept_name',
+        limitToList:true,
+        onSelect:function(){
+            // 子部门
+            var dept=$("input[name=data\\[dept_name\\]]").val();
+            $("input[name=data\\[sub_dept\\]]").combobox({
+                url: '/index.php/admin/dept/getsubdept',
+                method:'POST',
+                queryParams:{parent:dept},
+                valueField: 'dept_name',
+                textField: 'dept_name',
+                limitToList:false
+            });
+        }
+    });
+
+
+    // 角色
+    $("input[name=data\\[teach_role\\]]").combobox({
+        url: '/index.php/admin/dict/getDictByCategory',
+        method:'POST',
+        queryParams:{category:'角色'},
+        valueField: 'dict_value',
+        textField: 'dict_key',
+        separator:"|",
+        multiple:true
+    });
+    // 是否督导
+    $("input[name=data\\[conuncilor\\]]").combobox({
+        valueField: 'label',
+        textField: 'value',
+        data: [{
+            label: '是',
+            value: '是'
+        },{
+            label: '否',
+            value: '否'
+        }]
+    });
+    // 是否兼课
+    $("input[name=data\\[holds_teacher\\]]").combobox({
+        valueField: 'label',
+        textField: 'value',
+        data: [{
+            label: '是',
+            value: '是'
+        },{
+            label: '否',
+            value: '否'
+        }]
+    });
+    // 是否免听
+    $("input[name=data\\[passed\\]]").combobox({
+        valueField: 'label',
+        textField: 'value',
+        data: [{
+            label: '是',
+            value: '是'
+        },{
+            label: '否',
+            value: '否'
+        }]
     });
 }
 function saveForm(){
     $(form_id).form({
         url:url_save,
         onSubmit: function(){
-            var tech_id=$("#tech_id").val();
-            if(tech_id==''){
-                return false ;
-            }
+
         },
         success:function(data){
             var data = eval('(' + data + ')');  // change the JSON string to javascript object
