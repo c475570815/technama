@@ -215,12 +215,12 @@ class Tea extends Controller
             // array_flip($columns)['dept_name']  =='A'
             $data['teach_id']= (String)  $objPHPExcel->getActiveSheet()->getCell("Q".$i)->getValue();
             $data['dept_name']= (String)  $objPHPExcel->getActiveSheet()->getCell("C".$i)->getValue();
-            $data['sub_dept']=(String)   $objPHPExcel->getActiveSheet()->getCell("F".$i)->getValue();
+            $data['sub_dept']=(String)   $objPHPExcel->getActiveSheet()->getCell("J".$i)->getValue();
             $data['teach_role']= (String)  $objPHPExcel->getActiveSheet()->getCell("G".$i)->getValue();
             $data['teach_name']=(String)   $objPHPExcel->getActiveSheet()->getCell("P".$i)->getValue();
-            $data['sex']= (String)  $objPHPExcel->getActiveSheet()->getCell("S".$i)->getValue();
-            $data['profess_duty']= (String)  $objPHPExcel->getActiveSheet()->getCell("D".$i)->getValue();
-            $data['now_major']=(String)   $objPHPExcel->getActiveSheet()->getCell("D".$i)->getValue();
+            $data['sex']= (String)  $objPHPExcel->getActiveSheet()->getCell("T".$i)->getValue();
+            $data['profess_duty']= (String)  $objPHPExcel->getActiveSheet()->getCell("AL".$i)->getValue();
+            $data['now_major']=(String)   $objPHPExcel->getActiveSheet()->getCell("AL".$i)->getValue();
             $data['holds_teacher']= (String)  $objPHPExcel->getActiveSheet()->getCell("I".$i)->getValue();
             $data['teach_pass']=(String)   $objPHPExcel->getActiveSheet()->getCell("L".$i)->getValue();
             $data['qq']= (String)  $objPHPExcel->getActiveSheet()->getCell("Z".$i)->getValue();
