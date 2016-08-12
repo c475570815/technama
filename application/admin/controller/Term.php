@@ -64,6 +64,22 @@ class Term extends Controller implements InterfaceDataGrid
             return json(['total' => $total, 'rows' => $term_list]);
         }
 
+    /**
+     * 显示修改页面
+     * @param $pk
+     * @return string
+     */
+    public function update($pk){
+        $view = new View();
+        $mo=new TermModel();
+        $record=$mo->where('id',$pk)->find();
+        $term=new TermModel();
+        $termList=$term->select();
+        $view->assign("term",  $termList);
+        $view->assign("operation",'编辑');
+        $view->assign("record",  $record);
+        return $view->fetch('form');
+    }
 
 
     /**
@@ -78,23 +94,27 @@ class Term extends Controller implements InterfaceDataGrid
         $operation=$_POST['operation'];
         if($operation=='add'){
             $new_record = new TermModel();
-            if( !$new_record->isExist($form_data['term_name']) ){
+
+            if( !$a=$new_record ->where("term_name",$form_data['term_name'])->find() ){
                 // 验证
                 /* $validate = Loader::validate('ClassesValidate');
                  if(!$validate->check($form_data)){
                      dump($validate->getError());
                  }*/
+                // 将记录的当前学期字段全部改成否
+                TermModel::where('default',1)
+                    ->update(['default' => 0]);
                 // 保存
                 $new_record->data($form_data);
                 $new_record->save();
                 $ret=['success'=>true,'message'=>'添加成功'];
             }else{
-                $ret=['success'=>false,'message'=>'该用户已存在，添加失败！'];
+                $ret=['success'=>false,'message'=>'该学期已存在，添加失败！'];
             }
         }else{
-            $pk=$form_data['term_name'];
+            $pk=$form_data['id'];
             $new_record= new TermModel();
-            $new_record->save($form_data,['class_name'=>$pk]);
+            $new_record->save($form_data,['id'=>$pk]);
             $ret=['success'=>true,'message'=>'修改成功'];
 
         }

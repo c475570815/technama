@@ -18,7 +18,7 @@
                 <tr>
                     <td>学期</td>
                     <td>
-                        <input id="term_name" {$operation=="编辑"?"readonly":''}  class="easyui-textbox" type="text" name="data[term_name]" data-options="required:true" value="{$record.term_name?$record.term_name:''}"/>
+                        <input id="term_name"  class="easyui-textbox" type="text" name="data[term_name]" data-options="required:true,validType:TermValidate()" value="{$record.term_name?$record.term_name:''}"/>
                     </td>
                 </tr>
                 <tr>

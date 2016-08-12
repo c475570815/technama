@@ -6,7 +6,7 @@ define(['jquery','easyui'],function(){
    //模块实现代码
     $(document).ready(function () {
         $('#datagrd').datagrid({
-            url:'http://10.127.98.246/index.php/guowushi/controllerguowushi/action4',
+            url:'/index.php/guowushi/controllerguowushi/action4',
             method:'post',
             singleSelect:true,
             collapsible:false,
