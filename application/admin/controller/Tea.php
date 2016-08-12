@@ -245,7 +245,7 @@ class Tea extends Controller
      */
     public function excelValidate($datas,$validate){
         $ret= array();
-        $i=2;
+        $i=3;
         foreach ($datas as $current_row){
             if(!$validate->check($current_row)){
                 //dump($validate->getError());
@@ -285,7 +285,7 @@ class Tea extends Controller
             'limit'=>'听课限制'
         );
 
-        $start_row=2;
+        $start_row=3;
         $datas=$this->excel2array($tmp_file,$start_row,$columns);
         // (2)对数组进行有效性验证（如是否唯一）,返回验证结果，结果是错误信息的数组
         //对数组做清除处理
