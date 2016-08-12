@@ -27,15 +27,15 @@ class TeacherValidate  extends Validate
      */
     protected $rule = [
         'teach_id'=> 'require|length:6',
-        'dept_name'  =>  'is_unique:200|require',
-        'email'=>'email'
+//        'dept_name'  =>  'is_unique:200|require',
+//        'email'=>'email'
 
     ];
 
     protected $message  =   [
-        'teach_id'=>'教师工号必须填6位数字',
-        'dept_name.is_unique'=>'找不到此系部',
-        'email'=>'不是邮箱格式'
+        'teach_id'=>'教师工号必须填6位数字'
+//        'dept_name.is_unique'=>'找不到此系部',
+//        'email'=>'不是邮箱格式'
     ];
 
 
