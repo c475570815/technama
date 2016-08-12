@@ -122,4 +122,21 @@ class Index extends Controller
 
     }
 
+    /**
+     * 发布消息到redis
+     */
+    public function pub(){
+        $redis = new \Redis();
+        $redis->connect('127.0.0.1',6379);
+        //$redis->set('test','hello world!');
+
+        for($i=1;$i<1000;$i++){
+//            $redis->lPush('usr', "message $i from server");
+            $redis->publish('msg', "message $i from server");
+
+        }
+
+        echo "ok";
+    }
+
 }
