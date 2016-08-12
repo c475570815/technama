@@ -55,9 +55,6 @@ class Dict extends Controller
         $ret=array(
             'success'=>false,'message'=>'添加失败'
         );
-
-
-
         //操作是添加还是修改
         $operation=$_POST['operation'];
         if($operation=='add'){
@@ -93,7 +90,6 @@ class Dict extends Controller
         }else{
             return false;
         }
-
     }
 
     /**
@@ -131,6 +127,16 @@ class Dict extends Controller
         $view->assign("record",  $record);
         return $view->fetch('form');
 
+    }
+
+    /**
+     * 按类别获取字典
+     * @return false|\PDOStatement|string|\think\Collection
+     */
+    public function getDictByCategory(){
+        $category=$_POST['category'];
+        $mo=new DictModel();
+        return   $record=$mo->where('dict_category',$category)->select();
     }
 
 }

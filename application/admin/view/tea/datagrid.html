@@ -21,18 +21,21 @@
                     <div style="margin-bottom:20px; with:100px;float:left;">
                         <label class="label-top">系部筛选:</label>
                         <input id="cc" class="easyui-combotree"
-                               name="dict[dept_name]"
-                               data-options="
-                                    method:'get',
-                                    multiple:true
-                                "
-                               style="width:75%;">
+                               name="dict[dept_name]"    style="width:75%;">
                      </div>
-                <div style="">
+                <div>
                     职位: <input class="easyui-text"style="width:110px" name="dict[location]">
                     专业: <input class="easyui-text" style="width:110px" name="dict[profess_duty]">
                     教师名: <input class="easyui-text" style="width:110px" name="dict[teach_name]">
-                    是否免听: <select class="easyui-text" style="width:110px" name="dict[passed]">
+                    角色:<input class="easyui-text" style="width:110px" name="dict[teach_role]">
+                    职位:<input class="easyui-text" style="width:110px" name="dict[location]">
+                   督导: <select class="easyui-text" style="width:50px" name="dict[conuncilor]">
+                    <option value="全部" selected>全部</option>
+                    <option value="是">是</option>
+                    <option value="否">否</option>
+                </select>
+                    是否免听: <select class="easyui-text" style="width:50px" name="dict[passed]">
+                                 <option value="全部" selected>全部</option>
                                 <option value="是">是</option>
                                 <option value="否">否</option>
                              </select>
@@ -41,7 +44,6 @@
                 </div>
                 <!--系部: <input class="easyui-text" style="width:110px" name="dict[dept_name]">-->
                 <!-- url:'http://10.127.98.246/index.php/admin/Tea/tree_josn',-->
-
             </form>
             <form id="frm_download" method="post"></form>
         </div>
@@ -50,7 +52,7 @@
     <div data-options="region:'center'" border="false" style="padding:10px;">
         <div id="editToolbar" style="clear: both">
             <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true" onclick="edit()">编辑</a>
-            <a href="http://10.127.98.246/index.php/admin/Tea/add" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true">添加</a>
+            <a href="/index.php/admin/tea/add" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true">添加</a>
             <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true" onclick="removeRecord()">删除</a>
             <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-reload',plain:true" onclick="reload()">刷新</a>
             <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-help',plain:true">帮助</a>

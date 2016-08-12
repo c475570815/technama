@@ -149,7 +149,7 @@ function selectTech(id) {
     $('#listen_f').window('open');
      current_row_id=id;
     // 显示所有的督导人员
-    var listen_url = 'http://10.127.98.246/index.php/admin/course/getlisteners';
+    var listen_url = '/index.php/admin/course/getlisteners';
     listen(grid_listener, listen_url, columns_listen);
 
 }

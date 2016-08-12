@@ -14,11 +14,22 @@
 <body>
 <div class="easyui-panel" title="{$operation}" style="width:600px;padding:10px 20px 20px 20px">
     <form id="ff" method="post">
-        <table>
+        <table style="width: 100%">
             <tr>
                 <td>系部</td>
                 <td>
                     <input id="dept_name"  name="data[dept_name]" data-options="required:true" value="{$record.dept_name?$record.dept_name:''}"/>
+                </td>
+            </tr>
+            <tr>
+                <td>子部门</td>
+                <td>
+                    <input  name="data[sub_dept]" data-options="required:true" value="{$record.sub_dept?$record.sub_dept:''}"/>
+                </td>
+            </tr>
+            <tr>
+                <td>教师编号</td>
+                <td><input class="easyui-textbox" name="data[teach_id]" data-options="" value="{$record.teach_id?$record.teach_id:''}"/>
                 </td>
             </tr>
             <tr>
@@ -34,20 +45,51 @@
             <tr>
                 <td>教师角色</td>
                 <td>
-                    <input class="easyui-textbox" name="data[teach_role]" value="{$record.teach_role?$record.teach_role:''}">
+                    <input style="width: 100%" name="data[teach_role]" value="{$record.teach_role?$record.teach_role:''}">
+                </td>
+            </tr>
+
+            <tr>
+                <td>督导</td>
+                <td><input  name="data[conuncilor]" value="{$record.conuncilor?$record.conuncilor:''}"/>
                 </td>
             </tr>
             <tr>
-                <td>教师编号</td>
-                <td><input class="easyui-textbox" name="data[teach_id]" data-options="" value="{$record.teach_id?$record.teach_id:''}"/>
+                <td>兼课教师</td>
+                <td><input name="data[holds_teacher]" data-options="" value="{$record.holds_teacher?$record.holds_teacher:''}"/>
                 </td>
             </tr>
+            <tr>
+                <td>是否免听</td>
+                <td><input  name="data[passed]" value="{$record.passed?$record.passed:''}"/>
+                </td>
+            </tr>
+            <tr>
+                <td>电话</td>
+                <td><input  name="data[teach_phone]" value="{$record.teach_phone?$record.teach_phone:''}"/>
+                </td>
+            </tr>
+            <tr>
+                <td>邮件</td>
+                <td><input  name="data[email]" value="{$record.email?$record.email:''}"/>
+                </td>
+            </tr>
+            <tr>
+                <td>微信</td>
+                <td><input  name="data[wechat_id]" value="{$record.wechat_id?$record.wechat_id:''}"/>
+                </td>
+            </tr>
+            <tr>
+                <td>QQ</td>
+                <td><input  name="data[qq]" value="{$record.qq?$record.qq:''}"/>
+                </td>
+            </tr
             <tr>
                 <td></td>
                 <td>
                     <input type="hidden" name="operation" value="{$operation=='编辑'?'update':'add'}"/>
                     <a href="#" class="easyui-linkbutton" onclick="saveForm()">保存</a>
-                    <a href="http://10.127.98.246/index.php/admin/Tea/index" class="easyui-linkbutton">返回</a>
+                    <a href="#" class="easyui-linkbutton" onclick="history.back();">返回</a>
                     <a href="#" class="easyui-linkbutton" onclick="clearForm()">清除</a>
                 </td>
             </tr>

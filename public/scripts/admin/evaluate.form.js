@@ -6,14 +6,14 @@
  */
 var url_save = '/index.php/admin/evaluate/save';
 
-
+var ff="#ff";
 
 /**
  * 提交表单
  */
 function saveForm() {
-    var jsonData = $("#ff").serializeArray();
-    $('#ff').form({
+    var jsonData = $(ff).serializeArray();
+    $(ff).form({
         url: url_save,
         onSubmit: function () {
             console.log($(this).serializeArray());
@@ -24,8 +24,8 @@ function saveForm() {
         }
     });
     // 验证后提交
-    if ($('#ff').form('validate')){
-        $('#ff').submit();
+    if ($(ff).form('validate')){
+        $(ff).submit();
     }
 
 }
@@ -36,7 +36,7 @@ function saveform1(){
  * 清空表单内容
  */
 function clearForm() {
-    $('#ff').form('clear');
+    $(ff).form('clear');
 }
 
 /*
