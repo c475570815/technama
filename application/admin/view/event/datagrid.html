@@ -14,8 +14,8 @@
     <style>
         #frm_add { padding: 10px;}
         #frm_add div  { margin: 5px;padding: 5px;}
-        #frm_add div label{display: block;margin-bottom: 5px}
-        #frm_add div input{ width: 100%}
+        #frm_add div>label{display: block;margin-bottom: 5px}
+        #frm_add div>input{ width: 100%}
     </style>
 </head>
 <body>
@@ -27,7 +27,7 @@
             <!--    <div  class="easyui-panel"
                      data-options="iconCls:'icon-search',plain:true,collapsible:false;" style="padding:5px;margin-bottom: 10px">-->
             <form id="frm_search" action="" method="post">
-                学期: <input class="easyui-text" style="width:80px" name="dict[term]"  value="{$current_term?$current_term:''}">
+                学期: <input style="width:110px" name="dict[term]"  value="{$current_term?$current_term:''}">
                 事件:<input class="easyui-text" style="width:110px" name="dict[title]">
                 日期: <input class="easyui-text" style="width:110px" name="dict[date]">
                 <a href="#" class="easyui-linkbutton" iconCls="icon-search" onclick="query()">查找</a>
@@ -65,6 +65,9 @@
         </div>
         <div data-options="region:'east',plain:true,hideCollapsedContent:false" title="添加事件" style="width:400px">
             <form id="frm_add" method="post">
+                <div>
+                    <label>学期:</label>
+                    <input  style="width: 100%" name="dict[term]" value="{$current_term?$current_term:''}"></div>
                 <div>
                     <label>事件:</label>
                     <input class="easyui-text" style="" name="dict[title]"></div>

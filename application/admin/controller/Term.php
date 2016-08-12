@@ -123,4 +123,23 @@ class Term extends Controller implements InterfaceDataGrid
         }
         return json($ret);
     }
+
+    /**
+     * 获取学期列表
+     * @return false|\PDOStatement|string|\think\Collection
+     */
+    public  function getTerm(){
+        $mo=new TermModel();
+        return $record=$mo->where('1=1')->order('term_name desc')->select();
+    }
+
+    /**
+     * 返回当前学期名称
+     * @return mixed
+     */
+    public  function getCurrentTerm(){
+        $mo=new TermModel();
+        $rec= $record=$mo->where('default',1)->find();
+        return $rec['term_name'];
+    }
 }

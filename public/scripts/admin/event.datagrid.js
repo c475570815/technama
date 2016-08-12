@@ -60,6 +60,17 @@ function formatOptColumn(val,row,index){
  */
 $(document).ready(function () {
     initGrid(grid_id, url_get, columns_def);
+    // 学期列表
+    var dept=$("input[name=dict\\[term\\]]").val();
+    $("input[name=dict\\[term\\]]").combobox({
+        url: '/index.php/admin/term/getterm',
+        method:'POST',
+        valueField: 'term_name',
+        textField: 'term_name',
+        limitToList:false
+    });
+
+
 });
 
 /**
