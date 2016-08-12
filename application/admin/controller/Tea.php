@@ -213,26 +213,26 @@ class Tea extends Controller
         {
             $data=array();
             // array_flip($columns)['dept_name']  =='A'
-            $data['teach_id']=  $objPHPExcel->getActiveSheet()->getCell("Q".$i)->getValue();
-            $data['dept_name']=  $objPHPExcel->getActiveSheet()->getCell("C".$i)->getValue();
-            $data['sub_dept']=  $objPHPExcel->getActiveSheet()->getCell("F".$i)->getValue();
-            $data['teach_role']=  $objPHPExcel->getActiveSheet()->getCell("G".$i)->getValue();
-            $data['teach_name']=  $objPHPExcel->getActiveSheet()->getCell("P".$i)->getValue();
-            $data['sex']=  $objPHPExcel->getActiveSheet()->getCell("S".$i)->getValue();
-            $data['profess_duty']=  $objPHPExcel->getActiveSheet()->getCell("D".$i)->getValue();
-            $data['now_major']=  $objPHPExcel->getActiveSheet()->getCell("D".$i)->getValue();
-            $data['holds_teacher']=  $objPHPExcel->getActiveSheet()->getCell("I".$i)->getValue();
-            $data['teach_pass']=  $objPHPExcel->getActiveSheet()->getCell("L".$i)->getValue();
-            $data['qq']=  $objPHPExcel->getActiveSheet()->getCell("Z".$i)->getValue();
-            $data['wechat_id']=  $objPHPExcel->getActiveSheet()->getCell("Q".$i)->getValue();
-            $data['email']=  $objPHPExcel->getActiveSheet()->getCell("A".$i)->getValue();
-            $data['teach_phone']=  $objPHPExcel->getActiveSheet()->getCell("Z".$i)->getValue();
-            $data['conuncilor']=  $objPHPExcel->getActiveSheet()->getCell("A".$i)->getValue();
-            $data['in_school_time']=  $objPHPExcel->getActiveSheet()->getCell("A".$i)->getValue();
-            $data['location']=  $objPHPExcel->getActiveSheet()->getCell("A".$i)->getValue();
-            $data['limit']=  $objPHPExcel->getActiveSheet()->getCell("A".$i)->getValue();
-            $data['passed']=  $objPHPExcel->getActiveSheet()->getCell("A".$i)->getValue();
-            $data['teach_jw_id']=  $objPHPExcel->getActiveSheet()->getCell("A".$i)->getValue();
+            $data['teach_id']= (String)  $objPHPExcel->getActiveSheet()->getCell("Q".$i)->getValue();
+            $data['dept_name']= (String)  $objPHPExcel->getActiveSheet()->getCell("C".$i)->getValue();
+            $data['sub_dept']=(String)   $objPHPExcel->getActiveSheet()->getCell("F".$i)->getValue();
+            $data['teach_role']= (String)  $objPHPExcel->getActiveSheet()->getCell("G".$i)->getValue();
+            $data['teach_name']=(String)   $objPHPExcel->getActiveSheet()->getCell("P".$i)->getValue();
+            $data['sex']= (String)  $objPHPExcel->getActiveSheet()->getCell("S".$i)->getValue();
+            $data['profess_duty']= (String)  $objPHPExcel->getActiveSheet()->getCell("D".$i)->getValue();
+            $data['now_major']=(String)   $objPHPExcel->getActiveSheet()->getCell("D".$i)->getValue();
+            $data['holds_teacher']= (String)  $objPHPExcel->getActiveSheet()->getCell("I".$i)->getValue();
+            $data['teach_pass']=(String)   $objPHPExcel->getActiveSheet()->getCell("L".$i)->getValue();
+            $data['qq']= (String)  $objPHPExcel->getActiveSheet()->getCell("Z".$i)->getValue();
+            $data['wechat_id']=  (String) $objPHPExcel->getActiveSheet()->getCell("Q".$i)->getValue();
+            $data['email']= (String)  $objPHPExcel->getActiveSheet()->getCell("A".$i)->getValue();
+            $data['teach_phone']= (String)  $objPHPExcel->getActiveSheet()->getCell("Z".$i)->getValue();
+            $data['conuncilor']= (String)  $objPHPExcel->getActiveSheet()->getCell("A".$i)->getValue();
+            $data['in_school_time']= (String)  $objPHPExcel->getActiveSheet()->getCell("A".$i)->getValue();
+            $data['location']= (String)  $objPHPExcel->getActiveSheet()->getCell("A".$i)->getValue();
+            $data['limit']= (String)  $objPHPExcel->getActiveSheet()->getCell("A".$i)->getValue();
+            $data['passed']=(String)   $objPHPExcel->getActiveSheet()->getCell("A".$i)->getValue();
+            $data['teach_jw_id']=(String)  $objPHPExcel->getActiveSheet()->getCell("A".$i)->getValue();
             $list[]=$data;
         }
         return $list;
