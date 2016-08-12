@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>数据表格</title>
+    <link rel="stylesheet" type="text/css" href="/static/jquery-easyui-1.4.5/themes/default/easyui.css">
+    <link rel="stylesheet" type="text/css" href="/static/jquery-easyui-1.4.5/themes/icon.css">
+    <script type="text/javascript" src="/static/jquery-easyui-1.4.5/jquery.min.js"></script>
+    <script type="text/javascript" src="/static/jquery-easyui-1.4.5/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="/static/jquery-easyui-1.4.5/locale/easyui-lang-zh_CN.js"></script>
+    <script type="text/javascript" src="/scripts/comm.js"></script>
+    <script type="text/javascript" src="/scripts/admin/dept.form.js"></script>
+</head>
+<body  class="easyui-layout">
+    <div data-options="region:'center',split:true" border="true" style="padding:10px;">
+        <div class="easyui-panel" title="{$operation}"  fit="true">
+            <form id="ff" method="post" style="padding: 10px">
+                <table>
+                    <tr>
+                        <td>部门</td>
+                        <td>
+                            <input id="dept_name" {$operation=="编辑"?"readonly":''}  class="easyui-textbox" type="text" name="data[dept_name]" data-options="required:true" value="{$record.dept_name?$record.dept_name:''}"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>父部门</td>
+                        <td>
+                            <input id="dept_parent" {$operation=="编辑"?"readonly":''}  class="easyui-textbox" type="text" name="data[dept_parent]" data-options="" value="{$record.dept_parent?$record.dept_parent:''}"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>人数</td>
+                        <td><input class="easyui-textbox" type="text" name="data[dept_staff_number]"      data-options="required:true" value="{$record.dept_staff_number?$record.dept_staff_number:''}" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>部门类型</td>
+                        <td>
+                            <select class="easyui-combobox" name="data[dept_category]"  data-options="required:true,panelHeight:'auto'" value="{$record.dept_category?$record.dept_category:''}">
+                                <option value="行政管理部门">行政管理部门</option>
+                                <option value="教学部门">教学部门</option>
+                                <option value="其他部门">其他部门</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>
+                            <input type="hidden" name="data[dept_id]" value="{$record.dept_id?$record.dept_id:''}"/>
+                            <input type="hidden" name="operation" value="{$operation=='编辑'?'update':'add'}"/>
+                            <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-save'" onclick="saveForm()">保存</a>
+                            <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-return'" onclick="returnGrid()">返回</a>
+                            <a href="javascript:void(0)" class="easyui-linkbutton" onclick="clearForm()" data-options="iconCls:'icon-clear'">清除</a>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+
+        </div>
+    </div>
+<!--    <div data-options="region:'north',split:true" border="true" style="background-color: #eee;height:100px;padding:0px;margin-top:10px">
+        <div class="easyui-panel" title="编辑"></div>
+    </div>-->
+</body>
+</html>

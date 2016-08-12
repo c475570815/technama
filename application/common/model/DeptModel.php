@@ -27,4 +27,20 @@ class DeptModel extends \app\common\model\CommonModel
         'dept_category' => 'like'
 
     ];
+
+    /**
+     * 判断一个部门是否已存在
+     * @param $pk
+     * @return bool
+     */
+    public function isExist($pk){
+
+        if($this->get($pk)) {
+            return true;
+        }
+        else{
+            return false;
+        }
+
+    }
 }

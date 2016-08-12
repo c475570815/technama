@@ -8,7 +8,9 @@ var download_form_id="#frm_download";
 var url_import="/index.php/admin/dept/upload";
 var url_get="/index.php/admin/dept/getlist";
 var url_remove="/index.php/admin/dept/remove";
+var url_update='/index.php/admin/dept/update';
 var url_export ="/index.php/admin/dept/download";
+var pk_field='dept_id';
 $(document).ready(function () {
     //当整个页面全部载入后才执行
     initDeptGrid();
@@ -25,7 +27,9 @@ function initDeptGrid(){
         treeField:'dept_name',
         checkbox:false,
         rownumbers:true,
+        singleSelect: false,
         columns:[[
+            {field: 'chkbox', checkbox: true},
             {field:'dept_name',title:'部门',sortable: true},
             {field:'dept_staff_number',title:'人数',sortable: true},
             {field:'dept_category',title:'部门类型',sortable: true}
@@ -78,6 +82,14 @@ function removeall(){
         });
     });
 }
+
+/**
+ * 刷新网格
+ */
+function reload() {
+    $(grid_id).treegrid('clearSelections');
+    $(grid_id).treegrid('reload');
+}
 /**
  * 删除选中的记录
  */
@@ -115,18 +127,12 @@ function removeRecord() {
     });
     //console.log(names.join(","));
 }
-/**
- * 刷新网格
- */
-function reload() {
-    $(grid_id).datagrid('clearSelections');
-    $(grid_id).datagrid('reload');
-}
+
 /**
  * 编辑
  */
 function edit() {
-    var rows = $(grid_id).datagrid('getSelections');
+    var rows = $(grid_id).treegrid('getSelections');
     if (rows.length != 1) {
         $.messager.show({
             title: "",
@@ -134,12 +140,14 @@ function edit() {
         });
         return;
     }
-    var row = $(grid_id).datagrid('getSelected');
+    var row = $(grid_id).treegrid('getSelected');
     var idValue = row[pk_field];
     console.log(idValue);
     var updateUrl = url_update + "/pk/" + idValue;
     location.href = updateUrl;
 }
+
+
 
 /**
  *  下载
@@ -207,7 +215,6 @@ function importxls() {
                 message=message+"\n "+key+"行："+errors[key];
             }
             $("#msgbox").val(message);
-            console.log(dataObj.data);
             reload();
         }
     });

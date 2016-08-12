@@ -60,7 +60,73 @@ class Dept extends Controller implements InterfaceDataGrid
 
     }
 
+
     /**
+     * 接收表单填写的数据，并保存到数据库中
+     * @return \think\Response|\think\response\Json|\think\response\Jsonp|\think\response\Redirect|\think\response\View|\think\response\Xml
+     */
+    public function save(){
+        $form_data=$_POST['data'];
+        $ret=array(
+            'success'=>false,'message'=>'添加失败'
+        );
+        $operation=$_POST['operation'];
+        if($operation=='add'){
+            $new_record = new DeptModel();
+
+            if( ! $new_record->where('dept_name',$form_data['dept_name'])->find() ){
+                // 验证
+                /* $validate = Loader::validate('ClassesValidate');
+                 if(!$validate->check($form_data)){
+                     dump($validate->getError());
+                 }*/
+                // 保存
+                $new_record->data($form_data);
+                $new_record->save();
+                $ret=['success'=>true,'message'=>'添加成功'];
+            }else{
+                $ret=['success'=>false,'message'=>'该部门已存在，添加失败！'];
+            }
+        }else{
+            $pk=$form_data['dept_name'];
+            $new_record= new DeptModel();
+            $new_record->save($form_data,['class_name'=>$pk]);
+            $ret=['success'=>true,'message'=>'修改成功'];
+
+        }
+        return json($ret);
+    }
+    /*  显示添加页面 */
+    public function add()
+    {
+        $view = new View();
+        $view->assign("operation", '新增');
+        return $view->fetch('form');
+    }
+
+
+    /**
+     * 显示修改页面 index.php/admin/classes/update/pk/2
+     * @param $pk  自动获取pk参数的值
+     * @return string
+     */
+    public function update($pk){
+        // 根据主键获取一条记录
+
+     //   $record=$mo->where('class_name',$pk)->find();
+        $record=DeptModel::get($pk);
+
+        // 编辑页面的部门信息
+        $dept=new DeptModel();
+        $deptList=$dept->select();
+        // 视图页面
+        $view = new View();
+        $view->assign("dept",  $deptList);
+        $view->assign("operation",  '编辑');
+        $view->assign("record",  $record);
+        return $view->fetch('form');
+    }
+        /**
      * 删除记录
      * @return \think\Response|\think\response\Json|\think\response\Jsonp|\think\response\Redirect|\think\response\View|\think\response\Xml
      */
