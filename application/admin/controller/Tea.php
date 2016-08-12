@@ -153,7 +153,8 @@ class Tea extends Controller
         foreach($de as $current_dept){
             $child=array(
                 'id'=>$current_dept['dept_id'],
-                'text'=>$current_dept['dept_name']
+                'text'=>$current_dept['dept_name'],
+                'iconCls'=>"ico-blank"
             );
             $childrens[]=$child;
         }

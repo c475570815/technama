@@ -41,9 +41,16 @@ function initGrid(grid_id,url_get,columns_def){
         columns:columns_def
     });
 }
+//当整个页面全部载入后才执行
 $(document).ready(function () {
-    //当整个页面全部载入后才执行
     initGrid(grid_id,url_get,columns_def);
+    $(cc).combotree({
+        method: 'post',
+        required: true,
+        multiple:true,
+        lines:true,
+        panelWidth:300
+    });
     load2();
     //console.log(111111111111);
 });
@@ -137,7 +144,7 @@ function  down() {
  * 加载下拉树的josn
  */
 function  load2() {
-   $.getJSON("http://10.127.98.242/index.php/admin/Tea/treejosn",function(data){
+   $.getJSON("/index.php/admin/Tea/treejosn",function(data){
         $(cc).combotree('loadData',data);
 });
 }
@@ -150,7 +157,7 @@ function exportXls() {
     var acion = {'action': 'export'};
     var postdata = $.extend({}, grid_options, acion);
     $('#frm_download').form('submit', {
-        url: 'http://10.127.98.242/index.php/admin/Tea/download',
+        url: '/index.php/admin/Tea/download',
         queryParams: postdata,
         onSubmit: function () {
         },
