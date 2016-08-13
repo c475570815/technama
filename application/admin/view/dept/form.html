@@ -19,13 +19,13 @@
                     <tr>
                         <td>部门</td>
                         <td>
-                            <input id="dept_name" {$operation=="编辑"?"readonly":''}  class="easyui-textbox" type="text" name="data[dept_name]" data-options="required:true" value="{$record.dept_name?$record.dept_name:''}"/>
+                            <input id="dept_name"   class="easyui-textbox" type="text" name="data[dept_name]" data-options="required:true" value="{$record.dept_name?$record.dept_name:''}"/>
                         </td>
                     </tr>
                     <tr>
                         <td>父部门</td>
                         <td>
-                            <input id="dept_parent" {$operation=="编辑"?"readonly":''}  class="easyui-textbox" type="text" name="data[dept_parent]" data-options="" value="{$record.dept_parent?$record.dept_parent:''}"/>
+                            <input id="dept_parent"   class="easyui-textbox" type="text" name="data[dept_parent]" data-options="" value="{$record.dept_parent?$record.dept_parent:''}"/>
                         </td>
                     </tr>
                     <tr>
@@ -36,11 +36,8 @@
                     <tr>
                         <td>部门类型</td>
                         <td>
-                            <select class="easyui-combobox" name="data[dept_category]"  data-options="required:true,panelHeight:'auto'" value="{$record.dept_category?$record.dept_category:''}">
-                                <option value="行政管理部门">行政管理部门</option>
-                                <option value="教学部门">教学部门</option>
-                                <option value="其他部门">其他部门</option>
-                            </select>
+                            <input  name="data[dept_category]" value="{$record.dept_category?$record.dept_category:''}" />
+                            <!--<input style="width: 100%" name="data[teach_role]" value="{$record.teach_role?$record.teach_role:''}">-->
                         </td>
                     </tr>
                     <tr>
