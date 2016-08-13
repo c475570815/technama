@@ -249,8 +249,8 @@ return [
         'SMTP_PASS'   => 'opiphlbevgjwbebd', //SMTP服务器密码
         'FROM_EMAIL'  => 'guowushi@qq.com', //发件人EMAIL
         'FROM_NAME'   => '郭武士', //发件人名称
-        'REPLY_EMAIL' => '', //回复EMAIL（留空则为发件人EMAIL）
-        'REPLY_NAME'  => '', //回复名称（留空则为发件人名称）
+        'REPLY_EMAIL' => 'guowushi@qq.com', //回复EMAIL（留空则为发件人EMAIL）
+        'REPLY_NAME'  => 'SCETC', //回复名称（留空则为发件人名称）
     ),
     //云通讯SDK参数
     'yuntongxun'=>[

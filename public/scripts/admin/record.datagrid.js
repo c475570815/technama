@@ -48,7 +48,21 @@ function initGrid(grid, url, columns_def) {
  */
 $(document).ready(function () {
     initGrid(grid_id, url_get, columns_def);
+    initTermCombo();
 });
+
+function initTermCombo(){
+    // 学期列表初始化
+    var dept=$("input[name=dict\\[term\\]]").val();
+    $("input[name=dict\\[term\\]]").combobox({
+        url: '/index.php/admin/term/getterm',
+        method:'POST',
+        valueField: 'term_name',
+        textField: 'term_name',
+        limitToList:false
+    });
+}
+
 /**
  * 定义列的显示
  * @param val

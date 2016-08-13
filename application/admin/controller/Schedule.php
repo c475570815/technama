@@ -146,6 +146,56 @@ class Schedule extends Controller
         return  json($list);
     }
 
+    public function email(){
+        $current_table=new ScheduleModel();
+        if (isset($_POST['id'])) {
+            $id = $_POST['id'];
+            $list = $current_table->where("id","in",$id)->select();
+            $list_hand=array();
+            foreach ($list as $row){
+                $conuncilor=$row['conuncilor'];
+                $arr=explode('|',$conuncilor) ;
+                $teacher_mail=array();
+                foreach ($arr as $teacher_no){
+                    $teacher= TeacherModel::get(['teach_id' =>$teacher_no]);
+                    if($teacher['email_validated']){
+                        $teacher_mail[]=$teacher['email'];
+                    }
+                }
+                // 发送email
+                $subject="听课安排";
+                $body="老师，以下听课安排：".$row['teacher'].$row['week'].$row['xing_qi_ji'].$row['section'].$row['class_room'].$row['course_name']."";
+                sendmail($teacher_mail,$subject,$body);
+               // $row['conuncilor']=implode(',',$teacher_name);
+               // $list_hand[]=$row;
+            }
+        }
+    }
+
+    public function sms(){
+
+        $current_table=new ScheduleModel();
+        if (isset($_POST['id'])) {
+            $id = $_POST['id'];
+            $list = $current_table->where("id","in",$id)->select();
+            $list_hand=array();
+            foreach ($list as $row){
+                $conuncilor=$row['conuncilor'];
+                $arr=explode('|',$conuncilor) ;
+                $teacher_mail=array();
+                foreach ($arr as $teacher_no){
+                    $teacher= TeacherModel::get(['teach_id' =>$teacher_no]);
+                    if($teacher['email_validated']){
+                        $teacher_mail[]=$teacher['email'];
+                    }
+                }
+                // $row['conuncilor']=implode(',',$teacher_name);
+                // $list_hand[]=$row;
+            }
+            yuntongxun_sms('18942891954',['aaa','bbb'],1);
+        }
+    }
+
 }
 
 ?>

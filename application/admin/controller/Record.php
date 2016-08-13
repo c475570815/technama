@@ -13,6 +13,7 @@ use think\Controller;
 use app\common\model\RecordModel;
 use app\common\model\DeptModel;
 use app\common\model\TeaModel;
+use app\common\model\TermModel;
 use think\View;
 use think\Config;
 
@@ -53,8 +54,13 @@ class  Record extends Controller
 
         $dept = new DeptModel();
         $deptList = $dept->select();
+        // 获取当前学期
+        $mo=new TermModel();
+        $rec= $record=$mo->where('default',1)->find();
+        // 视图
         $view = new View();
         $view->assign("dept", $deptList);
+        $view->assign('current_term',$rec['term_name']);
         return $view->fetch('datagrid');
 
     }
@@ -203,12 +209,12 @@ class  Record extends Controller
     function sendTemplateSMS($to, $datas, $tempId)
     {
         // 初始化REST SDK
-        $accountSid = Config::get('yuntongxun.ACCOUNT_SID');
-        $accountToken = Config::get('yuntongxun.AUTH_TOKEN');
-        $appId = Config::get('yuntongxun.APPID');
-        $serverIP =Config::get('yuntongxun.REST_URL');
-        $serverPort = Config::get('yuntongxun.PORT');
-        $softVersion = Config::get('yuntongxun.VERSION');
+        $accountSid = config('yuntongxun.ACCOUNT_SID');
+        $accountToken = config('yuntongxun.AUTH_TOKEN');
+        $appId = config('yuntongxun.APPID');
+        $serverIP =config('yuntongxun.REST_URL');
+        $serverPort = config('yuntongxun.PORT');
+        $softVersion = config('yuntongxun.VERSION');
 
         vendor("yuntongxun.CCPRestSDK");
         $rest = new \REST($serverIP, $serverPort, $softVersion);
@@ -220,7 +226,6 @@ class  Record extends Controller
         }
         if ($result->statusCode != 0) {
             $ret = ['success' => false, 'message' => $result->statusMsg];
-            //TODO 添加错误处理逻辑
         } else {
             echo "Sendind TemplateSMS success!<br/>";
             // 获取返回信息

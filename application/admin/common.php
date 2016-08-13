@@ -81,13 +81,13 @@ function getAddressFromIp($ip){
 
 /**
  * LDAP验证
- * @param $userid    用户名，后必须带后缀
- * @param $pass
+ * @param $userid    用户名
+ * @param $pass     密码
  */
 function ldapValid($userid,$pass){
     $ldap_server_ip = '172.16.0.3';
     $ldap_server_port = '389';
-    $user =$userid.'@scetc.local';
+    $user =$userid.'@scetc.local';//用户名后必须带后缀
     $basedn = 'DC=scetc,DC=local';
     //建立到ldap服务器的连接
     $ldapConnect = ldap_connect($ldap_server_ip, $ldap_server_port);
@@ -104,6 +104,49 @@ function ldapValid($userid,$pass){
         return false;
     }
 }
+
+/**
+ * 发送邮件
+ * @param $to       收件人，可以是字符串或数组
+ * @param $subject  主题
+ * @param $body     内容
+ * @return bool
+ */
+function sendmail($to, $subject, $body)
+{
+    vendor("PHPMailer.PHPMailerAutoload");
+    $mail = new \PHPMailer(true);
+    $mail->IsSMTP();
+    //$mail->SMTPDebug = 3;
+    $mail->CharSet = 'UTF-8'; //设置邮件的字符编码，这很重要，不然中文乱码
+    $mail->SMTPAuth = true; //开启认证
+    $mail->SMTPSecure = 'ssl';      // 使用TLS加密，也支持ssl
+    $mail->Priority = 3;   // 设置邮件优先级 1高, 3正常（默认）, 5低 
+    $mail->Port = config('THINK_EMAIL.SMTP_PORT');                  // TCP 端口
+    $mail->Host = config('THINK_EMAIL.SMTP_HOST');
+    $mail->Username = config('THINK_EMAIL.SMTP_USER');;
+    $mail->Password = config('THINK_EMAIL.SMTP_PASS');;
+    $mail->AddReplyTo(config('THINK_EMAIL.REPLY_EMAIL'), config('THINK_EMAIL.REPLY_NAME'));//回复地址
+    $mail->From = config('THINK_EMAIL.FROM_EMAIL');
+    $mail->FromName = config('THINK_EMAIL.FROM_NAME');
+    if(is_array($to) ){
+        foreach($to as $addr){
+            $mail->AddAddress($addr);
+        }
+    }else{
+        $mail->AddAddress($to);
+    }
+    $mail->Subject = $subject;
+    $mail->Body = $body;
+    $mail->WordWrap = 80; // 设置每行字符串的长度
+    //$mail->AddAttachment("f:/test.png"); //可以添加附件
+    $mail->IsHTML(true);
+    if ($mail->Send()) {
+        return true;
+    } else {
+        return false;
+    }
+}
 /**
  * 网易云信发送短信
  * http://dev.netease.im/docs?doc=server&#发送模板短信
@@ -112,7 +155,7 @@ function ldapValid($userid,$pass){
  * @param string $templateid
  * @return array
  */
-function yx_sendsms($mobile='',$params='',$templateid=''){
+function netease_sms($mobile='',$params='',$templateid=''){
     header("Content-Type:text/html; charset=utf-8");
     $AppKey =config('neteaseim.appkey');
     $AppSecret = config('neteaseim.appsecret');
@@ -132,7 +175,6 @@ function yx_sendsms($mobile='',$params='',$templateid=''){
     $data['mobiles'] = $mobile;
     $data['params'] = $params;
     //var_dump($data);
-
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -147,5 +189,41 @@ function yx_sendsms($mobile='',$params='',$templateid=''){
     //var_dump($resArr);
     //echo $resArr['code'];
     return $resArr;
+}
+/**
+ * 发送模板短信
+ * @param to 手机号码集合,用英文逗号分开
+ * @param datas 内容数据 格式为数组 例如：array('Marry','Alon')，如不需替换请填 null
+ * @param $tempId 模板Id
+ */
+function yuntongxun_sms($to, $datas, $tempId)
+{
+    // 读取配置信息
+    $accountSid = config('yuntongxun.ACCOUNT_SID');
+    $accountToken = config('yuntongxun.AUTH_TOKEN');
+    $appId = config('yuntongxun.APPID');
+    $serverIP =config('yuntongxun.REST_URL');
+    $serverPort = config('yuntongxun.PORT');
+    $softVersion = config('yuntongxun.VERSION');
+    // 初始化REST SDK
+    vendor("yuntongxun.CCPRestSDK");
+    $rest = new \REST($serverIP, $serverPort, $softVersion);
+    $rest->setAccount($accountSid, $accountToken);
+    $rest->setAppId($appId);
+    // 发送模板短信
+    $result = $rest->sendTemplateSMS($to, $datas, $tempId);
+    if ($result == NULL) {
+        $ret = ['success' => false, 'message' => '错误'];
+    }
+    if ($result->statusCode != 0) {
+        $ret = ['success' => false, 'message' => $result->statusMsg];
+    } else {
+        echo "Sendind TemplateSMS success!<br/>";
+        // 获取返回信息
+        $smsmessage = $result->TemplateSMS;
+        $ret = ['success' => true, 'message' => $smsmessage->dateCreated.' 消息发送成功！'];
+
+    }
+    return json($ret);
 }
 ?>

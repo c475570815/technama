@@ -245,3 +245,9 @@
 .icon-staff{
     background: url('icons/staff.png') no-repeat center center;
 }
+.icon-mail{
+    background: url('icons/mail.png') no-repeat center center;
+}
+.icon-sms{
+    background: url('icons/sms.png') no-repeat center center;
+}

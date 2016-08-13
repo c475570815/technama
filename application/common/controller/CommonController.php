@@ -34,12 +34,25 @@ abstract class  CommonController extends Controller
     public abstract function delete();
 
     public function _initialize(){
-        import('ORG.Util.Auth');//加载类库
+        /*import('ORG.Util.Auth');//加载类库
         $auth=new Auth();
         if(!$auth->check(MODULE_NAME.'-'.ACTION_NAME,session('uid'))){
             $this->error('你没有权限');
-        }
+        }*/
     }
+    public function cacheDataInit(){
+        //如果没有缓存，则读取数据库当中的数据放入缓存
+        //如果有缓存，则读取缓存数据
+        // 设置缓存数据
+        if(cache('name')){
+
+        }else{
+
+            //cache('name', $value, 3600);
+        }
+
+    }
+
     public function auth(){
 
     }

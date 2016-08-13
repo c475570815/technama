@@ -27,6 +27,7 @@ class Event extends Controller
      */
     public function index(){
         $view = new View();
+        // 获取当前学期
         $mo=new TermModel();
         $rec= $record=$mo->where('default',1)->find();
         $view->assign('current_term',$rec['term_name']);

@@ -72,10 +72,11 @@ function listenerFormater(value,row,index){
     }
     return "<a href='/index.php/admin/schedule/tip/id/"+index+"' class='note'>"+value+"</a>";
 }
-
+//当整个页面全部载入后才执行
 $(document).ready(function () {
-    //当整个页面全部载入后才执行
+
     initGrid(grid,url,columns_def);
+    // 教师列表初始化
     initCbGrid('#cbogrid_of_teacher','/index.php/admin/schedule/teacher_cg');
     // 学期列表初始化
     var dept=$("input[name=dict\\[term\\]]").val();
@@ -119,6 +120,126 @@ function initCbGrid(cbgrid,url){
             {field:'dept_name',title:'部门',width:120,sortable:true},
             {field:'sex',title:'性别',width:40,sortable:true}
         ]]
+    });
+}
+/* 对datagrid 的扩展方法 */
+$.extend($.fn.datagrid.methods, {
+    /**
+     * 更新 非编辑列值
+     * @param rowIndex    : 行索引
+     * @param cellName    : 列索引或列名
+     * @param cellValue    : 列值
+     * @author WUYF
+     */
+    updateRowCell: function (jq, param) {
+        var oGrid = $(jq);
+        var jqId = $(jq).attr("id");
+        var curRow = (oGrid.datagrid('getRows')[param.rowIndex]);
+        /*                 curRow[param.cellName] = param.cellValue;
+         oGrid.datagrid('endEdit',param.rowIndex);
+         oGrid.datagrid('beginEdit',param.rowIndex); */
+        oGrid.datagrid('updateRow', {
+            index: param.rowIndex,
+            row: param.row
+        });
+    },
+    confirm:function(url,confirm_message){
+        var checkedItems = $(grid_id).datagrid('getChecked');
+        if (checkedItems.length == 0) {
+            $.messager.alert("提示", "请选择需要操作的行！", "info");
+            return;
+        }
+        //将选中行的主健值放到一个数组中
+        var selectedRowsID = [];
+        $.each(checkedItems, function (index, item) {
+            selectedRowsID.push(item.id);
+        });
+        $.messager.confirm('提示', confirm_message, function (ans) {
+            if (!ans) {
+                return;
+            }
+            $.ajax({
+                type: "POST",
+                url: url_email,
+                data: {id: selectedRowsID},//传递给服务器的参数
+                success: function (jsonresult) {
+                    if (jsonresult.isSuccess == true) {
+                        $.messager.alert("提示", jsonresult.message, "info");
+                    } else {
+                        $.messager.alert("提示", jsonresult.message, "info");
+                        return;
+                    }
+                }
+            });
+        });
+    }
+});
+
+/**
+ * 发送电子邮件通知
+ */
+function email(){
+    //
+    var url_email="/index.php/admin/schedule/email";
+    var checkedItems = $(grid).datagrid('getChecked');
+    if (checkedItems.length == 0) {
+        $.messager.alert("提示", "请选择需要操作的行！", "info");
+        return;
+    }
+    //将选中行的主健值放到一个数组中
+    var selectedRowsID = [];
+    $.each(checkedItems, function (index, item) {
+        selectedRowsID.push(item.id);
+    });
+    $.messager.confirm('提示', '是否发送电邮通知?', function (ans) {
+        if (!ans) {
+            return;
+        }
+        $.ajax({
+            type: "POST",
+            url: url_email,
+            data: {id: selectedRowsID},//传递给服务器的参数
+            success: function (jsonresult) {
+                if (jsonresult.isSuccess == true) {
+                    $.messager.alert("提示", jsonresult.message, "info");
+                } else {
+                    $.messager.alert("提示", jsonresult.message, "info");
+                    return;
+                }
+            }
+        });
+    });
+}
+function sms(){
+    //
+    var url_email="/index.php/admin/schedule/sms";
+    var checkedItems = $(grid).datagrid('getChecked');
+    if (checkedItems.length == 0) {
+        $.messager.alert("提示", "请选择需要操作的行！", "info");
+        return;
+    }
+    //将选中行的主健值放到一个数组中
+    var selectedRowsID = [];
+    $.each(checkedItems, function (index, item) {
+        selectedRowsID.push(item.id);
+    });
+    $.messager.confirm('提示', '是否发送短信通知?', function (ans) {
+        if (!ans) {
+            return;
+        }
+        $.ajax({
+            type: "POST",
+            url: url_email,
+            data: {id: selectedRowsID},//传递给服务器的参数
+            success: function (jsonresult) {
+                if (jsonresult.isSuccess == true) {
+                    $.messager.alert("提示", jsonresult.message, "info");
+                } else {
+                    $.messager.alert("提示", jsonresult.message, "info");
+                    return;
+                }
+            }
+        });
     });
 }
 
