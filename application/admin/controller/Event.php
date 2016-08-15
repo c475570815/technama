@@ -152,6 +152,30 @@ class Event extends Controller
     }
 
 
+    /**
+     * 返回事件格式
+     * @return string
+     */
+    public function getevents(){
+        $event_model=new EventModel();
+        $event_records = $event_model->select();
+        $events=array();
+        foreach ($event_records as $event_record){
+            $event=array();
+            $event['title']=$event_record['title'];
+            $event['start']=$event_record['start'];
+            $event['end']=$event_record['end'];
+            $event['url']=$event_record['url'];
+            $event['allDay']=$event_record['all_day'];
+            $event['textColor']=$event_record['textColor'];
+            $event['backgroundColor']=$event_record['backgroundColor'];
+            $events[]=$event;
+        }
+
+        return json($events);
+
+    }
+
 
 }
 

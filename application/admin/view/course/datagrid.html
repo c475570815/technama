@@ -16,7 +16,7 @@
         <!-- 查找工具栏 -->
         <div id="searchToolbar" class="easyui-panel" fit="true" title="筛选条件" data-options="iconCls:'icon-search',plain:true"  style="padding:5px;margin-bottom: 10px">
             <form id="frm_search" action="" method="post">
-                学期: <input class="easyui-text" style="width:80px" name="dict[term]"  value="{$current_term?$current_term:''}">
+                学期: <input  style="width:110px" name="dict[term]"  value="{$current_term?$current_term:''}">
                 系部:
                 <select id="a" class="easyui-combobox" panelHeight="auto" style="width:200px" name="dict[dept_name]">
                     <option value="全部" selected>全部</option>
@@ -26,7 +26,7 @@
                 </select>
                 周次:
                 <select class="easyui-combobox" name="week" style="width:70px;">
-                    <option value=""></option>
+                    <option value="全部">全部</option>
                     <option value="1">1</option>
                     <option value="2">2</option>
                     <option value="3">3</option>
@@ -48,8 +48,8 @@
                     <option value="19">19</option>
                     </select>
                 星期:
-                <select class="easyui-combobox" name="dict[section]" style="width:100px;">
-                    <option value=""></option>
+                <select class="easyui-combobox" name="dict[xing_qi_ji]" style="width:60px;">
+                    <option value="全部">全部</option>
                     <option value="1">星期1</option>
                     <option value="2">星期2</option>
                     <option value="3">星期3</option>
@@ -57,8 +57,8 @@
                     <option value="5">星期5</option>
                 </select>
                 节次:
-                <select class="easyui-combobox" name="dict[section]" style="width:100px;">
-                    <option value=""></option>
+                <select class="easyui-combobox" name="dict[section]" style="width:60px;">
+                    <option value="全部">全部</option>
                     <option value="1">第1大节</option>
                     <option value="2">第2大节</option>
                     <option value="3">第3大节</option>
@@ -66,11 +66,11 @@
                     <option value="5">第5大节</option>
                 </select>
                 教师: <input class="easyui-text" style="width:110px" name="dict[teach_id]">
-                调停课
+<!--                调停课
                 <select class="easyui-combobox" name="dict[onduty]" style="width:100px;">
                     <option value="是" selected>是</option>
                     <option value="否">否</option>
-                </select>
+                </select>-->
                 <a href="#" class="easyui-linkbutton" iconCls="icon-search" onclick="query()">查找</a>
             </form>
             <form id="frm_download" method="post"></form>

@@ -160,7 +160,7 @@ $.extend($.fn.datagrid.methods, {
             }
             $.ajax({
                 type: "POST",
-                url: url_email,
+                url: url,
                 data: {id: selectedRowsID},//传递给服务器的参数
                 success: function (jsonresult) {
                     if (jsonresult.isSuccess == true) {

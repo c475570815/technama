@@ -1,0 +1,14 @@
+{ 
+  "name"         : "redis-pubsub-to-websockets",
+  "description"  : "Watch a redis pubsub channel and broadcast it to websocket clients",
+  "version"      : "0.0.1",
+  "dependencies" : {
+    "redis"     : ">0.7.1",
+    "socket.io" : ">0.8.7"
+  },
+  "repository"   : { 
+    "type" : "git",
+    "url"  : "http://github.com/mnutt/redis-pubsub-to-websockets" 
+  },
+  "engines"      : { "node" : ">=0.4.0" }
+}

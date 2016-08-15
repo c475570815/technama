@@ -123,37 +123,7 @@ class  Record extends Controller
         return implode(',', $id);
     }
 
-    public function sendmail($to, $subject, $body)
-    {
-        vendor("PHPMailer.PHPMailerAutoload");
-        $mail = new \PHPMailer(true);
-        $mail->IsSMTP();
-        $mail->SMTPDebug = 3;
-        $mail->CharSet = 'UTF-8'; //设置邮件的字符编码，这很重要，不然中文乱码
-        $mail->SMTPAuth = true; //开启认证
-        $mail->SMTPSecure = 'ssl';      // 使用TLS加密，也支持ssl
-        $mail->Priority = 3;   // 设置邮件优先级 1高, 3正常（默认）, 5低 
-        $mail->Port = Config::get('THINK_EMAIL.SMTP_PORT');                  // TCP 端口
-        $mail->Host = Config::get('THINK_EMAIL.SMTP_HOST');
-        $mail->Username = Config::get('THINK_EMAIL.SMTP_USER');;
-        $mail->Password = Config::get('THINK_EMAIL.SMTP_PASS');;
-        $mail->AddReplyTo(Config::get('THINK_EMAIL.REPLY_EMAIL'), Config::get('THINK_EMAIL.REPLY_NAME'));//回复地址
-        $mail->From = Config::get('THINK_EMAIL.FROM_EMAIL');
-        $mail->FromName = Config::get('THINK_EMAIL.FROM_NAME');
-        $mail->AddAddress($to);
-        $mail->Subject = $subject;
-        $mail->Body = $body;
-        $mail->WordWrap = 80; // 设置每行字符串的长度
-        //$mail->AddAttachment("f:/test.png"); //可以添加附件
-        $mail->IsHTML(true);
-        if ($mail->Send()) {
-            return true;
-        } else {
-            return false;
-        }
-        $mail->Send();
 
-    }
 
     public function sendmail2()
     {

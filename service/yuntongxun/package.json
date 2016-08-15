@@ -1,0 +1,21 @@
+{
+  "name": "yuntongxun-node",
+  "version": "1.0.2",
+  "description": "云通讯 nodejs-sdk",
+  "main": "yuntongxun.js",
+  "author": {
+    "name": "guowushi"
+  },
+  "license": "ISC",
+  "keywords": [
+    "dreamstudio.top",
+    "云通讯"
+  ],
+  "dependencies": {
+    "lodash": "^3.10.1",
+    "moment": "^2.10.6",
+    "request": "^2.67.0"
+  },
+  "readme": "",
+  "readmeFilename": "README.md"
+}

@@ -38,7 +38,7 @@ var RDS_PORT = 6379,		//端口号
 */
 socket.on('connection', function (ws_client) {
     var redis_client = redis.createClient(RDS_PORT,RDS_HOST,RDS_OPTS);
-    redis_client.subscribe('msg');
+    redis_client.subscribe('sms');
     redis_client.on('message', function (channel, message) {
         // console.log("channel"+channel,message)
         //发短信，并监听发短信的操作的结果，将结果发送给websocket客户端浏览器

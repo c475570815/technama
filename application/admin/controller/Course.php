@@ -15,6 +15,7 @@ use think\View;
 use app\common\model\ScheduleModel;
 use app\common\model\DeptModel;
 use app\common\model\CourseModel;
+use app\common\model\ConfigModel;
 use think\Db;
 use  \think\Controller;
 
@@ -35,9 +36,13 @@ class Course extends Controller
         // 获取系部名称
         $dept = new DeptModel();
         $deptList = $dept->select();
-
+        // 当前学期
+        $model = new ConfigModel();
+        $row = $model->where('cfg_name', 'current_term')->find();
+        // 视图
         $view = new View();
         $view->assign("dept", $deptList);
+        $view->assign("current_term", $row['cfg_term']);
         return $view->fetch('datagrid');
     }
 
@@ -99,8 +104,6 @@ class Course extends Controller
      */
     public function ac1()
     {
-
-
          $model_course= new CourseModel();
         //（1）先从tbl_course 表中查所有记录的条数
         $arr_where=array();
@@ -114,14 +117,14 @@ class Course extends Controller
             $week=$_POST['week'];
             $arr_where= [];
             //print_r($arr_where);
-        }
-        $model_course->where($arr_where);*/
+        }*/
+        $model_course->where($arr_where);
         $total = intval($model_course->count());
 
         // (2) 获取分页信息，设置分页条件
         $page = isset($_POST['page']) ? intval($_POST['page']) : 1;
         $rows = isset($_POST['rows']) ? intval($_POST['rows']) : 10;
-        //$model_course->where($this->getWhere());//重新获取条件
+        $model_course->where($arr_where);//重新获取条件
         $start = ($page - 1) * $rows;
         $model_course->limit($start, $rows);
         // （3）对分页后的数据进行排序
