@@ -132,6 +132,8 @@ $(document).ready(function () {
     websocketinit();
 });
 var socket=null;
+
+
 function websocketinit(){
     socket = io.connect("http://192.168.19.137:8080/",{origin: '*'});
     // socket.set('transports', ['websocket', 'xhr-polling', 'jsonp-polling', 'htmlfile', 'flashsocket']);
