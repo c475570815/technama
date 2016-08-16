@@ -165,6 +165,14 @@ class Schedule extends Controller
                 // 发送email
                 $subject="听课安排";
                 $body="老师，以下听课安排：".$row['teacher'].$row['week'].$row['xing_qi_ji'].$row['section'].$row['class_room'].$row['course_name']."";
+                //  message_json=[
+                //         "teacher_name"=> “张三”,
+//                           "wee"=>  7
+                //]
+//                  json(message_json)
+
+
+
                 sendmail($teacher_mail,$subject,$body);
                // $row['conuncilor']=implode(',',$teacher_name);
                // $list_hand[]=$row;
