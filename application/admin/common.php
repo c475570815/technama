@@ -191,7 +191,7 @@ function netease_sms($mobile='',$params='',$templateid=''){
     return $resArr;
 }
 /**
- * 发送模板短信
+ * yuntongxun.com发送模板短信
  * @param to 手机号码集合,用英文逗号分开
  * @param datas 内容数据 格式为数组 例如：array('Marry','Alon')，如不需替换请填 null
  * @param $tempId 模板Id
@@ -218,7 +218,7 @@ function yuntongxun_sms($to, $datas, $tempId)
     if ($result->statusCode != 0) {
         $ret = ['success' => false, 'message' => $result->statusMsg];
     } else {
-        echo "Sendind TemplateSMS success!<br/>";
+        //echo "Sendind TemplateSMS success!<br/>";
         // 获取返回信息
         $smsmessage = $result->TemplateSMS;
         $ret = ['success' => true, 'message' => $smsmessage->dateCreated.' 消息发送成功！'];

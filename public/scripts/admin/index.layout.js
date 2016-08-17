@@ -103,6 +103,7 @@ $(document).ready(function () {
         return false;
     });
     //日历
+    var url_event="/index.php/admin/event/getevents";
     $('#calendar').fullCalendar({
         header: {
             left: 'prev,next today',
@@ -113,18 +114,59 @@ $(document).ready(function () {
         editable: true,
         eventLimit: true, // allow "more" link when too many events
         events: {
-            url: 'php/get-events.php',
+            url: url_event,
             type: 'POST',
             custom_param1: 'something',
             custom_param2: 'somethingelse',
             color: 'yellow',   // a non-ajax option
             textColor: 'black', // a non-ajax option
             error: function() {
-                $('#script-warning').show();
+              //  $('#script-warning').show();
             }
         },
-        loading: function(bool) {
-            $('#loading').toggle(bool);
+       loading: function(bool) {
+           // $('#loading').toggle(bool);
         }
     });
+
+    websocketinit();
 });
+var socket=null;
+
+
+function websocketinit(){
+    socket = io.connect("http://192.168.19.137:8080/",{origin: '*'});
+    // socket.set('transports', ['websocket', 'xhr-polling', 'jsonp-polling', 'htmlfile', 'flashsocket']);
+    //  io.set('origins', '*:*');
+    socket.on('message', function(data) {
+        var div = $("<div></div>");
+         div.text(data);
+        $("#message").prepend(div);
+    });
+    socket.on('connect', function(data) {
+        console.log("Connected to Server");
+        global.reconnectFailCount = 0;
+    });
+    socket.on('connect_failed', function(data) {
+        console.log("connect_failed to Server");
+    });
+    socket.on('error', function(data) {
+        console.log("error");
+        //alert("连接服务器失败！！！");
+    });
+    socket.on('reconnecting', function (data) {
+        console.log("reconnecting");
+        global.reconnectFailCount++;
+        if (global.reconnectFailCount >= 6) {
+            alert("连接服务器失败，请检查您当前的网络");
+        }
+    });
+    socket.on('reconnect', function (data) {
+        console.log("reconnect");
+        global.reconnectFailCount--;
+    });
+    socket.on('disconnect', function (data) {
+        console.log("disconnect");
+    });
+}
+

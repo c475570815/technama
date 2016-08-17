@@ -18,6 +18,7 @@
     <script src='/static/fullcalendar-2.9.0/lib/moment.min.js'></script>
     <script src='/static/fullcalendar-2.9.0/fullcalendar.min.js'></script>
     <script src='/static/fullcalendar-2.9.0/lang/zh-cn.js'></script>
+    <script src="http://192.168.19.137:8080/socket.io/socket.io.js"></script>
     <style>
         .head a:visited{ color: #CCE6FF;text-decoration: none }
         .head a:hover{ color: #ffffff;text-decoration: none }
@@ -39,7 +40,7 @@
 </div>
 <!--  South  -->
 <div data-options="region:'south',iconCls:'icon-log',split:true,hideCollapsedContent:false" title="操作记录" style="height:100px;padding:10px;">
-
+    <div id="message"></div>
 </div>
 <!--  East  -->
 <div id="bwl" data-options="region:'east',iconCls:'icon-detail',split:true,hideCollapsedContent:false" title="备忘" style="width:120px;padding:10px;">
@@ -128,6 +129,7 @@
                 <!--&lt;!&ndash;添加学期&ndash;&gt;-->
             </div>
             <div   title="系统参数" style="width:35%;margin-left:10px;padding:10px;background:#fafafa;float: left;border: dotted cornflowerblue 1px" >
+                <?php echo date("YmdHis");?>
                 当前学期：{$current_term} <a href="#">我要修改</a>
             </div>
 

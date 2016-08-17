@@ -175,8 +175,20 @@ $(document).ready(function () {
     //当整个页面全部载入后才执行
     initGrid(grid_id, url, columns_def);
    // listen(grid, url, columns_listen);
+    // 学期列表初始化
+    initTermCombobox();
 });
 
+function initTermCombobox(){
+    var dept=$("input[name=dict\\[term\\]]").val();
+    $("input[name=dict\\[term\\]]").combobox({
+        url: '/index.php/admin/term/getterm',
+        method:'POST',
+        valueField: 'term_name',
+        textField: 'term_name',
+        limitToList:false
+    });
+}
 /**
  * 查询
  */

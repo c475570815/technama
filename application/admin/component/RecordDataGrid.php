@@ -37,10 +37,10 @@ class RecordDataGrid extends   \app\common\DataGrid
     {
         // 获取用户提交的查找数据.构造查询语句
         $arr_where=array();
-        $request = request();
-        $req_method=$request->method();
-        if($req_method=='POST' && $request->param('dict') ){
-            $dict=$request->param('dict');//获取表单值
+
+        if( isset($_POST['dict'] )) {
+
+            $dict=$_POST['dict'];//获取表单值
             $model=$this->getModel();
             $arr_where= $model->filer($dict); //根据表单值，产生默认的Where数组
         }

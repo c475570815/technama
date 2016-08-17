@@ -193,14 +193,15 @@ class Schedule extends Controller
                 $teacher_mail=array();
                 foreach ($arr as $teacher_no){
                     $teacher= TeacherModel::get(['teach_id' =>$teacher_no]);
-                    if($teacher['email_validated']){
-                        $teacher_mail[]=$teacher['email'];
+                    if($teacher['mobile_validated']){
+                        $teacher_mail[]=$teacher['teach_phone'];
+                        yuntongxun_sms('18942891954',['aaa','bbb'],1);
                     }
                 }
                 // $row['conuncilor']=implode(',',$teacher_name);
                 // $list_hand[]=$row;
             }
-            yuntongxun_sms('18942891954',['aaa','bbb'],1);
+
         }
     }
 
