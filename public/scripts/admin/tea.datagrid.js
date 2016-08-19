@@ -46,14 +46,19 @@ function initGrid(grid_id,url_get,columns_def){
 //当整个页面全部载入后才执行
 $(document).ready(function () {
     initGrid(grid_id,url_get,columns_def);
+    // comboxtree
     $(cc).combotree({
         method: 'post',
+        url:"/index.php/admin/dept/deptTree",
         required: true,
         multiple:true,
         lines:true,
-        panelWidth:300
+        panelWidth:300,
+        panelHeight:400
     });
-    load2();
+    // $.getJSON("/index.php/admin/Tea/treejosn",function(data) {
+    //     $(cc).combotree('loadData', data);
+    // });
     //console.log(111111111111);
 });
 /**
@@ -142,14 +147,7 @@ function  down() {
     var url_down="ftp://10.127.98.242/static/picture/logo.png"
     location.href = url_down;
 }
-/**
- * 加载下拉树的josn
- */
-function  load2() {
-   $.getJSON("/index.php/admin/Tea/treejosn",function(data){
-        $(cc).combotree('loadData',data);
-});
-}
+
 /**
  *  下载
  */
