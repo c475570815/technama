@@ -132,7 +132,7 @@ class Index extends Controller
 
         for($i=1;$i<1000;$i++){
 //            $redis->lPush('usr', "message $i from server");
-            $redis->publish('msg', "message $i from server");
+            $redis->publish('first', "message $i from server");
 
         }
 

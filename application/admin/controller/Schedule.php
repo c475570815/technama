@@ -147,39 +147,43 @@ class Schedule extends Controller
     }
 
     public function email(){
-        $current_table=new ScheduleModel();
+        $current_table = new ScheduleModel();
         if (isset($_POST['id'])) {
             $id = $_POST['id'];
-            $list = $current_table->where("id","in",$id)->select();
-            $list_hand=array();
-            foreach ($list as $row){
-                $conuncilor=$row['conuncilor'];
-                $arr=explode('|',$conuncilor) ;
-                $teacher_mail=array();
-                foreach ($arr as $teacher_no){
-                    $teacher= TeacherModel::get(['teach_id' =>$teacher_no]);
-                    if($teacher['email_validated']){
-                        $teacher_mail[]=$teacher['email'];
+
+            $list = $current_table->where("id", "in", $id)->select();
+            $list_hand = array();
+            foreach ($list as $row) {
+//                $teacher_no = $row['teacher_no'];
+//                $teacher = TeacherModel::get(['teach_id' => $teacher_no]);
+//                $teacher_mail[] = $teacher['email'];
+                // 取听课教师邮件
+                $arr = explode('|', $row['conuncilor']);
+                $teacher_mail = array();
+                foreach ($arr as $teacher_no) {
+                    $teacher = TeacherModel::get(['teach_id' => $teacher_no]);
+                    if ($teacher['email_validated']) {
+//                        $teacher_mail[] = $teacher['email'];
+                        $teacher_name = $teacher['teach_name'];
+                        // 发送email
+                        $subject = "听课安排";
+                        $body = "$teacher_name 老师，以下听课安排：" . $row['teacher'] . $row['week'] ."-". $row['xing_qi_ji'] ."-". $row['section'] ." 教室:". $row['class_room'] ." 课程:". $row['course_name'] . "";
+                        $message_json =  [
+                            'name'=>$row['teacher'],   //被听课教师
+                            'toname'=>$teacher_name,  //听课教师
+                            'to' => $teacher['email'], // 收件列表，多个联系人逗号分开
+                            'subject' => $subject,      // 标题
+                            'html' => $body         // html 内容
+                        ];
+                        $redis = new \Redis();
+                        $redis->connect('127.0.0.1', 6379);
+                        $redis->publish('email', json_encode($message_json,JSON_UNESCAPED_UNICODE));
                     }
                 }
-                // 发送email
-                $subject="听课安排";
-                $body="老师，以下听课安排：".$row['teacher'].$row['week'].$row['xing_qi_ji'].$row['section'].$row['class_room'].$row['course_name']."";
-                //  message_json=[
-                //         "teacher_name"=> “张三”,
-//                           "wee"=>  7
-                //]
-//                  json(message_json)
 
-
-
-                sendmail($teacher_mail,$subject,$body);
-               // $row['conuncilor']=implode(',',$teacher_name);
-               // $list_hand[]=$row;
             }
         }
     }
-
     public function sms(){
 
         $current_table=new ScheduleModel();

@@ -8,6 +8,7 @@
 
 namespace app\admin\controller;
 use think\Controller;
+use app\common\model\TeacherModel;
 use app\common\model\TeaModel;
 use app\admin\TeaDataGrid;
 use app\common\model\DeptModel;
@@ -278,5 +279,32 @@ class Tea extends Controller
         $result=Db::execute("TRUNCATE tbl_teacher");
         $ret = ['success' => 'true', 'message' => '清除成功！'];
         return json($ret);
+    }
+    public function email(){
+        $current_table = new TeacherModel();
+        if (isset($_POST['id'])) {
+            $id = $_POST['id'];
+            $list = $current_table->where("teach_id", "in", $id)->select();
+            foreach ($list as $row) {
+                // 取听课教师邮件
+                    if ($row['email_validated']) {
+                        $teacher_name = $row['teach_name'];
+                        // 发送email
+                        $subject = "听课安排";
+                        $body = $teacher_name;
+                        $message_json =  [
+                            'year'=>'2016',  //听课教师
+                            'month' => '7', // 收件列表，多个联系人逗号分开
+                            'day' => '19',      // 标题
+                            'hour' => '11' ,        // html 内容
+                            'min'=>'21',
+                            'sec'=>'0',
+                        ];
+                        $redis = new \Redis();
+                        $redis->connect('127.0.0.1', 6379);
+                        $redis->publish('email', json_encode($message_json,JSON_UNESCAPED_UNICODE));
+                    }
+            }
+        }
     }
 }

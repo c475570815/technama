@@ -248,6 +248,8 @@ function removeall(){
             }
         });
     });
+}
+
 function printGrid(){
     // $(grid_id).print();
     window.open("/index.php/admin/classes/printgrid","_blank")
@@ -260,5 +262,35 @@ function printGrid(){
      });*/
 
 }
-
+function email(){
+    //
+    var url_email="/index.php/admin/tea/email";
+    var checkedItems = $(grid_id).datagrid('getChecked');
+    if (checkedItems.length == 0) {
+        $.messager.alert("提示", "请选择需要操作的行！", "info");
+        return;
+    }
+    //将选中行的主健值放到一个数组中
+    var selectedRowsID = [];
+    $.each(checkedItems, function (index, item) {
+        selectedRowsID.push(this.teach_id);
+    });
+    $.messager.confirm('提示', '是否发送电邮通知?', function (ans) {
+        if (!ans) {
+            return;
+        }
+        $.ajax({
+            type: "POST",
+            url: url_email,
+            data: {id: selectedRowsID},//传递给服务器的参数
+            success: function (jsonresult) {
+                //if (jsonresult.isSuccess == true) {
+                //    $.messager.alert("提示", jsonresult.message, "info");
+                //} else {
+                //    $.messager.alert("提示", jsonresult.message, "info");
+                //    return;
+                //}
+            }
+        });
+    });
 }
