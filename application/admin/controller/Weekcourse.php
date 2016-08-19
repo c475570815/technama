@@ -52,13 +52,14 @@ class WeekCourse extends Controller
 
     /**
      * 根据周次，产生周课表
-     * @param $week
+     * @param $week  当前周
      */
     public function init($week)
     {
         // 获取所有课表
         $course_model = new CourseModel();
         $courses = $course_model->select();
+        $arr_weekcouse=array();
         foreach ($courses as $course) {
             if (($week % 2 == 0 && $course['single_double'] == '单') || ($week % 2 == 1 && $course['single_double'] == '双')) {
                 // 单双周不同
@@ -86,8 +87,10 @@ class WeekCourse extends Controller
                         $weekcouse['onduty'] = '否';
                     }
 //                    $weekcouse['onduty'] =$this->onduty($course['teach_id'], $course['course_name'], $course['class_name'],$week , $course['xing_qi_ji'], $course['section']);
-                    $weekcouse['check_times'] = $this->checktimes($course['teach_id'], $course['course_name'], $course['class_name'], $course['week'], $course['xing_qi_ji'], $course['section']);//已被听课次数
-                    $weekcouse['status'] = $this->isPlaned($course['teach_id'], $course['course_name'], $course['class_name'], $course['week'], $course['xing_qi_ji'], $course['section'])>0?"已安排":"未安排";// 听课情况
+                    //已被听课次数
+                    $weekcouse['check_times'] = $this->checktimes($course['teach_id'], $course['course_name'], $course['class_name'], $course['week'], $course['xing_qi_ji'], $course['section']);
+                    // 已安排的听课情况
+                    $weekcouse['status'] = $this->isPlaned($course['teach_id'],  $course['week'], $course['xing_qi_ji'], $course['section'])>0?"已安排":"未安排";
                     $arr_weekcouse[] = $weekcouse;
                 }
             }
@@ -96,9 +99,58 @@ class WeekCourse extends Controller
         Db::execute("TRUNCATE tbl_course_week");
         $mo = new WeekcourseModel();
        // $mo->where('week', $week)->delete();
-        $mo->saveAll($arr_weekcouse);
+        if($arr_weekcouse){
+            $mo->saveAll($arr_weekcouse);
+        }
+
     }
 
+    /**
+     * 返回查询出来的课程表
+     * @return \think\Response|\think\response\Json|\think\response\Jsonp|\think\response\Redirect|\think\response\View|\think\response\Xml
+     */
+    public function getlist()
+    {
+        //（1）先从tbl_course 表中查所有记录的条数
+        $model_course = new WeekcourseModel();
+        // (2) 筛选条件
+        $arr_where=array();
+        if (isset($_POST['dict'])) {
+            $dict= $_POST['dict'];
+            $current_week = $dict['week'];
+            $arr_where=$model_course->filer($dict);
+            //$result=Db::execute("TRUNCATE tbl_course_week");
+            // $model_course->where( $arr_where);
+            $this->init($current_week);//
+        }
+
+        $model_course->where( $arr_where);
+        //统计记录数
+        $total = intval($model_course->count());
+        $model_course->where( $arr_where);
+        // (2) 获取分页信息，设置分页条件
+        $page = isset($_POST['page']) ? intval($_POST['page']) : 1;
+        $rows = isset($_POST['rows']) ? intval($_POST['rows']) : 10;
+        //$model_course->where($this->getWhere());//重新获取条件
+        $start = ($page - 1) * $rows;
+        $model_course->limit($start, $rows);
+        // （3）对分页后的数据进行排序
+        if (isset($_POST['sort']) && isset($_POST['order'])) {
+            $sort = $_POST['sort'];
+            $order = $_POST['order'];
+            $model_course->order($sort, $order);
+        }
+        // (4) 根据分页条件，排序条件进行数据查询
+        $course_list = $model_course->select();
+        Db::listen(function($sql,$time,$explain){
+            // 记录SQL
+            //echo $sql. ' ['.$time.'s]';
+            // 查看性能分析结果
+            //dump($explain);
+        });
+        // （6）将数据进行JSON编码
+        return json(['total' => $total, 'rows' => $course_list]);
+    }
     /**
      * 教师在指定周、日、节的听课状态
      * @param $teacherid
@@ -198,16 +250,16 @@ class WeekCourse extends Controller
      * @param $section
      * @return int
      */
-    public function isPlaned($teacherid, $course, $clazz, $week, $weekday, $section)
+    public function isPlaned($teacherid,  $week, $weekday, $section)
     {
         $model = new ScheduleModel();
         $map = array();
-        $map['teacher_no'] = $teacherid;
-/*        $map['course_name'] = $course;
-        $map['class_name'] = $clazz;
-        $map['week'] = $week;
-        $map['xing_qi_ji'] = $weekday;
-        $map['section'] = $section;*/
+        $map['teach_id'] = $teacherid;
+        /*  $map['course_name'] = $course;
+          $map['class_name'] = $clazz;*/
+          $map['week'] = $week;
+          $map['xing_qi_ji'] = $weekday;
+          $map['section'] = $section;
         return $model->where($map)->count();
     }
 
@@ -310,7 +362,7 @@ class WeekCourse extends Controller
     public function getScheduleById($teacher_id)
     {
         $model_techer = new ScheduleModel();
-        return $model_techer->where('teacher_no', $teacher_id)->find();
+        return $model_techer->where('teach_id', $teacher_id)->find();
     }
 
     public function getAdjustmentById($teacher_id)
@@ -319,54 +371,9 @@ class WeekCourse extends Controller
         return $model_techer->where('teach_id', $teacher_id)->find();
     }
 
-    /**
-     * 返回本周的课程表
-     * @return \think\Response|\think\response\Json|\think\response\Jsonp|\think\response\Redirect|\think\response\View|\think\response\Xml
-     */
-    public function getlist()
-    {
-        //（1）先从tbl_course 表中查所有记录的条数
-        $model_course = new WeekcourseModel();
-
-        // (2) 筛选条件
-        $arr_where=array();
-        if (isset($_POST['dict'])) {
-            $dict= $_POST['dict'];
-            $current_week = $dict['week'];
-            $arr_where=$model_course->filer($dict);
-            //$result=Db::execute("TRUNCATE tbl_course_week");
-           // $model_course->where( $arr_where);
-            $this->init($current_week);
-        }
-        $model_course->where( $arr_where);
-        $total = intval($model_course->count());
-        $model_course->where( $arr_where);
-        // (2) 获取分页信息，设置分页条件
-        $page = isset($_POST['page']) ? intval($_POST['page']) : 1;
-        $rows = isset($_POST['rows']) ? intval($_POST['rows']) : 10;
-        //$model_course->where($this->getWhere());//重新获取条件
-        $start = ($page - 1) * $rows;
-        $model_course->limit($start, $rows);
-        // （3）对分页后的数据进行排序
-        if (isset($_POST['sort']) && isset($_POST['order'])) {
-            $sort = $_POST['sort'];
-            $order = $_POST['order'];
-            $model_course->order($sort, $order);
-        }
-        // (4) 根据分页条件，排序条件进行数据查询
-        $course_list = $model_course->select();
-        Db::listen(function($sql,$time,$explain){
-            // 记录SQL
-            //echo $sql. ' ['.$time.'s]';
-            // 查看性能分析结果
-            //dump($explain);
-        });
-        // （6）将数据进行JSON编码
-        return json(['total' => $total, 'rows' => $course_list]);
-    }
 
     /**
-     * 获取停课人列表（1.是督导，2.没课）
+     * 获取听课人列表（1.是督导，2.没课）
      * @return \think\Response|\think\response\Json|\think\response\Jsonp|\think\response\Redirect|\think\response\View|\think\response\Xml
      */
     public function getListeners()
@@ -379,6 +386,9 @@ class WeekCourse extends Controller
             $week = $_POST['week'];
             $weekday = $_POST['xing_qi_ji'];
             $section = $_POST['section'];
+        }
+        if (isset($_POST['teacher_id'])) {
+            $teacher_id = $_POST['teacher_id'];
         }
         $model_course->where('conuncilor', '是');
         $total = intval($model_course->count());
@@ -405,8 +415,8 @@ class WeekCourse extends Controller
             $current['dept_name'] = $row['dept_name'];
             $current['dept_name'] = $row['dept_name'];
             $current['teach_name'] = $row['teach_name'];
-
             $current['has_lesson'] = $this->hasLesson($row['teach_id'], $week, $weekday, $section) ? '是' : '否';
+            $current['has_listened'] = $this->hasListened($teacher_id,$row['teach_id']) ? '是' : '否';
             $current['checked_times'] = $this->checkedTimes($row['teach_id']);
             $arr[] = $current;
         }
@@ -414,6 +424,25 @@ class WeekCourse extends Controller
         return json(['total' => $total, 'rows' => $arr]);
     }
 
+    /**
+     * 判断老师是否被一个督导听过
+     * @param $teacher
+     * @param $listener
+     * @return bool
+     */
+     private function hasListened($teacher,$listener){
+         $model = new RecordModel();
+         $map = array();
+         $map['teacher_id'] = $teacher;
+         $map['listener_no'] = $listener;
+
+         $count = $model->where($map)->count();
+         if ($count > 0) {
+             return true;
+         } else {
+             return false;
+         }
+     }
     /**
      * 返回督导已安排的听课次数
      * @param $teacher_no
@@ -433,23 +462,52 @@ class WeekCourse extends Controller
     {
         $model_course = new CourseModel();
         $model_schedule = new ScheduleModel();
+
         //(1) 获取POST数据
-        $course_id = $_POST['courseid'];
+        if(isset($_POST['lesson'])){
+            $lesson = $_POST['lesson'];
+        }
         $teachers = $_POST['teachers'];
         //（2）根据编号从Courses表中获取详细的课表信息
-        $listen_teach_information = $model_course->where('c_id', $course_id)->find();
+//        $listen_teach_information = $model_course->where('c_id', $course_id)->find();
 
         // (3) 向tbl_schedule中添加数据
-        $techer_id = $listen_teach_information['teach_id'];
-        $model_schedule->where("teacher_no", $techer_id)->setField('conuncilor', implode('|', $teachers));
+//        $techer_id = $listen_teach_information['teach_id'];
+        $model_schedule->term=$lesson['term'];
+        $model_schedule->dept_name=$lesson['dept_name'];
+        $model_schedule->teach_id=$lesson['teach_id'];
+        $model_schedule->teach_name=$lesson['teach_name'];
+        $model_schedule->week=$lesson['week'];
+        $model_schedule->xing_qi_ji=$lesson['xing_qi_ji'];
+        $model_schedule->section=$lesson['section'];
+        $model_schedule->class_name=$lesson['class_name'];
+        $model_schedule->class_room=$lesson['class_room'];
+        $model_schedule->course_name=$lesson['course_name'];
+        $model_schedule->conuncilor=implode('|', $teachers);
+
+        $result=$model_schedule->save();
+        if($result){
+            $ret = ['success' => 'true', 'message' => '清除成功！'];
+        }else{
+            $ret = ['success' => 'false', 'message' => '清除失败！'];
+        }
+        return json($ret);
+//        $model_schedule->where("teacher_no", $techer_id)->setField('conuncilor', );
     }
 
+    /**
+     * 清除所有记录
+     * @return \think\Response|\think\response\Json|\think\response\Jsonp|\think\response\Redirect|\think\response\View|\think\response\Xml
+     */
     public function removeall()
     {
-        //$mo = new ClassesModel();
-        //$count = $mo->where("1=1")->delete();//如果不接条件，则无法删除
-        $result = Db::execute("TRUNCATE tbl_course_week");
-        $ret = ['success' => 'true', 'message' => '清除成功！'];
+        $result = Db::execute("TRUNCATE tbl_course_week;");
+        if($result){
+            $ret = ['success' => 'true', 'message' => '清除成功！'];
+        }else{
+            $ret = ['success' => 'false', 'message' => '清除失败！'];
+        }
+
         return json($ret);
     }
 

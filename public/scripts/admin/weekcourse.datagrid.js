@@ -11,6 +11,7 @@ var columns_def = [[
     {field: 'term', title: '学期', sortable: true},
     {field: 'class_name', title: '班级名称', sortable: true},
     {field: 'course_name', title: '课程名称', sortable: true},
+    {field: 'class_room', title: '教室', sortable: true},
     {field: 'dept_name', title: '开课单位', sortable: true},
     {field: 'teach_name', title: '教师', sortable: true},
     {field: 'teach_id', title: '教师编号', sortable: true},
@@ -31,7 +32,12 @@ var columns_def = [[
 
 ]];
 
-
+/**
+ *
+ * @param grid_id
+ * @param url
+ * @param columns_def
+ */
 function initGrid(grid_id, url, columns_def) {
     $(grid_id).datagrid({
             url: url,
@@ -71,6 +77,7 @@ $(document).ready(function () {
 
     initGrid(grid_id, url, columns_def);
    // listen(grid, url, columns_listen);
+    //听课对话框
     $('#dialog_listen').window({
         width:600,
         height:400,
@@ -83,6 +90,7 @@ $(document).ready(function () {
         maximizable:false
     });
 });
+
 function formatOptColumn(val,row,index){
     var updateUrl = url_update + "/pk/" +row.c_id;
     var opt_formatter="<a href='#' target='_self'  onclick='selectTech("+ index + ")' title='编辑当前记录'> 听课 </a>";
@@ -136,7 +144,8 @@ function selectTech(id) {
     var param={
         'week':selectedRow.week,
         'xing_qi_ji':selectedRow.xing_qi_ji,
-        'section':selectedRow.section
+        'section':selectedRow.section,
+        'teacher_id':selectedRow.teach_id
     };
     // current_row_id=id;
     // 显示所有的督导人员
@@ -145,11 +154,11 @@ function selectTech(id) {
     var columns_listen = [[
         {field: 'chkbox', checkbox: true},
         {field: 'dept_name', title: '部门', sortable: true},
-
         {field: 'teach_id', title: '教师编号', sortable: true},
         {field: 'teach_name', title: '教师', sortable: true},
         {field: 'has_lesson', title: '是否有课', sortable: true},
         {field: 'checked_times', title: '听课次数', sortable: true},
+        {field: 'has_listened', title: '已听过', sortable: true},
         {field: 'operation', title: '操作', formatter:function(val,row,index) {
             var opt_formatter="<a href='#' target='_self'   title='详情'> 详情 </a>";
             return opt_formatter;
@@ -178,7 +187,7 @@ function listenGridInit(grid, url, columns_listen,param) {
     });
 }
 /**
- * 查询
+ * 查询周课表
  */
 function query() {
     var search_filter = $(search_form_id).serializeJson();
@@ -193,3 +202,61 @@ function query() {
 function load(){
 
 }
+/*
+ *  提交听课人
+ * */
+function affirm() {
+    // 获取周课表的当前行
+    var selectedRow = $(grid_id).datagrid('getSelected');
+    // var param = {
+    //     'teach_id': selectedRow.teach_id,
+    //     'class_name': selectedRow.class_name,
+    //     'course_name': selectedRow.course_name,
+    //     'week': selectedRow.week,
+    //     'xing_qi_ji': selectedRow.xing_qi_ji,
+    //     'section': selectedRow.section,
+    //     'term':selectedRow.term
+    // };
+    //(1)获取听课人网格中选中行的数量
+    var checkedItems = $('#listen').datagrid('getChecked');
+    //(2) 判断是否选择的是两条记录
+    if (checkedItems.length != 2) {
+        $.messager.alert("提示", "请选择2位听课教师！", "info");
+        return;
+    }
+    //(3) 获取听课人的工号
+    var teacher_ids = [];
+    $.each(checkedItems, function (index, item) {
+        teacher_ids.push(item.teach_id);
+    });
+    //（4） 提示是否安排指定的听课人
+    $.messager.confirm('提示', '是否安排指定听课人？', function (r) {
+        if (!r) {
+            return;
+        } else {
+            // （5）将听课人数据，当前行数据AJAX提交到服务器
+            var params = {
+                'lesson': selectedRow,
+                'teachers': teacher_ids
+            };
+            $.ajax({
+                type: "POST",
+                dataType: 'json',
+                url: "/index.php/admin/weekcourse/addlisteners",
+                data: params,//传递给服务器的参数
+                success: function (jsonresult) {
+                    reload();//放在提示消息之前
+                    if (jsonresult.success == 'true') {
+                        $.messager.alert("提示", '安排指定听课人成功！', "info");
+                        // (6)通知 课程表Grid 刷新数据
+                    } else {
+                        $.messager.alert("提示", '安排指定听课人失败', "info");
+                        return;
+                    }
+                }
+            });
+
+        }
+    });
+}
+

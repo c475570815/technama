@@ -36,7 +36,7 @@ function initGrid(grid,url,columns_def){
         method:'post',
         title:"详细信息",
         idField:'id',
-        singleSelect:true,
+        singleSelect:false,
         collapsible:false,
         pagination:true,
         rownumbers:true,
