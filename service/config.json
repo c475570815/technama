@@ -1,0 +1,10 @@
+{
+  "qqmail":{
+    "service": "QQ",
+    "auth":{
+    "user": "1058759007@qq.com",
+    "pass": "kfaddnfondiwbbdb"
+    }
+  },
+  "from":"1058759007@qq.com"
+}
