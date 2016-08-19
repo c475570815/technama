@@ -19,7 +19,7 @@
     <form id="frm_search" action="http://10.127.98.246/index.php/admin/dict/ac1" method="post">
     显示值: <input id="v" class="easyui-text" style="width:110px" name="dict[dict_value]">
     类别:
-    <select id="a" class="easyui-combobox" panelHeight="auto" style="width:100px" name="dict[dict_category]">
+    <select id="a" class="easyui-combobox"  style="width:100px" name="dict[dict_category]">
         <option value="全部" selected>全部</option>
         {volist name="dict_category" id="vo"}
         <option value="{$vo.dict_category}">{$vo.dict_category}</option>

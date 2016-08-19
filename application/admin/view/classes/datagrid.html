@@ -22,7 +22,7 @@
             <form id="frm_search" action="" method="post">
                 系部:
                 <!--<input  class="easyui-text"  style="width:200px" name="dict[dept_name]" />-->
-                <select id="a" class="easyui-combobox" panelHeight="auto" style="width:200px" name="dict[dept_name]">
+                <select id="a" class="easyui-combobox" style="width:200px" name="dict[dept_name]">
                     <option name="all" value="全部" selected>全部</option>
                     {volist name="dept" id="vo"}
                     <option value="{$vo.dept_name}">{$vo.dept_name}</option>

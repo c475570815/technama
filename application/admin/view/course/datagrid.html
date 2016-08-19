@@ -18,7 +18,7 @@
             <form id="frm_search" action="" method="post">
                 学期: <input  style="width:110px" name="dict[term]"  value="{$current_term?$current_term:''}">
                 系部:
-                <select id="a" class="easyui-combobox" panelHeight="auto" style="width:200px" name="dict[dept_name]">
+                <select id="a" class="easyui-combobox"  style="width:200px" name="dict[dept_name]">
                     <option value="全部" selected>全部</option>
                     {volist name="dept" id="vo"}
                     <option value="{$vo.dept_name}">{$vo.dept_name}</option>
