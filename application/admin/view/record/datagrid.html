@@ -20,7 +20,7 @@
             <form id="frm_search" action="" method="post">
                 学期: <input  style="width:110px" name="dict[term]" value="{$current_term?$current_term:''}">
                 系部:
-                <select id="a" class="easyui-combobox" panelHeight="auto" style="width:200px" name="dict[dept_name]">
+                <select id="a" class="easyui-combobox"  style="width:200px" name="dict[dept_name]">
                     <option value="全部" selected>全部</option>
                     {volist name="dept" id="vo"}
                     <option value="{$vo.dept_name}">{$vo.dept_name}</option>
@@ -41,9 +41,9 @@
     <div data-options="region:'center'" border="false" style="padding:10px;">
     <!-- 操作工具栏 -->
     <div id="editToolbar" style="clear: both">
-        <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true" onclick="edit()">编辑</a>
-        <a href="http://10.127.98.246/index.php/admin/classes/add" class="easyui-linkbutton"
-           data-options="iconCls:'icon-add',plain:true">添加</a>
+        <!--<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true" onclick="edit()">编辑</a>-->
+        <!--<a href="http://10.127.98.246/index.php/admin/classes/add" class="easyui-linkbutton"-->
+           <!--data-options="iconCls:'icon-add',plain:true">添加</a>-->
         <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true" onclick="removeRecord()" >删除</a>
         <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-download',plain:true" onclick="exportXls()">导出</a>
         <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-print',plain:true" onclick="printGrid()">打印</a>

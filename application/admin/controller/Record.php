@@ -205,4 +205,20 @@ class  Record extends Controller
         }
         return json($ret);
     }
+
+    /**
+     * 删除记录
+     * @return \think\Response|\think\response\Json|\think\response\Jsonp|\think\response\Redirect|\think\response\View|\think\response\Xml
+     */
+    public function remove(){
+        $id=$_POST['id'];
+        $mo=new RecordModel();
+        $count= $mo->where('id','in',$id)->delete();
+        if($count>0){
+            $ret=['success'=>'true','message'=>'删除成功,共删除'.$count.'条记录'];
+        }else{
+            $ret=['success'=>'false','message'=>'删除失败！'];
+        }
+        return json($ret);
+    }
 }

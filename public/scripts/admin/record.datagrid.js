@@ -8,10 +8,10 @@ var grid_id = '#datagrd';
 var search_form_id="#frm_search";
 var download_form_id="#frm_download";
 var url_get = '/index.php/admin/record/getlist';
-var url_remove = '/index.php/admin/classes/remove';
+var url_remove = '/index.php/admin/record/remove';
 var url_update = '/index.php/admin/classes/update';
 var url_export = '/index.php/admin/classes/download';
-var pk_field = 'class_name';
+var pk_field = 'id';
 var grid_options;
 var columns_def = [[
     {field: 'chkbox', checkbox: true},
@@ -101,7 +101,7 @@ function removeRecord() {
     //将数组中的主健值放到一个数组中 ,['软件1','网络1']
     var removeID = [];
     $.each(checkedItems, function (index, item) {
-        removeID.push(item.pk_field);
+        removeID.push(item.id);
     });
     $.messager.confirm('提示', '是否删除选中数据?', function (r) {
         if (!r) {
@@ -114,10 +114,21 @@ function removeRecord() {
             data: {id: removeID},//传递给服务器的参数
             success: function (jsonresult) {
                 reload();
-                if (jsonresult.isSuccess == true) {
+                // show message window on top center
+                // $.messager.show({
+                //     title:'提示',
+                //     msg:jsonresult.message,
+                //     showType:'show',
+                //     style:{
+                //         right:'',
+                //         top:document.body.scrollTop+document.documentElement.scrollTop,
+                //         bottom:''
+                //     }
+                // });
+                if (jsonresult.success == true) {
                     $.messager.alert("提示", jsonresult.message, "info");
                 } else {
-                    $.messager.alert("提示", jsonresult.message, "info");
+                    $.messager.alert("提示", jsonresult.message, "error");
                     return;
                 }
             }
