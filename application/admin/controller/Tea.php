@@ -116,53 +116,7 @@ class Tea extends Controller
         return json($deptList);
     }
 
-    /**
-     * 返回部门表中树状图josn
-     * @return string  json格式数据
-     * [{
-            "id":1,
-            "text":"My Documents",
-            "children":[{
-                "id":11,
-                "text":"Photos",
-                "state":"closed",
-                "children":[{
-                "id":111,
-                "text":"Friend"
-                },{
-                "id":112,
-                "text":"Wife"
-                },{
-                "id":113,
-                "text":"Company"
-                }]
-    }]
-     *
-     */
-    public   function  treejosn(){
-        $dept=new DeptModel();
-        $de=$dept->field('dept_name,dept_id')->select();
-        $tree_root=array(
-            'id'=>0,
-            'state'=>'closed',
-            'text'=>'全部系部',
-            'checked'=>'true'
-        );
 
-        $childrens=array();
-        foreach($de as $current_dept){
-            $child=array(
-                'id'=>$current_dept['dept_id'],
-                'text'=>$current_dept['dept_name'],
-                'iconCls'=>"ico-blank"
-            );
-            $childrens[]=$child;
-        }
-        $tree_root['children']= $childrens;
-
-        return json([$tree_root]);
-
-    }
     /**
      * 跳转打印a
      * @return \think\Response|\think\response\Json|\think\re
