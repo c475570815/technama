@@ -124,8 +124,8 @@ function sendmail($to, $subject, $body)
     $mail->Priority = 3;   // 设置邮件优先级 1高, 3正常（默认）, 5低 
     $mail->Port = config('THINK_EMAIL.SMTP_PORT');                  // TCP 端口
     $mail->Host = config('THINK_EMAIL.SMTP_HOST');
-    $mail->Username = config('THINK_EMAIL.SMTP_USER');;
-    $mail->Password = config('THINK_EMAIL.SMTP_PASS');;
+    $mail->Username = config('THINK_EMAIL.SMTP_USER');
+    $mail->Password = config('THINK_EMAIL.SMTP_PASS');
     $mail->AddReplyTo(config('THINK_EMAIL.REPLY_EMAIL'), config('THINK_EMAIL.REPLY_NAME'));//回复地址
     $mail->From = config('THINK_EMAIL.FROM_EMAIL');
     $mail->FromName = config('THINK_EMAIL.FROM_NAME');
