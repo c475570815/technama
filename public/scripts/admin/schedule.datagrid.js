@@ -14,8 +14,7 @@ var columns_def=[[
     {field:'section',title:'节次',sortable:true},
     {field:'class_name',title:'班级名称',sortable:true},
     {field:'class_room',title:'班级教室',sortable:true},
-    {field:'teach_id',title:'教师编号',sortable:true},
-    {field:'teach_name',title:'教师',sortable:true},
+    {field:'teacher',title:'教室',sortable:true},
     {field:'course_name',title:'课程名称',sortable:true},
     {field:'teacher_info',title:'教师信息',sortable:true},
     {field:'dept_name',title:'系部名称',sortable:true},
@@ -35,8 +34,7 @@ function initGrid(grid,url,columns_def){
         url:url,
         method:'post',
         title:"详细信息",
-        idField:'id',
-        singleSelect:false,
+        singleSelect:true,
         collapsible:false,
         pagination:true,
         rownumbers:true,
@@ -245,50 +243,3 @@ function sms(){
     });
 }
 
-/**
- * 删除选中的记录
- */
-function removeRecord() {
-    var cfg={
-        "url_remove":"/index.php/admin/schedule/remove"
-    }
-    var checkedItems = $(grid).datagrid('getChecked');//返回选中记录的数组
-    if (checkedItems.length == 0) {
-        $.messager.alert("提示", "请选择要删除的行！", "info");
-        return;
-    }
-    //将数组中的主健值放到一个数组中 ,['软件1','网络1']
-    var removeID = [];
-    $.each(checkedItems, function (index, item) {
-        removeID.push(item.id);
-    });
-    $.messager.confirm('提示', '是否删除选中数据?', function (r) {
-        if (!r) {
-            return;
-        }
-        //Ajax提交
-        $.ajax({
-            type: "POST",
-            url: cfg.url_remove,
-            data: {id: removeID},//传递给服务器的参数
-            success: function (jsonresult) {
-                reload();
-                if (jsonresult.success == true) {
-                    $.messager.alert("提示", jsonresult.message, "info");
-                } else {
-                    $.messager.alert("提示", jsonresult.message, "info");
-                    return;
-                }
-            }
-        });
-    });
-    //console.log(names.join(","));
-
-}
-/**
- * 刷新网格
- */
-function reload() {
-    $(grid).datagrid('clearSelections');
-    $(grid).datagrid('reload');
-}
