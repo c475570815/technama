@@ -124,6 +124,8 @@ abstract class DataGrid
             }
         }
         $objPHPExcel->getActiveSheet()->setTitle($expTitle);
+        $objPHPExcel->setActiveSheetIndex(0);
+        ob_end_clean();//清除缓冲区,避免乱码
         // 头部信息
         header('pragma:public');
         header('Content-type:application/vnd.ms-excel;charset=utf-8;name="'.$xlsTitle.'.xls"');
