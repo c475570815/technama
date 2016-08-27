@@ -9,6 +9,10 @@
     <script type="text/javascript" src="/static/jquery-easyui-1.4.5/locale/easyui-lang-zh_CN.js"></script>
     <script type="text/javascript" src="/scripts/comm.js"></script>
     <script type="text/javascript" src="/scripts/admin/course.treegrid.js"></script>
+    <style>
+        .table td,.table th{border:solid #add9c0; border-width:0px 1px 1px 0px; padding:10px 0px;}
+        .table{border:solid #add9c0; border-width:1px 0px 0px 1px;}
+    </style>
 </head>
 <body>
 <div class="easyui-layout" fit="true">
@@ -90,8 +94,15 @@
         </table>
     </div>
     <div data-options="region:'east'" border="false" style="width:400px;padding:10px;">
-        <div id="i" class="easyui-panel" title="数据表格"
-               data-options="iconCls:'icon-more',plain:true" fit="true" style="padding:10px">
+        <div id="i" class="easyui-panel" title="数据表格"  data-options="iconCls:'icon-more',plain:true" fit="true" style="padding:10px">
+            <table class="table">
+                <tr><th></th><th>星期一</th><th>星期二</th><th>星期三</th><th>星期四</th><th>星期五</th></tr>
+                <tr><td>一大节</td><td></td><td></td><td></td><td></td><td></td></tr>
+                <tr><td>二大节</td><td></td><td></td><td></td><td></td><td></td></tr>
+                <tr><td>三大节</td><td></td><td></td><td></td><td></td><td></td></tr>
+                <tr><td>四大节</td><td></td><td></td><td></td><td></td><td></td></tr>
+                <tr><td>晚自习</td><td></td><td></td><td></td><td></td><td></td></tr>
+            </table>
         </div>
     </div>
 </div>

@@ -137,34 +137,34 @@ class Course extends Controller
         $course_list=$model_course->select();
 
         // （5） 对返回的记录进行循环,对数据进行处理放入一个数组中
-             $ret_array=array();//需要返回的数组
-             foreach($course_list as $course){
-                 $techer_id=$course['teach_id'];
-                 $schedule_id=$course['teach_id'];
-                 $adjustment_id=$course['teach_id'];
-
-                 //根据教师编号从教师表中获取该教教师的是否免听课信息
-                 $techer=$this->getTeacherById($techer_id);
-                 $ispassed=$techer['passed'];
-                 $course['passed']=isset($ispassed)?$ispassed:'';
-                //根据教师编号从听课表中获取该教教师的听课状态信息
-                 $schedule=$this->getScheduleById($schedule_id);
-                 $state_information=$schedule['state'];
-                 $conuncilor_information=$schedule['conuncilor'];
-                 $course['state']=$state_information;
-                 $course['teach_dd']=$conuncilor_information;
-                 //根据教师编号从调课表中获取该教师的调停课信息
-                 $adjustment=$this->getAdjustmentById($adjustment_id);
-                 $adjustment_information[]=$adjustment['week'];
-                 $adjustment_information[]=$adjustment['xing_qi_ji'];
-                 $adjustment_information[]=$adjustment['section'];
-                 //将数组转化为字符串
-                 $course['adj_exchange']= implode('-',$adjustment_information);
-                 $ret_array[]=$course;
-                 unset($adjustment_information);
-          }
+//             $ret_array=array();//需要返回的数组
+//             foreach($course_list as $course){
+//                 $techer_id=$course['teach_id'];
+//                 $schedule_id=$course['teach_id'];
+//                 $adjustment_id=$course['teach_id'];
+//
+//                 //根据教师编号从教师表中获取该教教师的是否免听课信息
+//                 $techer=$this->getTeacherById($techer_id);
+//                 $ispassed=$techer['passed'];
+//                 $course['passed']=isset($ispassed)?$ispassed:'';
+//                //根据教师编号从听课表中获取该教教师的听课状态信息
+//                 $schedule=$this->getScheduleById($schedule_id);
+//                 $state_information=$schedule['state'];
+//                 $conuncilor_information=$schedule['conuncilor'];
+//                 $course['state']=$state_information;
+//                 $course['teach_dd']=$conuncilor_information;
+//                 //根据教师编号从调课表中获取该教师的调停课信息
+//                 $adjustment=$this->getAdjustmentById($adjustment_id);
+//                 $adjustment_information[]=$adjustment['week'];
+//                 $adjustment_information[]=$adjustment['xing_qi_ji'];
+//                 $adjustment_information[]=$adjustment['section'];
+//                 //将数组转化为字符串
+//                 $course['adj_exchange']= implode('-',$adjustment_information);
+//                 $ret_array[]=$course;
+//                 unset($adjustment_information);
+//          }
         // （6）将数据进行JSON编码
-        return json(['total' => $total, 'rows' => $ret_array]);
+        return json(['total' => $total, 'rows' => $course_list]);
 
 
     }
