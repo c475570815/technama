@@ -19,8 +19,8 @@ function saveForm() {
             console.log($(this).serializeArray());
         },
         success: function (data) {
-           // var data = eval('(' + data + ')');  // change the JSON string to javascript object
-           // $.messager.alert('提示', data.message, 'info');
+           var data = eval('(' + data + ')');  // change the JSON string to javascript object
+           $.messager.alert('提示', data.message, 'info');
         }
     });
     // 验证后提交
@@ -89,12 +89,49 @@ $.extend($.fn.validatebox.defaults.rules, {
 });
 
 $(document).ready(function () {
+
     // 教室
-    $("input[name='data[class_room]']").validatebox({
-        buttonText: 'Search',
-        iconCls: 'icon-tech',
-        iconAlign: 'left',
-        validType: ['classroom']
+    $("input[name='data\\[class_room\\]']").textbox({
+
+    });
+    // 系部
+    $("input[name=data\\[dept_name\\]]").combobox({
+        url: '/index.php/admin/dept/rootdept',
+        method:'POST',
+        valueField: 'dept_name',
+        textField: 'dept_name',
+        limitToList:false
+    });
+    // 教师名称
+    $('input[name=data\\[teacher\\]]').textbox({
+        // buttonText:'Search',
+        // iconCls:'icon-man',
+        // iconAlign:'left'
+    });
+    // 听课日期
+    $('input[name=data\\[time\\]]').datebox({
+        required:true
+        // buttonText:'Search',
+        // iconCls:'icon-man',
+        // iconAlign:'left'
+    });
+    //周
+    $('input[name=data\\[week\\]]').combobox({
+        url:'/index.php/admin/term/weeks',
+        valueField:'id',
+        textField:'text',
+    });
+    //星期
+    $('input[name=data\\[xing_qi_ji\\]]').combobox({
+        valueField:'id',
+        textField:'text',
+        data:[{"id":1,"text":"星期一"},{"id":2,"text":"星期二"},{"id":3,"text":"星期三"},{"id":4,"text":"星期四"},{"id":5,"text":"星期五"},{"id":6,"text":"星期六"},{"id":7,"text":"星期日"}]
+    });
+    //节次
+    $('input[name=data\\[section\\]]').combobox({
+        valueField:'id',
+        textField:'text',
+        data:[{"id":1,"text":"一大节"},{"id":2,"text":"二大节"},{"id":3,"text":"三大节"},{"id":4,"text":"四大节"},{"id":5,"text":"晚上"}]
     });
     // 应到学生
     // $("#stu_due_num").validatebox({
