@@ -27,12 +27,25 @@ class Tea extends Controller
         $deptList=$dept->distinct(true)->field('dept_name')->select();
         $view = new View();
         //
-        $tree=$this->treejosn();
+//        $tree=$this->treejosn();
         $view->assign("dept",$deptList);
-        $view->assign("tree",$tree);
+//        $view->assign("tree",$tree);
         return $view->fetch('datagrid');
     }
-
+    /**s
+     * 用于显示Grid
+     */
+    public function tree(){
+        // 从教师表中获取系部名称
+        $dept=new TeaModel();
+        $deptList=$dept->distinct(true)->field('dept_name')->select();
+        $view = new View();
+        //
+//        $tree=$this->treejosn();
+        $view->assign("dept",$deptList);
+//        $view->assign("tree",$tree);
+        return $view->fetch('treegrid');
+    }
     /**
      * 通过ajax方式从服务器上获取JSON格式的数据给网格显示
      * @return \think\Response|\think\response\Json|\think\response\Jsonp|\think\response\Redirect|\think\response\View|\think\response\Xml
@@ -42,6 +55,37 @@ class Tea extends Controller
         return $tea_grid->dataGridJson();
     }
 
+    public function getlist(){
+
+        $current_table=new TeaModel();
+        $arr_where=array();
+        if (isset($_POST['dict'])) {
+            $dict = $_POST['dict'];
+            $arr_where=$current_table->filer($dict);
+            $current_table->where($arr_where);
+        }
+         //print_r($arr_where);
+
+        //先获取筛选后记录的总数
+        $total = intval($current_table->count());
+        //重新获取条件
+        $current_table->where($arr_where);
+        //获取客户端传递过来的参数 page=2&rows=20
+        $page = isset($_POST['page']) ? intval($_POST['page']) : 1;
+        $rows = isset($_POST['rows']) ? intval($_POST['rows']) : 10;
+        $start = ($page - 1) * $rows;
+        $current_table->limit($start, $rows);
+        // 排序
+        if(isset($_POST['sort']) &&  isset($_POST['order'])){
+            $sort = $_POST['sort'] ;
+            $order = $_POST['order'];
+            $current_table->order($sort,$order);
+        }
+        // 获取数组
+        $list = $current_table->select();
+        // 返回JSON
+        return json(['total' => $total, 'rows' => $list]);
+    }
     /**
      * 处理修改或者保存有效性
      */
