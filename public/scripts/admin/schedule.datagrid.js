@@ -20,11 +20,20 @@ var columns_def=[[
     {field:'dept_name',title:'系部名称',sortable:true},
     {field:'stu_due_number',title:'学生人数',sortable:true},
     {field:'conuncilor',title:'督导',sortable:true},
-    {field:'state',title:'状态',sortable:true},
+    {field:'notified',title:'通知情况',sortable:true},
+    {field:'finished',title:'完成情况',sortable:true},
+    {field:'locked',title:'锁定',sortable:true},
     {field:'operation',title:'操作',formatter:function(val,row,index){
-        var updateUrl = url_record + "/pk/" + row.id;
-        var opt_formatter="<a class='link-edit' href='"+updateUrl+"' target='_self' title='编辑当前记录'> 编辑 </a>";
-        opt_formatter=opt_formatter+"<a class='link-edit' href='"+updateUrl+"' target='_self' title='录入听课结果'> 录入结果 </a>";
+
+        var opt_formatter="";
+        if(row.finished !=="完成"){
+            var updateUrl = url_record + "/pk/" + row.id;
+            opt_formatter=opt_formatter+"<a class='link-edit' href='"+updateUrl+"' target='_self' title='录入听课结果'> 录入结果 </a>";
+        }else{
+            var url_detail="";
+            opt_formatter="<a class='link-edit' href='"+url_detail+"' target='_self' title='查看详细结果'> 查看结果 </a>";
+        }
+
         return opt_formatter;
     }}
 
@@ -242,4 +251,42 @@ function sms(){
         });
     });
 }
-
+/**
+ 删除
+ */
+function removeRecord() {
+    var url_remove="/index.php/admin/schedule/remove";
+    var checkedItems = $(grid).datagrid('getChecked');//返回选中记录的数组
+    if (checkedItems.length == 0) {
+        $.messager.alert("提示", "请选择要删除的行！", "info");
+        return;
+    }
+//将数组中的主健值放到一个数组中 ['软件1','网络1']
+    var removeID = [];
+    console.log(checkedItems);
+    $.each(checkedItems, function(){
+        removeID.push(this.id);
+    });
+    $.messager.confirm('提示', '是否删除选中数据?', function (r) {
+        if (!r) {
+            return;
+        }
+        //Ajax提交
+        $.ajax({
+            type: "POST",
+            async: false,
+            url: url_remove,
+            data: {id:removeID},//传递给服务器的参数id
+            success: function (result) {
+                $(grid).datagrid('clearSelections');
+                $(grid).datagrid('reload');
+                if (result.success ==true) {
+                    $.messager.alert("提示", result.message, "info");
+                } else {
+                    $.messager.alert("提示", result.message, "info");
+                    return;
+                }
+            }
+        });
+    });
+}
