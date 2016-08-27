@@ -31,7 +31,11 @@ var columns_def = [[
   /*  {field: 'teach_dd', title: '听课教师', sortable: true}//数据录入听课表*/
 
 ]];
-
+function formatOptColumn(val,row,index){
+    var updateUrl = url_update + "/pk/" +row.c_id;
+    var opt_formatter="<a href='#' target='_self'  onclick='selectTech("+ index + ")' title='安排听课教师'> 听课 </a>";
+    return opt_formatter;
+}
 /**
  *
  * @param grid_id
@@ -44,6 +48,7 @@ function initGrid(grid_id, url, columns_def) {
             method: 'post',
             title: "详细信息",
             fit: true,
+            idField:"c_id",
             singleSelect: true,
             checkOnSelect: true,
             selectOnCheck: true,
@@ -82,6 +87,7 @@ $(document).ready(function () {
         width:600,
         height:400,
         modal:true,
+        constrain:true,
         //top:40,
         iconCls:'icon-save',
         closed:true,
@@ -91,11 +97,7 @@ $(document).ready(function () {
     });
 });
 
-function formatOptColumn(val,row,index){
-    var updateUrl = url_update + "/pk/" +row.c_id;
-    var opt_formatter="<a href='#' target='_self'  onclick='selectTech("+ index + ")' title='编辑当前记录'> 听课 </a>";
-    return opt_formatter;
-}
+
 
 /**
  *  清楚所有记录,清除前提示
@@ -137,8 +139,8 @@ function reload() {
 function selectTech(id) {
     //打开对话框
     $('#dialog_listen').window('open');
+    $('#dialog_listen').window('center');
     // 获取当前行
-
     $(grid_id).datagrid('selectRow',id);
     var selectedRow=$(grid_id).datagrid('getSelected');
     var param={
@@ -156,16 +158,15 @@ function selectTech(id) {
         {field: 'dept_name', title: '部门', sortable: true},
         {field: 'teach_id', title: '教师编号', sortable: true},
         {field: 'teach_name', title: '教师', sortable: true},
-        {field: 'has_lesson', title: '是否有课', sortable: true},
-        {field: 'checked_times', title: '听课次数', sortable: true},
-        {field: 'has_listened', title: '已听过', sortable: true},
+        {field: 'has_lesson', title: '是否有课'},
+        {field: 'checked_times', title: '听课次数'},
+        {field: 'has_listened', title: '已听过'},
         {field: 'operation', title: '操作', formatter:function(val,row,index) {
             var opt_formatter="<a href='#' target='_self'   title='详情'> 详情 </a>";
             return opt_formatter;
         } }
     ]];
     listenGridInit(grid_listener, listen_url, columns_listen,param);
-
 }
 /**
  *  显示督导人员的网格
@@ -258,5 +259,13 @@ function affirm() {
 
         }
     });
+}
+/**
+ * 关闭对话框窗体
+ */
+function closeDialog(){
+    //打开对话框
+    $('#dialog_listen').window('close');
+
 }
 
