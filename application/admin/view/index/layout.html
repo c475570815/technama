@@ -6,19 +6,22 @@
     <link rel="stylesheet" type="text/css" href="/static/jquery-easyui-1.4.5/themes/default/easyui.css">
     <link rel="stylesheet" type="text/css" href="/static/jquery-easyui-1.4.5/themes/icon.css">
     <link rel="stylesheet" type="text/css" href="/css/admin/index.layout.css">
+    <link href='/static/fullcalendar-2.9.0/fullcalendar.css' rel='stylesheet' />
+    <link href='/static/fullcalendar-2.9.0/fullcalendar.print.css' rel='stylesheet' media='print' />
+    <!--<script type="text/javascript"  src="/static/require.js"></script>-->
+    <!--<script type="text/javascript"  src="/static/sea.js"></script>-->
     <script type="text/javascript" src="/static/jquery-easyui-1.4.5/jquery.min.js"></script>
     <script type="text/javascript" src="/static/jquery-easyui-1.4.5/jquery.easyui.min.js"></script>
     <script type="text/javascript" src="/static/jquery-easyui-1.4.5/locale/easyui-lang-zh_CN.js"></script>
     <script type="text/javascript" src="/scripts/comm.js"></script>
-    <script type="text/javascript" src="/scripts/admin/index.layout.js"></script>
     <script type="text/javascript" src="/scripts/admin/calendar.js"></script>
     <script type="text/javascript" src="/scripts/admin/add_vacation.js"></script>
-    <link href='/static/fullcalendar-2.9.0/fullcalendar.css' rel='stylesheet' />
-    <link href='/static/fullcalendar-2.9.0/fullcalendar.print.css' rel='stylesheet' media='print' />
     <script src='/static/fullcalendar-2.9.0/lib/moment.min.js'></script>
     <script src='/static/fullcalendar-2.9.0/fullcalendar.min.js'></script>
     <script src='/static/fullcalendar-2.9.0/lang/zh-cn.js'></script>
-    <script src="http://192.168.19.137:8080/socket.io/socket.io.js"></script>
+    <script src="http://192.168.19.138:8080/socket.io/socket.io.js"></script>
+    <!--<script type="text/javascript" src="/scripts/admin/index.layout.js"></script>-->
+    <script type="text/javascript" src="/scripts/admin/index.layout.js"></script>
     <style>
         .head a:visited{ color: #CCE6FF;text-decoration: none }
         .head a:hover{ color: #ffffff;text-decoration: none }
@@ -92,6 +95,8 @@
                        class="easyui-linkbutton">听课记录</a></li>
                 <li><a href="/index.php/admin/index/chart" data-options="iconCls:'icon-statistics',plain:true"
                        class="easyui-linkbutton">数据统计</a></li>
+                <li><a href="/index.php/admin/tea/tree" data-options="iconCls:'icon-sms',plain:true"
+                       class="easyui-linkbutton">发送通知</a></li>
             </ul>
         </div>
     </div>
@@ -102,7 +107,6 @@
         <div title="学期日历"   style="padding:20px">
             <div  style="width:55%;padding:10px;background:#fafafa;float: left;border: dotted cornflowerblue 1px" title="日历"    >
             <div id='calendar'>
-
             </div>
             <!--<div id="mytitle" style="background:#ddd;padding:5px;width:735px">本学期校历</div>-->
             <!--<div>-->
@@ -142,7 +146,7 @@
 </div>
 
 <!-- Comtext Menu -->
-<div id="bwl_m" class="easyui-menu" data-options="onClick:menuHandler">
+<div id="bwl_m" class="easyui-menu">
     <div data-options="name:'new'">新建</div>
     <div data-options="name:'del'">删除</div>
     <div data-options="name:'del_all'">清空所有</div>
