@@ -16,6 +16,6 @@ class WeekcourseModel extends \app\common\model\CommonModel
 
     protected $defaults = [
         'teach_name' => 'like',
-
+        'status' => 'like',
     ];
 }
