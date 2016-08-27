@@ -416,9 +416,13 @@ class WeekCourse extends Controller
             $current['dept_name'] = $row['dept_name'];
             $current['teach_name'] = $row['teach_name'];
             $current['has_lesson'] = $this->hasLesson($row['teach_id'], $week, $weekday, $section) ? '是' : '否';
+            $has_listened_once=$this->hasListened($teacher_id,$row['teach_id']);
             $current['has_listened'] = $this->hasListened($teacher_id,$row['teach_id']) ? '是' : '否';
             $current['checked_times'] = $this->checkedTimes($row['teach_id']);
-            $arr[] = $current;
+            if($has_listened_once==false){
+                $arr[] = $current;
+            }
+
         }
         // （6）将数据进行JSON编码
         return json(['total' => $total, 'rows' => $arr]);
@@ -460,19 +464,32 @@ class WeekCourse extends Controller
      */
     public function addlisteners()
     {
-        $model_course = new CourseModel();
-        $model_schedule = new ScheduleModel();
+
 
         //(1) 获取POST数据
+        //课程信息的数组
         if(isset($_POST['lesson'])){
             $lesson = $_POST['lesson'];
         }
+        //获取听课教师编号
         $teachers = $_POST['teachers'];
         //（2）根据编号从Courses表中获取详细的课表信息
 //        $listen_teach_information = $model_course->where('c_id', $course_id)->find();
 
-        // (3) 向tbl_schedule中添加数据
+        // (3) 如果没有找到，则向tbl_schedule中添加数据；否则为修改
+        $model_schedule = new ScheduleModel();
 //        $techer_id = $listen_teach_information['teach_id'];
+        if($this->isPlaned($lesson['teach_id'],$lesson['week'],$lesson['xing_qi_ji'],$lesson['section'])){
+            $map = array();
+            $map['teach_id'] = $lesson['teach_id'];
+            $map['week'] = $lesson['week'];
+            $map['xing_qi_ji'] = $lesson['xing_qi_ji'];
+            $map['section'] = $lesson['section'];
+            $result= $model_schedule->where($map)->delete();
+            //$result=  $model_schedule->delete();
+        }else{
+
+        }
         $model_schedule->term=$lesson['term'];
         $model_schedule->dept_name=$lesson['dept_name'];
         $model_schedule->teach_id=$lesson['teach_id'];
@@ -484,12 +501,13 @@ class WeekCourse extends Controller
         $model_schedule->class_room=$lesson['class_room'];
         $model_schedule->course_name=$lesson['course_name'];
         $model_schedule->conuncilor=implode('|', $teachers);
-
         $result=$model_schedule->save();
+        //(3) 添加
+
         if($result){
-            $ret = ['success' => 'true', 'message' => '清除成功！'];
+            $ret = ['success' => 'true', 'message' => '安排成功！'];
         }else{
-            $ret = ['success' => 'false', 'message' => '清除失败！'];
+            $ret = ['success' => 'false', 'message' => '安排失败！'];
         }
         return json($ret);
 //        $model_schedule->where("teacher_no", $techer_id)->setField('conuncilor', );
