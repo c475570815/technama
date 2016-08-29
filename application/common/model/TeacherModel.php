@@ -24,6 +24,44 @@ class TeacherModel extends \app\common\model\CommonModel
 {
     protected $table = 'tbl_teacher';
 
+    /**/
+    public  static $fieldNameMap=[
+        "teach_id"=>"教师编号",
+        "dept_name"=>"部门",
+        "sub_dept"=>"子部门",
+        "teach_role"=>"角色",
+        "teach_name"=>"姓名",
+        "sex"=>"姓名",
+        "profess_duty"=>"专业",
+        "now_major"=>"现在专业",
+        "holds_teacher"=>"兼职教师",
+        "qq"=>"QQ",
+        "email"=>"邮件",
+        "teach_phone"=>"电话",
+        "wechat_id"=>"微信号",
+        "conuncilor"=>"是否是督导",
+        "in_school_time"=>"进校时间",
+        "location"=>"职位",
+        "limit"=>"听课限制",
+        "passed"=>"是否免听",
+        "listen_count"=>"听课的次数",
+        "listened_count"=>"被听课的次数",
+        "email_validated"=>"邮件是否已验证",
+        "mobile_validated"=>"手机是否已经验证",
+        "teach_jw_id"=>"教务编号",
+
+
+
+
+    ];
+
+    public static function getFieldName($field){
+        if(array_key_exists($field,self::$fieldNameMap)){
+            return self::$fieldNameMap[$field];
+        }else{
+            return $field;
+        }
+   }
     /**
      * 构造函数
      * TeacherModel constructor.
