@@ -38,6 +38,8 @@ function initGrid(grid_id,url_get,columns_def){
         collapsible:false,
         pagination:true,
         rownumbers:true,
+        checkOnSelect: true,
+        ctrlSelect:true,
         pageSize:20,
         iconCls:'icon-more',
         columns:columns_def
@@ -56,6 +58,11 @@ $(document).ready(function () {
         panelWidth:300,
         panelHeight:400
     });
+    // $('#pg').propertygrid({
+    //     url: '/index.php/admin/tea/property',
+    //     showGroup: false,
+    //     scrollbarSize: 0
+    // });
     // $.getJSON("/index.php/admin/Tea/treejosn",function(data) {
     //     $(cc).combotree('loadData', data);
     // });
@@ -175,8 +182,20 @@ function exportXls() {
  */
 function formatOptColumn(val,row,index){
     var updateUrl = url_update + "/pk/" + row.teach_id;
-    return "<a href='"+updateUrl+"' target='_self'> 操作 </a>";
-
+    var opt_formatter="";
+    opt_formatter=opt_formatter+"<a href='"+updateUrl+"' target='_self' title='编辑当前记录'> 编辑  </a>";
+    opt_formatter=opt_formatter+" | <a href='#' onclick=\"detail(\'"+row.teach_id+"\')\" target='_self' title='查看当前记录的详细信息'> 查看详细信息  </a>";
+    return opt_formatter;
+}
+function detail(id){
+    $('#pg').propertygrid({
+        url: '/index.php/admin/tea/property',
+        method:"post",
+        queryParams:{"id":id},
+        showGroup: false,
+        scrollbarSize: 0
+    });
+    $('#pg').propertygrid('reload', {'nnn': 'aaa'});
 }
 /**
  * 清空
