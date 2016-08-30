@@ -72,14 +72,14 @@ function TermValidate() {
 function initForm() {
     // 系部
     $("input[name=data\\[default\\]]").combobox({
-        valueField: 'label',
-        textField: 'value',
+        valueField: 'value',
+        textField: 'label',
         data: [{
             label: '是',
-            value: '是'
+            value: '1'
         }, {
             label: '否',
-            value: '否'
+            value: '0'
         }]
     });
 }
