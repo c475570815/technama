@@ -19,7 +19,7 @@ class Index extends Controller
 {
     //在执行Action之前需要执行的方法
     protected $beforeActionList = [
-//        'before'=>  ['except'=>'login,isLogined,authentication']
+          'before'=>  ['except'=>'login,isLogined,authentication']
     ];
     public function before()
     {
@@ -115,10 +115,11 @@ class Index extends Controller
      */
     public function authentication()
     {
-        $statu = isset($_POST['statu']) ? $_POST['statu'] : "";
+
+//        $statu = isset($_POST['statu']) ? $_POST['statu'] : "";
         $id = isset($_POST['id']) ? $_POST['id'] : "";
         $password = isset($_POST['password']) ? $_POST['password'] : "";
-        $captcha = isset($_POST['captcha']) ? $_POST['captcha'] : "";
+//        $captcha = isset($_POST['captcha']) ? $_POST['captcha'] : "";
 
 //        if (!captcha_check($captcha)) {
 //            //验证失败
@@ -127,16 +128,16 @@ class Index extends Controller
 //            return $this->error("验证码错误", 'login');
 //        };
         if(ldapValid($id,$password)){
-            $table = new TeaModel();
+            $table = new TeacherModel();
             $row = $table->where('teach_id', $id)->find();
-      /*      $table = new TeaModel();
-            $row = $table->where('teach_id', $id)->where('teach_pass', $password)->find();*/
             if ($row) {
                 $roles = $row['teach_role'];
                 Session::set('name', $row['teach_name']);
                 Session::set('uid', $id);
                 Session::set('roles', $roles);
                 // return view('layout');
+                $ret=['success'=>'true','message'=>'教师认证成功'];
+                return $ret;
                 return $this->success("登录成功", 'index');
             } else {
                 $ret=['success'=>'false','message'=>'教师详细信息获取失败'];
