@@ -75,6 +75,7 @@ function query(){
      //var  a=$("#cc").combotree('getText');
     //document.getElementsByName("dict[dept_name]").value=a;
     var search_filter=$(frm_search).serializeJson();//把数据做成josn格式
+    console.log(search_filter)
    $(grid_id).datagrid(
        'load',//利用load方法提交search_filter 控制器ac1方法
        search_filter
