@@ -16,7 +16,9 @@ var grid_options;
 var columns_def=[[
     {field:'chkbox',checkbox:true },
     {field:'term',title:'学期',sortable:true},
+
     {field:'teach_id',title:'教师编号',sortable:true},
+    {field:'teach_name',title:'教师',sortable:true},
     {field:'class_name',title:'班级名称',sortable:true},
     {field:'class_room',title:'班级固定教室',sortable:true},
     {field:'course_name',title:'课程名称',sortable:true},
@@ -28,6 +30,9 @@ var columns_def=[[
     {field:'alt_xq',title:'调后星期',sortable:true},
     {field:'alt_section',title:'调后节次',sortable:true},
     {field:'alt_class_room',title:'调后教室',sortable:true},
+    {field:'passed',title:'审核',sortable:true},
+    {field:'apply_time',title:'申请时间',sortable:true},
+    {field:'comment',title:'说明',sortable:true}
 
 
 ]];
@@ -42,6 +47,7 @@ function initGrid(grid,url,columns_def){
         pagination:true,
         rownumbers:true,
         height:345,
+        pageSize:20,
         columns:columns_def
     });
 }
@@ -60,8 +66,28 @@ function query(){
         search_filter
     );
 }
-function add(){
-
+function sync(){
+    var url_sync="/index.php/admin/adjustment/sync";
+    $.messager.confirm('提示', '将教务的调课数据同步过来?', function (r) {
+        if (!r) {
+            return;
+        }
+        //Ajax提交
+        $.ajax({
+            type: "POST",
+            url: url_sync,
+            // data: {id: removeID},//传递给服务器的参数
+            success: function (jsonresult) {
+                reload();
+                if (jsonresult.success == true) {
+                    $.messager.alert("提示", jsonresult.message, "info");
+                } else {
+                    $.messager.alert("提示", jsonresult.message, "info");
+                    return;
+                }
+            }
+        });
+    });
 }
 
 /**

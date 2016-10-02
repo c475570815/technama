@@ -248,6 +248,19 @@ use app\admin\AdjustmentDataGrid;
             return json($ret);
         }
 
+        /**
+         * 删除所有记录
+         * @return \think\Response|\think\response\Json|\think\response\Jsonp|\think\response\Redirect|\think\response\View|\think\response\Xml
+         */
+        public function removeall(){
+            $result = Db::execute("TRUNCATE tbl_adjustment;");
+            if($result){
+                $ret = ['success' => 'true', 'message' => '清除成功！'];
+            }else{
+                $ret = ['success' => 'false', 'message' => '清除失败！'];
+            }
+            return json($ret);
+        }
 
 
 
@@ -277,6 +290,78 @@ use app\admin\AdjustmentDataGrid;
             return $view->fetch('form');
         }
 
+        /**
+         * 根据教务的教师姓名查找教师编号
+         * @param $name  在教务系统中的教师名
+         * @return string  教师的编号
+         */
+        public function findTeacherId($name){
+            $sql="SELECT [教师编号] FROM [教师信息v] WHERE [姓名]='".$name."'";
+            $sth= Db::connect(config('jwc_odbc'))->query($sql);
+     ;
+            if($sth){
+//                $row=$sth->fetch(PDO::FETCH_BOTH);
+                return $sth[0]['教师编号'];
+            }else{
+                return "";
+            }
+        }
+
+        /**
+         * 将教务的调课信息同步到mysql表中
+         */
+        public function sync(){
+            $result = Db::execute("TRUNCATE tbl_adjustment;");//删除原有记录
+           $sql = " SELECT  [id] ,[学期] ,convert(varchar(255), [班级]) as class ,convert(varchar(255), [课程]) as course ,
+                [教师] ,[教室] ,[周次]
+      ,[上课时间] ,[调后周次],[调后时间],[调后教室] ,[调停类别] ,[备注],[开课单位]
+      ,[审核],[申请时间]
+  FROM [gc].[dbo].[tk调停记录]";
+           $sth= Db::connect(config('jwc_odbc'))->query($sql);
+
+            if ($sth){
+                    $count=0;
+                    foreach ($sth as $row){
+
+                        $adj=new AdjustmentModel();
+                        $adj->term=$row['学期'];
+                        $adj->teach_name=$row['教师'];
+                        $adj->teach_id=$this->findTeacherId($row['教师']);
+                        $adj->class_room=$row['教室'];
+                        $adj->class_name=$row['class'];
+                        $adj->course_name=$row['course'];
+                        $adj->dept_name=$row['开课单位'];
+                        $adj->week=$row['周次'];
+                        $arr=explode("-",$row['上课时间']);
+                        $adj->xing_qi_ji=$arr[0];
+                        $adj->section=$arr[1];
+                        $adj->reason=$row['调停类别'];
+                        $adj->alt_week=$row['调后周次'];
+                        if(strpos($row['调后时间'],'-')>0){
+                            $adj_arr=explode("-",$row['调后时间']);
+                            $adj->alt_xq=$adj_arr[0];
+                            $adj->alt_section=$adj_arr[1];
+                        }else{
+                            $adj->comment=$row['调后时间'];
+                        }
+
+                        $adj->alt_class_room=$row['调后教室'];
+//                        $adj->alt_class_room=$row[''];
+                        $adj->passed=$row['审核'];
+                        $adj->apply_time=$row['申请时间'];
+
+                        $adj->save();
+                        $count++;
+
+                    }
+                $ret=['success'=>'true','message'=>'同步成功,共同步'.$count.'条记录'];
+            }else{
+                $ret=['success'=>'false','message'=>'同步失败！'];
+
+            }
+            return json($ret);
+
+        }
 
     }
 
