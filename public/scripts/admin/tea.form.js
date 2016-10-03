@@ -13,28 +13,43 @@ $(document).ready(function(){
 });
 // 初始化表单
 function initForm(){
-    // 系部
+
+    // 系部列表
     $("input[name=data\\[dept_name\\]]").combobox({
         url: '/index.php/admin/Tea/deptinfo',
         valueField: 'dept_name',
         textField: 'dept_name',
         limitToList:true,
-        onSelect:function(){
+        onChange:function(newValue,oldValue){
             // 子部门
             var dept=$("input[name=data\\[dept_name\\]]").val();
-            $("input[name=data\\[sub_dept\\]]").combobox({
-                url: '/index.php/admin/dept/getsubdept',
-                method:'POST',
+            $('#cbo_subdept').combobox('clear');
+            $("#cbo_subdept").combobox({
+                // url: '/index.php/admin/dept/getsubdept',
+                // method:'POST',
                 queryParams:{parent:dept},
-                valueField: 'dept_name',
-                textField: 'dept_name',
+                // valueField: 'dept_name',
+                // textField: 'dept_name',
                 limitToList:false
             });
+            $('#cbo_subdept').combobox('reload');
+
         }
     });
 
+    // 子部门列表
+    var dept=$("input[name=data\\[dept_name\\]]").val();
+    $("input[name=data\\[sub_dept\\]]").combobox({
+        url: '/index.php/admin/dept/getsubdept',
+        method:'POST',
+        queryParams:{parent:dept},
+        valueField: 'dept_name',
+        textField: 'dept_name',
+        limitToList:false
+    });
 
-    // 角色
+
+    // 角色列表
     $("input[name=data\\[teach_role\\]]").combobox({
         url: '/index.php/admin/dict/getDictByCategory',
         method:'POST',
@@ -61,11 +76,11 @@ function initForm(){
         valueField: 'label',
         textField: 'value',
         data: [{
-            label: '是',
-            value: '是'
+            label: '兼课',
+            value: '兼课'
         },{
-            label: '否',
-            value: '否'
+            label: '专任',
+            value: '专任'
         }]
     });
     // 是否免听
