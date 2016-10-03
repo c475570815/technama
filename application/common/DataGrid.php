@@ -9,6 +9,7 @@
 namespace app\common;
 use think\Db;
 use think\Model;
+use \PHPExcel_Cell_DataType;
 
 /**
  * 一个用于DataGird数据操作的抽象类
@@ -93,9 +94,11 @@ abstract class DataGrid
     }
     /**
      * 导出EXCEL
-     * @param $expTitle excel文件名
-     * @param $expCellName   单元格和表的字段对应
-     * @param $expTableData   数据
+     * @param $expTitle  导出的excel文件名
+     * @param $expCellName   表和单元格的字段对应（二维数组）
+     * @param $expTableData   二维数组数据
+     * 例如：
+     *
      */
     public function exportExcel($expTitle,$expCellName,$expTableData){
         $xlsTitle = iconv('utf-8', 'gb2312', $expTitle);//文件标题
@@ -112,15 +115,20 @@ abstract class DataGrid
             ->setDescription("")
             ->setKeywords("")
             ->setCategory("");
-        $cellName = array('A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','AA','AB','AC','AD','AE','AF','AG','AH','AI','AJ','AK','AL','AM','AN','AO','AP','AQ','AR','AS','AT','AU','AV','AW','AX','AY','AZ');
+        $cellName = array(
+            'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z',
+            'AA','AB','AC','AD','AE','AF','AG','AH','AI','AJ','AK','AL','AM','AN','AO','AP','AQ','AR','AS','AT','AU','AV','AW','AX','AY','AZ'
+        );
         // 设置标题
         for($i=0;$i<$cellNum;$i++){
             $objPHPExcel->setActiveSheetIndex(0)->setCellValue($cellName[$i].'1', $expCellName[$i][1]);
         }
         // 数据填写
-        for($i=0;$i<$dataNum;$i++){
-            for($j=0;$j<$cellNum;$j++){
-                $objPHPExcel->getActiveSheet(0)->setCellValue($cellName[$j].($i+2), $expTableData[$i][$expCellName[$j][0]]);
+        $sheet=$objPHPExcel->getActiveSheet();
+        for($row=0;$row<$dataNum;$row++){
+            for($col=0;$col<$cellNum;$col++){
+                $sheet->setCellValueExplicit($cellName[$col].($row+2),$expTableData[$row][$expCellName[$col][0]],PHPExcel_Cell_DataType::TYPE_STRING);
+//                $objPHPExcel->getActiveSheet(0)->setCellValue($cellName[$j].($i+2), $expTableData[$i][$expCellName[$j][0]]);
             }
         }
         $objPHPExcel->getActiveSheet()->setTitle($expTitle);
