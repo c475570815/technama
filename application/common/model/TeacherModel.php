@@ -62,6 +62,17 @@ class TeacherModel extends \app\common\model\CommonModel
             return $field;
         }
    }
+
+    /**
+     * 获取器的作用是在获取数据的字段值后自动进行处理；还可以定义数据表中不存在的字段
+     * @param $value
+     * @return mixed
+     */
+    public function getStatusAttr($value)
+    {
+        $status = [-1=>'删除',0=>'禁用',1=>'正常',2=>'待审核'];
+        return $status[$value];
+    }
     /**
      * 构造函数
      * TeacherModel constructor.
