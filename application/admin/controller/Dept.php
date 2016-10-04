@@ -56,6 +56,17 @@ class Dept extends Controller implements InterfaceDataGrid
         return json($list);
     }
 
+    /**
+     * 返回一级部门
+     * @return \think\Response|\think\response\Json|\think\response\Jsonp|\think\response\Redirect|\think\response\View|\think\response\Xml
+     */
+    public function rootdept(){
+        $model=new DeptModel();
+        $list= $model->where('dept_parent','')->where('dept_enabled','1')->select();
+        return json($list);
+    }
+
+
     public function import(){
 
     }
@@ -287,6 +298,50 @@ public function upload(){
        $parent=$_POST['parent'];
        $mo=new DeptModel();
        return $mo->where('dept_parent',$parent)->select();
+   }
+
+    /**
+     * 返回tree组件需要的JSON
+     * @return \think\Response|\think\response\Json|\think\response\Jsonp|\think\response\Redirect|\think\response\View|\think\response\Xml
+     */
+   public function deptTree(){
+       //根节点
+       $tree_root=array(
+           'id'=>0,
+           'state'=>'closed',
+           'text'=>'全部系部',
+           'checked'=>false
+       );
+       $dept=new DeptModel();
+       $de=$dept->where("dept_parent","")->field('dept_name,dept_id')->select();
+       $nodes=array();
+       foreach($de as $current_dept){
+           $node=array(
+               'id'=>$current_dept['dept_id'],
+               'text'=>$current_dept['dept_name'],
+               'iconCls'=>"ico-blank",
+               'attributes'=>array('level'=>1)
+           );
+           // 获取子节点
+           $sub_depts=$dept->where("dept_parent",$current_dept['dept_name'])->field('dept_name,dept_id')->select();
+           $childs=array();
+           foreach ($sub_depts as $sub){
+               $child=array(
+                   'id'=>$sub['dept_id'],
+                   'text'=>$sub['dept_name'],
+                   'iconCls'=>"ico-blank",
+                   'attributes'=>array('level'=>2)
+               );
+               $childs[]=$child;
+           }
+           if(count($childs)>0){
+               $node['state']='closed';
+               $node['children']=$childs;
+           }
+           $nodes[]=$node;
+       }
+       $tree_root['children']= $nodes;
+       return json([$tree_root]);
    }
 }
 
