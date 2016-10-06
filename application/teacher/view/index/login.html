@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+     <title>录入评价结果</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+    <link rel="stylesheet" href="/static/sui/css/sm.css">
+    <link rel="stylesheet" href="/static/sui/css/sm-extend.min.css">
+</head>
+<body>
+
+<header class="bar bar-nav">
+    <h1 class='title'>登录</h1>
+</header>
+
+<div class="content">
+    <form action="/index.php/teacher/index/authentication" method="POST" id="frm_login">
+    <div class="list-block">
+        <ul>
+            <!-- Text inputs -->
+            <li>
+                <div class="item-content">
+                    <div class="item-media"><i class="icon icon-form-name"></i></div>
+                    <div class="item-inner">
+                        <div class="item-title label">姓名</div>
+                        <div class="item-input">
+                            <input type="text" name="id" id="id" placeholder="输入上网账号">
+                        </div>
+                    </div>
+                </div>
+            </li>
+  
+            <li>
+                <div class="item-content">
+                    <div class="item-media"><i class="icon icon-form-gender"></i></div>
+                    <div class="item-inner">
+                        <div class="item-title label">密码</div>
+                        <div class="item-input">
+                          <input type="password" name="password"  id="password"  placeholder="输入上网账号密码">
+                        </div>
+                    </div>
+                </div>
+            </li>
+          
+			<li>
+                <div class="item-content">
+                    <div class="item-media"><i class="icon icon-form-toggle"></i></div>
+                    <div class="item-inner">
+                        <div class="item-title label"  style="width:40%">记住密码</div>
+                        <div class="item-input">
+                            <label class="label-switch">
+                                <input type="checkbox">
+                                <div class="checkbox"></div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <div class="content-block">
+        <div class="row">
+            <div class="col-50"><a href="#" class="button button-big button-fill button-danger">取消</a></div>
+            <div class="col-50"><a href="#" class="button button-big button-fill button-success" onclick="login();">提交</a></div>
+        </div>
+		<br/>
+		<div class="row">
+            <div class="col-100"><a href="#" class="button button-big button-fill">QQ登录</a></div>     
+        </div>
+    </div>
+	</form>
+</div>
+
+<script type='text/javascript' src='/static/sui/js/zepto.js' charset='utf-8'></script>
+<script type='text/javascript' src='/scripts/mobile/config.js' charset='utf-8'></script>
+<script type='text/javascript' src='/static/sui/js/sm.min.js' charset='utf-8'></script>
+<script type='text/javascript' src='/static/sui/js/sm-extend.min.js' charset='utf-8'></script>
+<script type='text/javascript' src='/static/sui/js/picker.js' charset='utf-8'></script>
+<script type='text/javascript' src='/scripts/mobile/app.js' charset='utf-8'></script>
+<script>
+    function login(){
+        var id=document.getElementById("id");
+        var pass=document.getElementById("password");
+        var form=document.getElementById("frm_login");
+        if(id.value=='' || pass.value==''){
+            if(id.value==''){
+                alert("请输入用户名")
+            }
+            if(pass.value==''){
+                alert("请输入密码")
+            }
+        }else{
+//			$.ajax({
+//			  type: 'GET',
+//			  url: '/projects',
+//			  data: { name: 'Zepto.js' },
+//			  dataType: 'json',
+//			  timeout: 300,
+//			  context: $('body'),
+//			  success: function(data){
+//				// Supposing this JSON payload was received:
+//				//   {"project": {"id": 42, "html": "<div>..." }}
+//				// append the HTML to context object.
+//				this.append(data.project.html)
+//			  },
+//			  error: function(xhr, type){
+//				alert('Ajax error!')
+//			  }
+//			});
+            form.submit();
+        }
+    }
+</script>
+</body>
+</html>
