@@ -69,7 +69,11 @@ $(document).ready(function () {
         textField: 'term_name',
         limitToList:false
     });
-
+    // 开始时间
+    $('input[name=dict\\[start\\]]').datetimebox({
+        required: true,
+        showSeconds: false
+    });
 
 });
 
@@ -113,19 +117,22 @@ function removeall(){
     });
 }
 /**
- * 删除选中的记录
+ *  删除选中的记录
  */
 function removeRecord() {
-    var checkedItems = $(grid_id).datagrid('getChecked');//返回选中记录的数组
+    //（1）返回选中记录的数组
+    var checkedItems = $(grid_id).datagrid('getChecked');
     if (checkedItems.length == 0) {
         $.messager.alert("提示", "请选择要删除的行！", "info");
         return;
     }
-    //将数组中的主健值放到一个数组中 ,['软件1','网络1']
+    //便利选中的行，并将行的主健值放到一个数组中 ,[3]
     var removeID = [];
     $.each(checkedItems, function (index, item) {
-        removeID.push(item.pk_field);
+
+        removeID.push(item.id);
     });
+    // console.log(removeID);
     $.messager.confirm('提示', '是否删除选中数据?', function (r) {
         if (!r) {
             return;
@@ -167,11 +174,18 @@ function edit() {
         });
         return;
     }
+    // 获取当前选中的行
     var row = $(grid_id).datagrid('getSelected');
     var idValue = row[pk_field];
-    console.log(idValue);
-    var updateUrl = url_update + "/pk/" + idValue;
-    location.href = updateUrl;
+    console.log(row.end);
+    $("input[name=dict\\[term\\]]").val(row.term);
+    $("input[name=dict\\[title\\]]").val(row.title);
+    $("input[name=dict\\[start\\]]").datetimebox('setValue',row.start);
+
+    $("input[name=dict\\[end\\]]").datetimebox('setValue', row.end);
+    $("input[name=dict\\[url\\]]").val(row.url);
+    // var updateUrl = url_update + "/pk/" + idValue;
+    // location.href = updateUrl;
 }
 
 /**
