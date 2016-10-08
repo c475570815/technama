@@ -137,7 +137,26 @@ class Schedule extends Controller
         //$view->assign("dict_category",  $dict_category);
         return $view->fetch('form');
     }
+    /**
+     * 删除记录
+     * @return \think\Response|\think\response\Json|\think\response\Jsonp|\think\response\Redirect|\think\response\View|\think\response\Xml
+     */
+    public function remove(){
+        $id=$_POST['id'];
+        $mo=new ScheduleModel();
+        $count= $mo->where('id','in',$id)->delete();
+        if($count>0){
+            $ret=['success'=>'true','message'=>'删除成功,共删除'.$count.'条记录'];
+        }else{
+            $ret=['success'=>'false','message'=>'删除失败！'];
+        }
+        return json($ret);
+    }
 
+    /**
+     *
+     * @return \think\Response|\think\response\Json|\think\response\Jsonp|\think\response\Redirect|\think\response\View|\think\response\Xml
+     */
     public function teacher_cg()
     {
         $q = isset($_POST['q']) ? $_POST['q'] : '';  // the request parameter
@@ -146,11 +165,14 @@ class Schedule extends Controller
         return  json($list);
     }
 
+    /**
+     * 发送邮件通知
+     */
     public function email(){
         $current_table = new ScheduleModel();
         if (isset($_POST['id'])) {
             $id = $_POST['id'];
-
+            // 获取所有记录
             $list = $current_table->where("id", "in", $id)->select();
             $list_hand = array();
             foreach ($list as $row) {
@@ -184,11 +206,16 @@ class Schedule extends Controller
             }
         }
     }
+
+    /**
+     * 发送短信通知
+     */
     public function sms(){
 
         $current_table=new ScheduleModel();
         if (isset($_POST['id'])) {
             $id = $_POST['id'];
+            // 获取所有记录
             $list = $current_table->where("id","in",$id)->select();
             $list_hand=array();
             foreach ($list as $row){
@@ -197,9 +224,10 @@ class Schedule extends Controller
                 $teacher_mail=array();
                 foreach ($arr as $teacher_no){
                     $teacher= TeacherModel::get(['teach_id' =>$teacher_no]);
+                    // 如果电话号码经过验证，则发送短信
                     if($teacher['mobile_validated']){
                         $teacher_mail[]=$teacher['teach_phone'];
-                        yuntongxun_sms('18942891954',['aaa','bbb'],1);
+                        yuntongxun_sms('18942891954',['aaa','bbb'],121236);
                     }
                 }
                 // $row['conuncilor']=implode(',',$teacher_name);
@@ -208,19 +236,56 @@ class Schedule extends Controller
 
         }
     }
+    /**
+     * 设置锁定状态
+     */
+    public function setlock(){
+
+        $current_table=new ScheduleModel();
+        $ret=['success'=>false,'message'=>'系统错误，请联系管理员!'];
+        if (isset($_POST['id'])) {
+            $id = $_POST['id'];
+            // 批量更新
+            $lock=$_GET['lock'];
+            if($lock=='1'){
+                $count=$current_table->where("id","in",$id)->update(['locked' => '锁定']);
+            }else{
+                $count=$current_table->where("id","in",$id)->update(['locked' => '未锁定']);
+            }
+
+            if($count>0){
+                $ret=['success'=>true,'message'=>'更新成功,共更新'.$count.'条记录'];
+            }else{
+                $ret=['success'=>false,'message'=>'更新失败！'];
+            }
+        }
+        return json($ret);
+    }
 
     /**
-     * 删除记录
-     * @return \think\Response|\think\response\Json|\think\response\Jsonp|\think\response\Redirect|\think\response\View|\think\response\Xml
+     * 设置完成状态
      */
-    public function remove(){
-        $id=$_POST['id'];
-        $mo=new ScheduleModel();
-        $count= $mo->where('id','in',$id)->delete();
-        if($count>0){
-            $ret=['success'=>'true','message'=>'删除成功,共删除'.$count.'条记录'];
-        }else{
-            $ret=['success'=>'false','message'=>'删除失败！'];
+    public function setfinish(){
+
+        $current_table=new ScheduleModel();
+        $ret=['success'=>false,'message'=>'系统错误，请联系管理员!'];
+        if (isset($_POST['id'])) {
+            $id = $_POST['id'];
+
+            $lock=$_GET['v'];
+            if($lock=='1'){
+                $count=$current_table->where("id","in",$id)->update(['finished' => '完成']);
+            }elseif($lock=='0'){
+                $count=$current_table->where("id","in",$id)->update(['finished' => '未完成']);
+            }else{
+                $count=$current_table->where("id","in",$id)->update(['finished' => '取消']);
+            }
+
+            if($count>0){
+                $ret=['success'=>true,'message'=>'更新成功,共更新'.$count.'条记录'];
+            }else{
+                $ret=['success'=>false,'message'=>'更新失败！'];
+            }
         }
         return json($ret);
     }
