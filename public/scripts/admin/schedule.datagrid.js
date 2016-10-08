@@ -325,6 +325,7 @@ function ajaxAction(option){
     $.each(checkedItems, function(){
         arr_id.push(eval("this."+option.idField));
     });
+
     $.messager.confirm('提示', option.msg_confirm, function (r) {
         if (!r) {
             return;
@@ -351,10 +352,23 @@ function ajaxAction(option){
 /**
   锁定
  */
-function setlock() {
+function setlock(value) {
     ajaxAction(
         {
-            url:"/index.php/admin/schedule/setlock",
+            url:"/index.php/admin/schedule/setlock?lock="+value,
+            grid_id:"#datagrd",
+            idField:"id"
+        }
+    )
+}
+
+/**
+ 完成状态
+ */
+function setfinish(value) {
+    ajaxAction(
+        {
+            url:"/index.php/admin/schedule/setfinish?v="+value,
             grid_id:"#datagrd",
             idField:"id"
         }
