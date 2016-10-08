@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>数据表格</title>
-    <link rel="stylesheet" type="text/css" href="/static/jquery-easyui-1.4.5/themes/default/easyui.css">
-    <link rel="stylesheet" type="text/css" href="/static/jquery-easyui-1.4.5/themes/icon.css">
-    <script type="text/javascript" src="/static/jquery-easyui-1.4.5/jquery.min.js"></script>
-    <script type="text/javascript" src="/static/jquery-easyui-1.4.5/jquery.easyui.min.js"></script>
-    <script type="text/javascript" src="/static/jquery-easyui-1.4.5/locale/easyui-lang-zh_CN.js"></script>
+    <link rel="stylesheet" type="text/css" href="/static/jquery-easyui/themes/default/easyui.css">
+    <link rel="stylesheet" type="text/css" href="/static/jquery-easyui/themes/icon.css">
+    <script type="text/javascript" src="/static/jquery-easyui/jquery.min.js"></script>
+    <script type="text/javascript" src="/static/jquery-easyui/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="/static/jquery-easyui/locale/easyui-lang-zh_CN.js"></script>
     <script type="text/javascript" src="/scripts/comm.js"></script>
     <script type="text/javascript" src="/scripts/admin/schedule.datagrid.js"></script>
     <style>
@@ -22,7 +22,7 @@
         }
     </style>
 </head>
-<body style="height:100%">
+<body>
 
 <!-- 查找工具栏 -->
 <div id="searchToolbar" class="easyui-panel" title="筛选条件" data-options="iconCls:'icon-search',plain:true" style="padding:5px;margin-bottom: 10px;height:100px;">
@@ -50,6 +50,20 @@
     <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true" onclick="removeRecord()">删除</a>
     <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-mail',plain:true" onclick="email()">邮件通知</a>
     <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-sms',plain:true" onclick="sms()">短信通知</a>
+    <a href="javascript:void(0)"  class="easyui-menubutton"
+       data-options="menu:'#mm_finished',iconCls:'icon-input'">完成状态</a>
+    <div id="mm_finished" style="width:150px;">
+        <div data-options="iconCls:'icon-undo'" onclick="setfinish(0)">设置为未完成</div>
+        <div data-options="iconCls:'icon-redo'" onclick="setfinish(1)">设置为已完成</div>
+        <div data-options="iconCls:'icon-cancel'" onclick="setfinish(-1)">设置为取消</div>
+    </div>
+    <a href="javascript:void(0)" id="mb" class="easyui-menubutton"
+       data-options="menu:'#mm_lock',iconCls:'icon-lock'">锁定</a>
+    <div id="mm_lock" style="width:150px;">
+        <div data-options="iconCls:'icon-undo'" onclick="setlock(1)">设置为锁定</div>
+        <div data-options="iconCls:'icon-redo'" onclick="setlock(0)">设置为未锁定</div>
+
+    </div>
     <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-reload',plain:true">刷新</a>
     <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-help',plain:true">帮助</a>
 </div>
