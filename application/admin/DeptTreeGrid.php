@@ -25,13 +25,19 @@ class DeptTreeGrid  extends   \app\common\DataGrid
      * @return \think\Response|\think\response\Json|\think\response\Jsonp|\think\response\Redirect|\think\response\View|\think\response\Xml
      */
     public function getTreeJson(){
+        // 节点id
         if(isset( $_POST['id'])){
             $id =  $_POST['id'];
         }else{
             $id='';
         }
+        // 所有记录
         $result = array();
         $tbl=new DeptModel();
+        if(isset( $_POST['dept_category'])){
+            $dept_category =  $_POST['dept_category'];
+            $tbl->where("dept_category","in",$dept_category);
+        }
         // 筛选
 //        if(isset($_POST['sort']) &&  isset($_POST['order'])){
 //            $sort = $_POST['sort'] ;
@@ -44,7 +50,21 @@ class DeptTreeGrid  extends   \app\common\DataGrid
             $order = $_POST['order'];
             $tbl->order($sort,$order);
         }
-        $children=$tbl->where('dept_parent',$id)->select();
+//        Db::listen(function($sql, $time, $explain){
+//            // 记录SQL
+//            echo $sql. ' ['.$time.'s]';
+//            // 查看性能分析结果
+//            dump($explain);
+//        });
+        if($id==""){
+            $cond['dept_parent']=array('EXP','is NULL');
+        }else{
+            $cond['dept_parent']=array('EQ',$id);
+        }
+
+        $children=$tbl->where($cond)->select();
+
+
         foreach ($children as $child){
             $child['state'] = $this->has_child($child['dept_name']) ? 'closed' : 'open';
             array_push($result, $child);
