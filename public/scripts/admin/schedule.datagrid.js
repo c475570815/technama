@@ -43,8 +43,11 @@ function initGrid(grid,url,columns_def){
     $(grid).datagrid({
         url:url,
         method:'post',
+        idField:"id",
         title:"详细信息",
-        singleSelect:true,
+        singleSelect:false,
+        checkOnSelect:true,
+        selectOnCheck:true,
         collapsible:false,
         pagination:true,
         rownumbers:true,
@@ -220,8 +223,10 @@ function email(){
         });
     });
 }
+/**
+ * 发送短信通知
+ */
 function sms(){
-    //
     var url_email="/index.php/admin/schedule/sms";
     var checkedItems = $(grid).datagrid('getChecked');
     if (checkedItems.length == 0) {
@@ -233,7 +238,7 @@ function sms(){
     $.each(checkedItems, function (index, item) {
         selectedRowsID.push(item.id);
     });
-    $.messager.confirm('提示', '是否发送短信通知?', function (ans) {
+    $.messager.confirm('提示', '共选中 '+checkedItems.length+' 条，是否发送短信通知?', function (ans) {
         if (!ans) {
             return;
         }
@@ -290,4 +295,68 @@ function removeRecord() {
             }
         });
     });
+}
+
+/**
+ * Ajax处理选中的记录
+ * @param option
+ * option.url
+ * option.grid_id
+ * option.idField
+ * option.msg_confirm
+ * option.msg_no_selected
+ *
+ */
+function ajaxAction(option){
+    //合并默认选项和传递过来的用户选项
+    var option=$.extend({
+        method:"POST",
+        msg_no_selected:"请选择记录",
+        msg_confirm:"确定要指定的操作？"
+    }, option);
+    var gird=$(option.grid_id);
+    var checkedItems = gird.datagrid('getChecked');
+    if (checkedItems.length == 0) {
+        $.messager.alert("提示", option.msg_no_selected, "info");
+        return;
+    }
+    //将数组中的主健值放到一个数组中 ['软件1','网络1']
+    var arr_id = [];
+    $.each(checkedItems, function(){
+        arr_id.push(eval("this."+option.idField));
+    });
+    $.messager.confirm('提示', option.msg_confirm, function (r) {
+        if (!r) {
+            return;
+        }
+        $.ajax({
+            type: "POST",
+            async: false,
+            url: option.url,
+            data: {id:arr_id},//传递给服务器的参数id
+            success: function (result) {
+                gird.datagrid('clearSelections');
+                gird.datagrid('reload');
+                if (result.success ==true) {
+                    $.messager.alert("提示", result.message, "info");
+                } else {
+                    $.messager.alert("提示", result.message, "error");
+                    return;
+                }
+            }
+        });
+    });
+}
+
+/**
+  锁定
+ */
+function setlock() {
+    ajaxAction(
+        {
+            url:"/index.php/admin/schedule/setlock",
+            grid_id:"#datagrd",
+            idField:"id"
+        }
+    )
 }
