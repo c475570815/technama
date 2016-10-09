@@ -152,6 +152,22 @@ class Dept extends Controller implements InterfaceDataGrid
         }
         return json($ret);
     }
+
+    /**
+     * 删除所有记录
+     * @return \think\Response|\think\response\Json|\think\response\Jsonp|\think\response\Redirect|\think\response\View|\think\response\Xml
+     */
+    public function removeall(){
+        $result = Db::execute("TRUNCATE tbl_department;");
+
+        if($result){
+            $ret = ['success' => true, 'message' => '清除成功！'];
+        }else{
+            $ret = ['success' => false, 'message' => '清除失败！'];
+        }
+        $ret = ['success' => true, 'message' => '清除成功！'];
+        return json($ret);
+    }
     /**
      * 下载EXCEL文件
      */
@@ -160,12 +176,19 @@ class Dept extends Controller implements InterfaceDataGrid
             if($request->method()=='POST'){
                 if($request->post('action')=='export'){
                     $dict_grid= new DeptTreeGrid();
-                    $list=$dict_grid->getList();//
-                    $xlsName  = "部门表";
+                    $list=$dict_grid->getList();//记录
+                    $xlsName  = "部门表";//电子表格名称
+                    //  表中字段和EXCEL列的对应关系
                     $xlsCell  = array(
                         array('dept_name','部门名'),
-                        array('dept_staff_number','人数'),
+                        array('dept_parent','父部门'),
                         array('dept_category','部门类型'),
+                        array('dept_staff_number','人数'),
+                        array('dept_comment','部门说明'),
+                        array('dept_phone','部门电话'),
+                        array('dept_addr','部门地址'),
+                        array('dept_header','部门负责人'),
+                        array('dept_enabled','启用')
                     );
                     $dict_grid->exportExcel($xlsName,$xlsCell,$list);
                 }
@@ -194,14 +217,38 @@ class Dept extends Controller implements InterfaceDataGrid
         for($i=$start_row;$i<=$highestColumn;$i++){
 
         }
-        $list=array();// excel数据二维数组
+        $columns=array(
+            array('dept_name','部门名'),
+            array('dept_parent','父部门'),
+            array('dept_category','部门类型'),
+            array('dept_staff_number','人数'),
+            array('dept_comment','部门说明'),
+            array('dept_phone','部门电话'),
+            array('dept_addr','部门地址'),
+            array('dept_header','部门复制人'),
+            array('dept_enabled','启用')
+        );
+        $list=array();// excel数据二维数组3
+        $current_sheet=$objPHPExcel->getActiveSheet();
         for($i=$start_row;$i<=$highestRow;$i++)
         {
             $data=array();
             // array_flip($columns)['dept_name']  =='A'
-            $data['dept_name']=  $objPHPExcel->getActiveSheet()->getCell("A".$i)->getValue();
-            $data['dept_staff_number']=  $objPHPExcel->getActiveSheet()->getCell("B".$i)->getValue();
-            $data['dept_category']=  $objPHPExcel->getActiveSheet()->getCell("C".$i)->getValue();
+            $data['dept_name']=  (string)$current_sheet->getCell("A".$i)->getValue();
+            $data['dept_parent']=  (string)$current_sheet->getCell("B".$i)->getValue();
+            $data['dept_category']=  (string)$current_sheet->getCell("C".$i)->getValue();
+            $data['dept_staff_number']= (string) $current_sheet->getCell("D".$i)->getValue();
+            $data['dept_comment']= (string)$current_sheet->getCell("E".$i)->getValue();
+             $data['dept_phone']=  (string)$current_sheet->getCell("F".$i)->getValue();
+            $data['dept_addr']=  (string)$current_sheet->getCell("G".$i)->getValue();
+            $data['dept_header']=  (string)$current_sheet->getCell("H".$i)->getValue();
+            $data['dept_enabled']=  (string)$current_sheet->getCell("I".$i)->getValue();
+            //富文本转换字符串
+//            if($cellVal instanceof PHPExcel_RichText){
+//                $cellVal = $cellVal->__toString();
+//            }
+            // excel中日期读取出来是个数字，需要转化
+//            $date = date("Y-m-d",PHPExcel_Shared_Date::ExcelToPHP($date) );
             $list[]=$data;
         }
         return $list;
@@ -230,13 +277,13 @@ class Dept extends Controller implements InterfaceDataGrid
 /**
  *  ajax上传/public/uploads/ 目录下并导入
  * {
-success：true，
- *   message：‘成功’
- *  data: {
-1: '用户名为空',5:'年龄必须是数字'
- *          }
- *
- * }
+    success：true，
+     *   message：‘成功’
+     *  data: {
+    1: '用户名为空',5:'年龄必须是数字'
+     *          }
+     *
+     * }
  */
 public function upload(){
     // 获取上传文件并放到/public/uploads/ 目录下
@@ -252,13 +299,19 @@ public function upload(){
         }
         // (1)将excel记录一次性读入到数组中
         $columns=array(
-            'dept_name'=>'部门',
-            'dept_staff_number'=>'人数',
-            'dept_category'=>'部门类型',
+            array('dept_name','部门名'),
+            array('dept_parent','父部门'),
+            array('dept_category','部门类型'),
+            array('dept_staff_number','人数'),
+            array('dept_comment','部门说明'),
+            array('dept_enabled','启用')
         );
 
         $start_row=2;
         $datas=$this->excel2array($tmp_file,$start_row,$columns);
+//        var_dump($datas);
+
+
         // (2)对数组进行有效性验证（如是否唯一）,返回验证结果，结果是错误信息的数组
         //对数组做清除处理
         $validate = Loader::validate('DeptValidate');
@@ -301,19 +354,21 @@ public function upload(){
    }
 
     /**
-     * 返回tree组件需要的JSON
+     * 返回tree组件需要的JSON数据
      * @return \think\Response|\think\response\Json|\think\response\Jsonp|\think\response\Redirect|\think\response\View|\think\response\Xml
      */
    public function deptTree(){
-       //根节点
+       //先定义一个根节点
        $tree_root=array(
            'id'=>0,
            'state'=>'closed',
            'text'=>'全部系部',
            'checked'=>false
        );
+       //现查找一级部门
        $dept=new DeptModel();
-       $de=$dept->where("dept_parent","")->field('dept_name,dept_id')->select();
+       $cond["dept_parent"]=array("EQ","");
+       $de=$dept->where($cond)->field('dept_name,dept_id')->select();
        $nodes=array();
        foreach($de as $current_dept){
            $node=array(
@@ -322,7 +377,7 @@ public function upload(){
                'iconCls'=>"ico-blank",
                'attributes'=>array('level'=>1)
            );
-           // 获取子节点
+           // 获取二级部门节点
            $sub_depts=$dept->where("dept_parent",$current_dept['dept_name'])->field('dept_name,dept_id')->select();
            $childs=array();
            foreach ($sub_depts as $sub){
