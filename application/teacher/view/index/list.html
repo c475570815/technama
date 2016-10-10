@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>听课列表</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" href="/static/sui/css/sm.css">
+    <link rel="stylesheet" href="/static/sui/css/sm-extend.min.css">
+</head>
+<body>
+   <div class="page-group">
+      <!-- 页面1 -->
+      <div class="page  page-current" id='routers-index'>
+          <header class="bar bar-nav">
+              <a class="button button-link button-nav pull-left" href="/index.php/teacher/index/login">
+                  <span class="icon icon-left"></span>
+                  返回
+              </a>
+              <h1 class="title">听课安排</h1>
+          </header>
+		  <!-- 页面工具栏 -->
+          <nav class="bar bar-tab">
+              <a class="tab-item external active" href="#">
+                  <span class="icon icon-home"></span>
+                  <span class="tab-label">首页</span>
+              </a>
+              <a class="tab-item external" href="#">
+                  <span class="icon icon-me"></span>
+                  <span class="tab-label">我的信息</span>
+              </a>
+              <a class="tab-item external" href="/index.php/teacher/index/standard">
+                  <span class="icon icon-star"></span>
+                  <span class="tab-label">评判标准</span>
+              </a>
+              <a class="tab-item external" href="login.html">
+                  <span class="icon icon-settings"></span>
+                  <span class="tab-label">设置</span>
+              </a>
+          </nav>
+          <div class="content">
+              <!-- 这里是页面内容区 -->
+              <div class="page-index">
+                  <div class="content-block-title">{$current_term} ,{$name}</div>
+                  {volist name="lists" id="vo"}
+                  <div class="card">
+                      <div style="background-color:#ddf" valign="bottom" class="card-header color-white no-border">
+                          {$vo.teach_name}（{$vo.teach_id}）  第{$vo.week}周/星期{$vo.xing_qi_ji}/{$vo.section}节
+                      </div>
+                      <div class="card-content">
+                          <div class="card-content-inner">
+                                <p>
+                                    课程：{$vo.course_name}   教室：{$vo.class_room}   <br/>班级：{$vo.class_name} <br/>  人数：{$vo.stu_due_number}
+                                </p>
+                          </div>
+                      </div>
+                      <div class="card-footer">
+                          <a href="#" class="link confirm-ok-cancel" id="{$vo.id}">
+                              {$vo.finished=="完成"?"已完成听课":"确定已完成听课"}
+                          </a>
+                          <a href='{$vo.locked=="锁定"?"#":"form?id=".$vo.id}' class="link confirm-input" >
+                              {$vo.locked=="锁定"?"已完成录入":"录入评价"}
+                          </a>
+                      </div>
+                  </div>
+                  {/volist}
+
+
+              </div>
+          </div>
+      </div>
+      <!-- 页面2 -->
+	  <div class="page" id="standard">
+	  	   <header class="bar bar-nav">
+              <a class="button button-link button-nav pull-left" href="">
+                  <span class="icon icon-left"></span>
+                  返回
+              </a>
+              <h1 class="title">优质课堂参考标准</h1>
+          </header>
+		  <div class="content">
+		 
+		  <div class="card">
+			<div class="card-content">
+			  <div class="card-content-inner">课前准备充分：备课充分，依着得体，精神饱满，教具或PPT准备充分。</div>
+			</div>
+		  </div>
+		  
+		  <div class="card">
+			<div class="card-content">
+			  <div class="card-content-inner">教学目标明确：目标清晰，内容正确，重点突出，课堂安排合理；</div>
+			</div>
+		  </div>
+		 
+		  <div class="card">
+			<div class="card-content">
+			  <div class="card-content-inner">教学方法得当：理实结合，案例和手段丰富，深入浅出，易于理解，启发性强；
+</div>
+			</div>
+		  </div>
+		 
+		  <div class="card">
+			<div class="card-content">
+			  <div class="card-content-inner">学生调动有效：学生出勤好,听课和笔记认真,互动良好,秩序井然；</div>
+			</div>
+		  </div>
+		 
+		  <div class="card">
+			<div class="card-content">
+			  <div class="card-content-inner">教书育人并重：教学态度好,关爱学生,注重思想、方法和行为教育,育人效果好；</div>
+			</div>
+		  </div>
+		  	
+		  <div class="card">
+			<div class="card-content">
+			  <div class="card-content-inner">教书育人并重：教学态度好,关爱学生,注重思想、方法和行为教育,育人效果好；</di教学基本功扎实：逻辑清楚，表达清晰，语言生动，教态优雅，善于归纳，板书美观。v>
+			</div>
+		  </div>
+  
+		  </div>
+	  </div>
+	  
+	  <!-- 如果有 popup -->
+        <div class="popup popup-about">...</div>
+  </div>
+
+
+
+
+<script type='text/javascript' src='/static/sui/js/zepto.js' charset='utf-8'></script>
+<script type='text/javascript' src='/static/sui/js/sm.min.js' charset='utf-8'></script>
+<script type='text/javascript' src='/static/sui/js/sm-extend.min.js' charset='utf-8'></script>
+
+<!-- 默认必须要执行$.init(),实际业务里一般不会在HTML文档里执行，通常是在业务页面代码的最后执行 -->
+<script>
+   $.init();
+   // 提交完成情况
+  $(document).on('click', '.confirm-ok-cancel',function () {
+      var _id=$(this).attr("id");
+      var href_txt=$.trim($(this).text());
+      console.log(href_txt);
+      if(href_txt=="已完成听课"){
+          $.toast("你已经完成了听课，不用再点了:)");
+      }else{
+          $.confirm('确定已完成听课任务?',
+                  function () {
+                      $.ajax({
+                          type:"POST",   //post提交方式默认是get
+                          url:"/index.php/teacher/index/setfinished",
+                          data:{id:_id},   //序列化
+                          success:function(data) {
+                              console.log(data);
+                              if(data.success=="true"){
+                                  document.location = "/index.php/teacher/index/index";
+                              }
+                          }
+                      });
+                  },
+                  function(){  //$.alert('取消');
+                        }
+          );
+      }
+  });
+   // 提交评价结果
+   $(document).on('click', '.confirm-input',function () {
+
+       var href_txt=$.trim($(this).text());
+       console.log(href_txt);
+       if(href_txt=="已完成录入"){
+           $.toast("结果已经录入，修改则需要管理员解锁 :)");
+       }else{
+           $.confirm('确定已完成听课任务?',
+                   function () {
+                       $.ajax({
+                           type:"POST",   //post提交方式默认是get
+                           url:"/index.php/teacher/index/setfinished",
+                           data:{id:_id},   //序列化
+                           success:function(data) {
+                               console.log(data);
+                               if(data.success=="true"){
+                                   document.location = "/index.php/teacher/index/index";
+                               }
+                           }
+                       });
+                   },
+                   function(){  //$.alert('取消');
+                   }
+           );
+       }
+   });
+</script>
+</body>
+</html>
