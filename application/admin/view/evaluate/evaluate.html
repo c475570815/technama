@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>听课结果录入</title>
-    <link rel="stylesheet" type="text/css" href="/static/jquery-easyui-1.4.5/themes/default/easyui.css">
-    <link rel="stylesheet" type="text/css" href="/static/jquery-easyui-1.4.5/themes/icon.css">
-    <script type="text/javascript" src="/static/jquery-easyui-1.4.5/jquery.min.js"></script>
-    <script type="text/javascript" src="/static/jquery-easyui-1.4.5/jquery.easyui.min.js"></script>
-    <script type="text/javascript" src="/static/jquery-easyui-1.4.5/locale/easyui-lang-zh_CN.js"></script>
+    <link rel="stylesheet" type="text/css" href="/static/jquery-easyui/themes/default/easyui.css">
+    <link rel="stylesheet" type="text/css" href="/static/jquery-easyui/themes/icon.css">
+    <script type="text/javascript" src="/static/jquery-easyui/jquery.min.js"></script>
+    <script type="text/javascript" src="/static/jquery-easyui/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="/static/jquery-easyui/locale/easyui-lang-zh_CN.js"></script>
     <script type="text/javascript" src="/scripts/admin/evaluate.form.js"></script>
     <style>
         #ff fieldset {
@@ -39,87 +39,46 @@
             <fieldset style="padding: 20px">
                 <legend>课程信息</legend>
                 <div>
-                    <div>
-                        学期：{$schedule['term']}
-                        教师：{$schedule['teacher']}（{$schedule['teacher_no']}）
-                        系部：{$schedule['dept_name']}
-                        时间：{$schedule['time']}
-                        地点：{$schedule['class_room']}
-                        学生人数：{$schedule['stu_due_number']}
-                        班级：{$schedule['class_name']}
-                        课程：{$schedule['course_name']}
-                        {$schedule['week']}-{$schedule['xing_qi_ji']}-{$schedule['section']}
-                    </div>
+                    <!--<div>-->
+                        <!--学期：{$schedule['term']}-->
+                        <!--教师：{$schedule['teach_name']}（{$schedule['teach_id']}）-->
+                        <!--系部：{$schedule['dept_name']}-->
+                        <!--时间：{$schedule['time']}-->
+                        <!--地点：{$schedule['class_room']}-->
+                        <!--学生人数：{$schedule['stu_due_number']}-->
+                        <!--班级：{$schedule['class_name']}-->
+                        <!--课程：{$schedule['course_name']}-->
+                        <!--{$schedule['week']}-{$schedule['xing_qi_ji']}-{$schedule['section']}-->
+                    <!--</div>-->
 
                     <label>学期:</label>
                     <input  type="text" name="data[term]" style="width:150px" value="2015-2016-1" readonly/>
                     <label>系部:</label>
-                    <select class="easyui-combobox" panelHeight="160" name="data[dept_name]">
-                        <option value="外语系" selected>外语系</option>
-                        {volist name="dept" id="vo"}
-                        <option value="{$vo.dept_name}">{$vo.dept_name}</option>
-                        {/volist}
-                    </select>
+                    <input  name="data[dept_name]" value="{$schedule['dept_name']}" readonly />
+                    <label>
+                        教师工号:
+                    </label>
+                    <input  type="text" name="data[teacher_id]" value="{$schedule['teach_id']}" readonly/>
                     <label>
                         教师姓名:
                     </label>
-                    <input class="easyui-textbox" type="text" name="data[teacher]" validType=" length[0,6]"
-                           data-options="required:true" missingMessage="教师姓名必须填写" invalidMessage="不能超过6个字"/>
+                    <input  type="text" name="data[teacher]" value="{$schedule['teach_name']}" readonly/>
                     <label>班级:</label>
-                    <input class="easyui-textbox" type="text" name="data[class_name]" validType=" length[0,20]"
-                           data-options="required:true" missingMessage="班级名必须填写" invalidMessage="不能超过20个字"/>
-                    <label>课程名称:</label><input
-                        class="easyui-textbox" type="text" name="data[course_name]" validType=" length[0,20]"
-                        data-options="required:true" missingMessage="课程必须填写" invalidMessage="不能超过20个字"/>
+                    <input type="text" name="data[class_name]" value="{$schedule['class_name']}" readonly/>
+                    <label>课程名称:</label>
+                    <input  type="text" name="data[course_name]" value="{$schedule['course_name']}" readonly />
                 </div>
                 <div>
                     <label>日期:</label>
-                    <input class="easyui-datebox" type="text" name="data[time]"
-                           data-options="required:true" missingMessage="日期必须填写" value="1"/>
+                    <input   type="text" name="data[time]" value="{$schedule['time']}" />
                     <label>周次:</label>
-                    <select class="easyui-combobox" name="data[week]" style="width: 50px">
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                        <option value="6">6</option>
-                        <option value="7">7</option>
-                        <option value="8">8</option>
-                        <option value="9">9</option>
-                        <option value="10">10</option>
-                        <option value="11">11</option>
-                        <option value="12">12</option>
-                        <option value="13">13</option>
-                        <option value="14">14</option>
-                        <option value="15">15</option>
-                        <option value="16">16</option>
-                        <option value="17">17</option>
-                        <option value="18">18</option>
-                        <option value="19">19</option>
-                    </select>
+                    <input  name="data[week]" style="width: 50px" value="{$schedule['week']}"  />
                     <label>星期几:</label>
-                    <select class="easyui-combobox" panelHeight="auto" name="data[xing_qi_ji]" style="width: 100px">
-                        <option value="1">星期一</option>
-                        <option value="2">星期二</option>
-                        <option value="3">星期三</option>
-                        <option value="4">星期四</option>
-                        <option value="5">星期五</option>
-                        <option value="6">星期六</option>
-                        <option value="7">星期天</option>
-                    </select>
+                    <input  name="data[xing_qi_ji]" value="{$schedule['xing_qi_ji']}" style="width: 100px" readonly />
                     <label>节次:</label>
-                    <select class="easyui-combobox" panelHeight="auto" name="data[section]" style="width: 100px">
-                            <option value="1">第一节</option>
-                        <option value="2">第二节</option>
-                        <option value="3">第三节</option>
-                        <option value="4">第四节</option>
-                        <option value="5">其它时段</option>
-                    </select>
+                    <input   name="data[section]" style="width: 100px"  value="{$schedule['section']}" readonly/>
                     <label>教室:</label>
-                    <input type="text" name="data[class_room]" validType="classroom"
-                           data-options="required:true"
-                           missingMessage="教室必须填写" invalidMessage="请填写数据格式如同5c404" value="5c404"/>
+                    <input type="text" name="data[class_room]" readonly   value="{$schedule['class_room']}"/>
                 </div>
                 <fieldset style="margin-top: 20px">
                     <legend>结果</legend>
@@ -145,7 +104,7 @@
 
                     <div>
                         <label>课程评价(*)</label>
-                        <input class="easyui-textbox" type="text" name="data[listener]" style="height:80px;width:100%"
+                        <input class="easyui-textbox" type="text" name="data[comments]" style="height:80px;width:100%"
                                data-options="required:true,multiline:true" />
                     </div>
                 </fieldset>
@@ -174,17 +133,14 @@
                                 否<input name="data[detail][4]" type="radio" value="否"/>
                             </td>
                         </tr>
-                        <tr>
-                            <td valign="top">建议:</td>
-                            <td COLSPAN="10">
-                                <input class="easyui-textbox" name="data[comments]"
-                                       data-options="multiline:true" style="height:60px;width: 100%" value=""/></td>
-                        </tr>
+
                     </table>
                 </fieldset>
             </fieldset>
 
             <div style="text-align:center;padding:5px">
+                <input type="hidden" name="data[listener_no]" value="{$schedule['conuncilor']}" />
+                <input type="hidden" name="id" value="{$schedule['id']}" />
                 <a href="javascript:void(0)" class="easyui-linkbutton" style="width: 80px" onclick="saveForm()">提交</a>
                 <a href="javascript:void(0)" class="easyui-linkbutton" style="width: 80px" onclick="clearForm()">清除</a>
                 <a href="javascript:void(0)" class="easyui-linkbutton" style="width: 80px" onclick="history.back();">返回</a>

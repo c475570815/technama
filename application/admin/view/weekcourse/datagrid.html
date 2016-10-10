@@ -2,13 +2,24 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" type="text/css" href="/static/jquery-easyui-1.4.5/themes/default/easyui.css">
-    <link rel="stylesheet" type="text/css" href="/static/jquery-easyui-1.4.5/themes/icon.css">
-    <script type="text/javascript" src="/static/jquery-easyui-1.4.5/jquery.min.js"></script>
-    <script type="text/javascript" src="/static/jquery-easyui-1.4.5/jquery.easyui.min.js"></script>
-    <script type="text/javascript" src="/static/jquery-easyui-1.4.5/locale/easyui-lang-zh_CN.js"></script>
+    <link rel="stylesheet" type="text/css" href="/static/jquery-easyui/themes/default/easyui.css">
+    <link rel="stylesheet" type="text/css" href="/static/jquery-easyui/themes/icon.css">
+    <script type="text/javascript" src="/static/jquery-easyui/jquery.min.js"></script>
+    <script type="text/javascript" src="/static/jquery-easyui/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="/static/jquery-easyui/locale/easyui-lang-zh_CN.js"></script>
     <script type="text/javascript" src="/scripts/comm.js"></script>
     <script type="text/javascript" src="/scripts/admin/weekcourse.datagrid.js"></script>
+    <style>
+        .link-edit{
+            display: block;height:auto;width:auto;padding-left:7px;padding-right:7px;background-color: #7f77ff;float: left;text-align: center;color: whitesmoke;padding-top: 2px;padding-bottom: 2px;
+            text-decoration: none;
+            margin-left: 5px;margin-right: 5px;
+            margin-top: 2px;margin-bottom: 2px;
+        }
+        .link-edit:hover{
+            background-color: #9f8855; color: white;
+        }
+    </style>
 </head>
 <body>
 <div class="easyui-layout" fit="true">
@@ -26,7 +37,6 @@
                 </select>
                 周次:
                 <select class="easyui-combobox" name="dict[week]" style="width:50px;overflow: auto">
-                    <option value=""></option>
                     <option value="1">1</option>
                     <option value="2">2</option>
                     <option value="3">3</option>
@@ -87,6 +97,7 @@
         <!-- 操作工具栏 -->
         <div id="editToolbar" style="clear: both">
             <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-download',plain:true" onclick="exportXls()">导出</a>
+            <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-download',plain:true" onclick="autoplan()">自动安排听课</a>
             <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-trashcan',plain:true"
                onclick="removeall()">清除所有记录</a>
             <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-reload',plain:true" onclick="reload()">刷新</a>
@@ -98,14 +109,13 @@
                data-options="iconCls:'icon-more',plain:true" fit="true" style="width:500px;padding:10px">
         </table>
     </div>
-<!--    <div data-options="region:'east'" border="false" style="width:400px;padding:10px;">
-        <div id="panel_detail" class="easyui-panel" title="详细信息"
-               data-options="iconCls:'icon-more',plain:true" fit="true" style="padding:10px">
-
-        </div>
-    </div>-->
+   <!--<div data-options="region:'east'" border="false" style="width:400px;padding:10px;">-->
+        <!--<div id="panel_detail" class="easyui-panel" title="详细信息"-->
+               <!--data-options="iconCls:'icon-more',plain:true" fit="true" style="padding:10px">-->
+        <!--</div>-->
+    <!--</div>-->
 </div>
-<!-- 对话框   -->
+<!-- 选择听课教师对话框   -->
 <div id="dialog_listen" class="easyui-window" title="请选择听课教师"  >
     <div class="easyui-layout" data-options="fit:true">
         <div data-options="region:'center'" style="">
@@ -115,7 +125,20 @@
         </div>
         <div data-options="region:'south',border:false" style="text-align:right;padding:5px 0 0;">
             <a class="easyui-linkbutton" data-options="iconCls:'icon-ok'" href="#" onclick="affirm()" style="width:80px">确定</a>
-            <a class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" href="#" onclick="clear()" style="width:80px">清除</a>
+            <a class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" href="#" onclick="closeDialog()" style="width:80px">取消</a>
+        </div>
+    </div>
+</div>
+
+<!-- 自动安排对话框   -->
+<div id="dialog_autoplan" class="easyui-window" title="设置自动安排参数"  >
+    <div class="easyui-layout" data-options="fit:true">
+        <div data-options="region:'center'" style="">
+
+        </div>
+        <div data-options="region:'south',border:false" style="text-align:right;padding:5px 0 0;">
+            <a class="easyui-linkbutton" data-options="iconCls:'icon-ok'" href="#" onclick="affirm()" style="width:80px">确定</a>
+            <a class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" href="#" onclick="closeDialog()" style="width:80px">取消</a>
         </div>
     </div>
 </div>

@@ -3,23 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <title> 督导管理系统</title>
-    <link rel="stylesheet" type="text/css" href="/static/jquery-easyui-1.4.5/themes/default/easyui.css">
-    <link rel="stylesheet" type="text/css" href="/static/jquery-easyui-1.4.5/themes/icon.css">
+    <link rel="stylesheet" type="text/css" href="/static/jquery-easyui/themes/default/easyui.css">
+    <link rel="stylesheet" type="text/css" href="/static/jquery-easyui/themes/icon.css">
     <link rel="stylesheet" type="text/css" href="/css/admin/index.layout.css">
     <link href='/static/fullcalendar-2.9.0/fullcalendar.css' rel='stylesheet' />
     <link href='/static/fullcalendar-2.9.0/fullcalendar.print.css' rel='stylesheet' media='print' />
+    <link href='/static/fakeLoader/fakeLoader.css' rel='stylesheet' />
     <!--<script type="text/javascript"  src="/static/require.js"></script>-->
     <!--<script type="text/javascript"  src="/static/sea.js"></script>-->
-    <script type="text/javascript" src="/static/jquery-easyui-1.4.5/jquery.min.js"></script>
-    <script type="text/javascript" src="/static/jquery-easyui-1.4.5/jquery.easyui.min.js"></script>
-    <script type="text/javascript" src="/static/jquery-easyui-1.4.5/locale/easyui-lang-zh_CN.js"></script>
+    <script type="text/javascript" src="/static/jquery-easyui/jquery.min.js"></script>
+    <script src="/static/fakeLoader/fakeLoader.js"></script>
+    <script type="text/javascript" src="/static/jquery-easyui/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="/static/jquery-easyui/locale/easyui-lang-zh_CN.js"></script>
     <script type="text/javascript" src="/scripts/comm.js"></script>
     <script type="text/javascript" src="/scripts/admin/calendar.js"></script>
     <script type="text/javascript" src="/scripts/admin/add_vacation.js"></script>
     <script src='/static/fullcalendar-2.9.0/lib/moment.min.js'></script>
     <script src='/static/fullcalendar-2.9.0/fullcalendar.min.js'></script>
     <script src='/static/fullcalendar-2.9.0/lang/zh-cn.js'></script>
-    <script src="http://192.168.19.138:8080/socket.io/socket.io.js"></script>
+    <script src="/static/socket.io.js"></script>
+
     <!--<script type="text/javascript" src="/scripts/admin/index.layout.js"></script>-->
     <script type="text/javascript" src="/scripts/admin/index.layout.js"></script>
     <style>
@@ -29,6 +32,17 @@
     </style>
 </head>
 <body id="zt" class="easyui-layout">
+<div id="fakeLoader"></div>
+<script>
+    $("#fakeLoader").fakeLoader({
+        timeToHide:1200, //Time in milliseconds for fakeLoader disappear
+        zIndex:999, // Default zIndex
+        spinner:"spinner3",//Options: 'spinner1', 'spinner2', 'spinner3', 'spinner4', 'spinner5', 'spinner6', 'spinner7'
+        bgColor:"#2ecc99" //Hex, RGB or RGBA colors
+//        imagePath:"yourPath/customizedImage.gif"
+    });
+</script>
+
 <!--  North  -->
 <div region="north" split="false" border="false" style="overflow: hidden; height: 40px;
         background: #7f99be repeat-x center 100%;
@@ -89,8 +103,8 @@
                        class="easyui-linkbutton">周课程表</a></li>
                 <li><a href="/index.php/admin/schedule/index" data-options="iconCls:'icon-alphabet',plain:true"
                        class="easyui-linkbutton">听课任务安排</a></li>
-                <li><a href="/index.php/admin/evaluate/add" data-options="iconCls:'icon-input',plain:true"
-                       class="easyui-linkbutton">督导结果录入</a></li>
+                <!--<li><a href="/index.php/admin/evaluate/add" data-options="iconCls:'icon-input',plain:true"-->
+                       <!--class="easyui-linkbutton">督导结果录入</a></li>-->
                 <li><a href="/index.php/admin/record/index" data-options="iconCls:'icon-data',plain:true"
                        class="easyui-linkbutton">听课记录</a></li>
                 <li><a href="/index.php/admin/index/chart" data-options="iconCls:'icon-statistics',plain:true"
@@ -132,9 +146,12 @@
                 <!--</div>-->
                 <!--&lt;!&ndash;添加学期&ndash;&gt;-->
             </div>
-            <div   title="系统参数" style="width:35%;margin-left:10px;padding:10px;background:#fafafa;float: left;border: dotted cornflowerblue 1px" >
-                <?php echo date("YmdHis");?>
-                当前学期：{$current_term} <a href="#">我要修改</a>
+            <div    style="font-size:14px;width:35%;margin-left:10px;padding:10px;background:#fafafa;float: left;border: dotted cornflowerblue 1px" >
+                <p></p>当前日期：<?php echo date("Y-m-d");?></p>
+                <p>当前时间：<?php echo date("H:i:s");?></p>
+                <p>当前学期：<a href="#" title="当前学期">{$current_term} </a></p>
+                <p>今天是： 第{$current_week}周，星期{$today_weekday}</p>
+                <p>{$jwc}</p>
             </div>
 
 

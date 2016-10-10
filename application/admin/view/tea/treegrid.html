@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>数据表格</title>
-    <link rel="stylesheet" type="text/css" href="/static/jquery-easyui-1.4.5/themes/default/easyui.css">
-    <link rel="stylesheet" type="text/css" href="/static/jquery-easyui-1.4.5/themes/icon.css">
-    <script type="text/javascript" src="/static/jquery-easyui-1.4.5/jquery.min.js"></script>
-    <script type="text/javascript" src="/static/jquery-easyui-1.4.5/jquery.easyui.min.js"></script>
-    <script type="text/javascript" src="/static/jquery-easyui-1.4.5/locale/easyui-lang-zh_CN.js"></script>
+    <link rel="stylesheet" type="text/css" href="/static/jquery-easyui/themes/default/easyui.css">
+    <link rel="stylesheet" type="text/css" href="/static/jquery-easyui/themes/icon.css">
+    <script type="text/javascript" src="/static/jquery-easyui/jquery.min.js"></script>
+    <script type="text/javascript" src="/static/jquery-easyui/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="/static/jquery-easyui/locale/easyui-lang-zh_CN.js"></script>
     <script type="text/javascript" src="/scripts/comm.js"></script>
     <script type="text/javascript" src="/scripts/admin/teacher.treegrid.js"></script>
 </head>
@@ -82,15 +82,19 @@
                     <div title="邮件通知" data-options="closable:false" style="overflow:auto;padding:10px;display:none;">
                         <form style="padding: 10px">
                             <input class="tb" type="text" style="width: 100%;margin-bottom:10px" >
-                            <textarea rows="10" style="width: 100%;margin-top:10px"></textarea>
+                            <textarea  id="txt_email" rows="10" style="width: 100%;margin-top:10px"></textarea>
                             <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-mail',plain:false" onclick="email()">立即发送邮件通知</a>
+                            <input id="cbo_dt_email" type="checkbox" />定时发送
+                            <input id="dt_email" />
 
                         </form>
                     </div>
                     <div title="短信通知" data-options="closable:true" style="display:none;">
                         <form style="padding: 10px">
-                            <textarea rows="10" style="width: 100%;margin-top:10px"></textarea>
-                            <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-sms',plain:false" onclick="email()">立即发送短信通知</a>
+                            <textarea id="txt_sms" rows="10" style="width: 100%;margin-top:10px"></textarea>
+                            <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-sms',plain:false" onclick="sendSMS()">立即发送短信通知</a>
+                            <input id="cbo_dt_sms" type="checkbox" />定时发送
+                            <input id="dt_sms" />
                         </form>
                     </div>
                 </div>

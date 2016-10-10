@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>数据表格</title>
-    <link rel="stylesheet" type="text/css" href="/static/jquery-easyui-1.4.5/themes/default/easyui.css">
-    <link rel="stylesheet" type="text/css" href="/static/jquery-easyui-1.4.5/themes/icon.css">
-    <script type="text/javascript" src="/static/jquery-easyui-1.4.5/jquery.min.js"></script>
-    <script type="text/javascript" src="/static/jquery-easyui-1.4.5/jquery.easyui.min.js"></script>
-    <script type="text/javascript" src="/static/jquery-easyui-1.4.5/locale/easyui-lang-zh_CN.js"></script>
+    <link rel="stylesheet" type="text/css" href="/static/jquery-easyui/themes/default/easyui.css">
+    <link rel="stylesheet" type="text/css" href="/static/jquery-easyui/themes/icon.css">
+    <script type="text/javascript" src="/static/jquery-easyui/jquery.min.js"></script>
+    <script type="text/javascript" src="/static/jquery-easyui/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="/static/jquery-easyui/locale/easyui-lang-zh_CN.js"></script>
     <script type="text/javascript" src="/scripts/comm.js"></script>
     <script type="text/javascript" src="/scripts/admin/tea.datagrid.js"></script>
 </head>
@@ -48,8 +48,9 @@
             <form id="frm_download" method="post"></form>
         </div>
     </div>
-<!-- 操作工具栏 -->
+
     <div data-options="region:'center'" border="false" style="padding:10px;">
+        <!-- 操作工具栏 -->
         <div id="editToolbar" style="clear: both">
             <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true" onclick="edit()">编辑</a>
             <a href="/index.php/admin/tea/add" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true">添加</a>
@@ -67,6 +68,10 @@
                toolbar="#editToolbar"
                data-options="iconCls:'icon-more',plain:true" fit="true">
         </table>
+    </div>
+    <div data-options="region:'east'" border="false" style="width:400px;padding:10px;">
+        <!-- propertygrid  -->
+        <table id="pg" style="width:300px"></table>
     </div>
     <div id="dd" data-options="buttons:'#bb'">
         <form id="frm_upload" action="" enctype="multipart/form-data" method="post"   style="padding: 10px">
