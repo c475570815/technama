@@ -8,17 +8,18 @@ $(document).ready(function () {
         url:'/index.php/admin/dict/ac1',
         method:'post',
         title:"详细信息",
+        idField:"dict_id",
         fit:true,
         singleSelect:true,
         collapsible:false,
         pagination:true,
         rownumbers:true,
-        height:345,
         columns:[[
             {field:'dict_category',title:'类别',sortable:true,width:'30%'},
             {field:'dict_key',title:'键',sortable:true,width:'10%'},
             {field:'dict_value',title:'显示值',sortable:true,width:'10%'},
-            {field:'dict_id',title:'编号',sortable:true,width:'10%'}
+            {field:'dict_point',title:'显示顺序',sortable:true,width:'10%'},
+            {field:'dict_enabled',title:'启用',sortable:true,width:'10%'}
 
         ]]
     });
