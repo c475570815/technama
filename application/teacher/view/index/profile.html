@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>个人信息</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" href="/static/sui/css/sm.css">
+    <link rel="stylesheet" href="/static/sui/css/sm-extend.min.css">
+</head>
+<body>
+<!-- header  -->
+<header class="bar bar-nav">
+    <h1 class='title'>修改个人信息</h1>
+</header>
+<!-- content  -->
+<div class="content">
+    <!-- 个人信息 -->
+    <form id="frm_record">
+        <div class="list-block">
+            <ul>
+                <li>
+                    <div class="item-content">
+                        <div class="item-media"><i class="icon icon-form-toggle"></i></div>
+                        <div class="item-inner">
+                            <div class="item-title label">姓名</div>
+                            <div class="item-input">
+                                <input type="text" id='teach_name' name="data[teach_name]"/>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="item-content">
+                        <div class="item-media"><i class="icon icon-form-calendar"></i></div>
+                        <div class="item-inner">
+                            <div class="item-title label">出生日期</div>
+                            <div class="item-input">
+                                <input type="date" id="time" placeholder="实际听课时间" value="" name="data[time]">
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="item-content">
+                        <div class="item-media"><i class="icon icon-form-toggle"></i></div>
+                        <div class="item-inner">
+                            <div class="item-title label">系部</div>
+                            <div class="item-input">
+                                <input type="text" id='picker' name="data[last_evaluate]"/>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="item-content">
+                        <div class="item-media"><i class="icon icon-form-toggle"></i></div>
+                        <div class="item-inner">
+                            <div class="item-title label">电话</div>
+                            <div class="item-input">
+                                <input type="text" id='teach_phone' name="data[teach_phone]"/>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="item-content">
+                        <div class="item-media"><i class="icon icon-form-toggle"></i></div>
+                        <div class="item-inner">
+                            <div class="item-title label">邮件</div>
+                            <div class="item-input">
+                                <input type="text" id='email' name="data[email]"/>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="item-content">
+                        <div class="item-media"><i class="icon icon-form-toggle"></i></div>
+                        <div class="item-inner">
+                            <div class="item-title label">qq</div>
+                            <div class="item-input">
+                                <input type="text" id='qq' name="data[qq]"/>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="item-content">
+                        <div class="item-media"><i class="icon icon-form-toggle"></i></div>
+                        <div class="item-inner">
+                            <div class="item-title label">职称</div>
+                            <div class="item-input">
+                                <input type="text" id='' name="data[last_evaluate]"/>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+             </ul>
+        </div>
+        <div class="content-block">
+            <div class="row">
+                <!--<div class="col-50"><a href="#" class="button button-big button-fill button-danger">取消</a></div>-->
+                <div class="col-100"><a href="#" class="button button-big button-fill button-success"
+                                       id="btn_save">修改个人信息</a></div>
+            </div>
+
+        </div>
+        <div class="content-block">
+        <div class="row">
+            <div class="col-100"><a href="#" id="btn_logout"  class="button button-big button-fill">退出系统</a></div>
+        </div>
+            </div>
+        <!-- hidden -->
+        <input type="hidden" name="id" value="{$vo.id?$vo.id:''}"/>
+        <input type="hidden" name="data[listener_no]" value=""/>
+    </form>
+</div>
+<script type='text/javascript' src='/static/sui/js/zepto.js' charset='utf-8'></script>
+<script type='text/javascript' src='/scripts/mobile/config.js' charset='utf-8'></script>
+<script type='text/javascript' src='/static/sui/js/sm.min.js' charset='utf-8'></script>
+<script type='text/javascript' src='/static/sui/js/sm-extend.min.js' charset='utf-8'></script>
+<script type='text/javascript' src='/static/sui/js/picker.js' charset='utf-8'></script>
+<script type='text/javascript' src='/scripts/mobile/app.js' charset='utf-8'></script>
+<script>
+    // 退出按钮
+    $(document).on('click', '#btn_logout', function () {
+        $.confirm('确定退出系统?',
+                function () {
+                    var t=setTimeout("document.location = '/index.php/teacher/index/logout';",1000);
+//                    $.ajax({
+//                        type: "POST",
+//                        url: "/index.php/teacher/index/logout",
+//                        success: function (data) {
+////                                var t=setTimeout("document.location = '/index.php/teacher/index/index';",4000)
+//                        }
+//                    });
+                },
+                function () {
+
+                }
+        );
+    })
+    $(document).on('click', '#btn_save', function () {
+        var _id = $(this).attr("id");
+        //判断输入是否完成
+        var _time=$.trim($("#time").val());
+        var _picker=$.trim($("#picker").val());
+        var _comments=$.trim($("#comments").val());
+        if(_time=="" || _picker=="" || _comments==""){
+            $.toast("你没有完成，请完成填写后再提交！");
+            return ;
+        }
+        var jsonData = $("#frm_record").serializeArray();
+
+        $.confirm('确定已完成听课任务?',
+                function () {
+                    $.ajax({
+                        type: "POST",
+                        url: "/index.php/teacher/index/saverecord",
+                        data: jsonData,   //序列化
+                        success: function (data) {
+                            if (data.success == true) {
+//                                console.log(data);
+                                $.toast('操作成功，4秒后跳转...', 3000, 'success top');
+                                var t=setTimeout("document.location = '/index.php/teacher/index/index';",4000)
+
+                            }
+                        }
+                    });
+                },
+                function () {
+                    $.alert('取消');
+                }
+        );
+    });
+</script>
+</body>
+</html>
