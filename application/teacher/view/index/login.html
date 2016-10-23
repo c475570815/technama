@@ -5,19 +5,62 @@
      <title>录入评价结果</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="initial-scale=1, maximum-scale=1">
-    
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
-
+    <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
     <link rel="stylesheet" href="/static/sui/css/sm.css">
     <link rel="stylesheet" href="/static/sui/css/sm-extend.min.css">
+    <script>
+
+        wx.config({
+            debug: false,// 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+            appId: '<?php echo $signPackage["appId"];?>',
+            timestamp:'<?php echo $signPackage["timestamp"];?>',
+            nonceStr: '<?php echo $signPackage["nonceStr"];?>',
+            signature: '<?php echo $signPackage["signature"];?>',
+            jsApiList: [
+                'checkJsApi',
+                'onMenuShareTimeline',
+                'onMenuShareAppMessage',
+                'onMenuShareQQ',
+                'onMenuShareWeibo',
+                'hideMenuItems',
+                'showMenuItems',
+                'hideAllNonBaseMenuItem',
+                'showAllNonBaseMenuItem',
+                'translateVoice',
+                'startRecord',
+                'stopRecord',
+                'onRecordEnd',
+                'playVoice',
+                'pauseVoice',
+                'stopVoice',
+                'uploadVoice',
+                'downloadVoice',
+                'chooseImage',
+                'previewImage',
+                'uploadImage',
+                'downloadImage',
+                'getNetworkType',
+                'openLocation',
+                'getLocation',
+                'hideOptionMenu',
+                'showOptionMenu',
+                'closeWindow',
+                'scanQRCode',
+                'chooseWXPay',
+                'openProductSpecificView',
+                'addCard',
+                'chooseCard',
+                'openCard'
+            ]
+        });
+    </script>
 </head>
 <body>
-
 <header class="bar bar-nav">
     <h1 class='title'>登录</h1>
 </header>
-
 <div class="content">
     <form action="/index.php/teacher/index/authentication" method="POST" id="frm_login">
     <div class="list-block">
@@ -46,15 +89,15 @@
                     </div>
                 </div>
             </li>
-          
+
 			<li>
                 <div class="item-content">
                     <div class="item-media"><i class="icon icon-form-toggle"></i></div>
                     <div class="item-inner">
-                        <div class="item-title label"  style="width:40%">记住密码</div>
+                        <div class="item-title label"   style="width:40%">记住密码</div>
                         <div class="item-input">
                             <label class="label-switch">
-                                <input type="checkbox">
+                                <input type="checkbox" id="remember" value="1">
                                 <div class="checkbox"></div>
                             </label>
                         </div>
@@ -65,13 +108,14 @@
     </div>
     <div class="content-block">
         <div class="row">
-            <div class="col-50"><a href="#" class="button button-big button-fill button-danger">取消</a></div>
-            <div class="col-50"><a href="#" class="button button-big button-fill button-success" onclick="login();">提交</a></div>
+            <div class="col-50"><a href="#" id="btn_cancel" class="button button-big button-fill button-danger">取消</a></div>
+            <div class="col-50"><a href="#" id="btn_submit" class="button button-big button-fill button-success" onclick="login();">提交</a></div>
         </div>
 		<br/>
 		<div class="row">
-            <div class="col-100"><a href="#" class="button button-big button-fill">QQ登录</a></div>     
+            <div class="col-100"><a href="#" id="wxlogin" onclick="wxlogin()" class="button button-big button-fill">微信一键登录</a></div>
         </div>
+
     </div>
 	</form>
 </div>
@@ -82,7 +126,75 @@
 <script type='text/javascript' src='/static/sui/js/sm-extend.min.js' charset='utf-8'></script>
 <script type='text/javascript' src='/static/sui/js/picker.js' charset='utf-8'></script>
 <script type='text/javascript' src='/scripts/mobile/app.js' charset='utf-8'></script>
+<script src="/scripts/mobile/wx.js"></script>
 <script>
+
+    function wxlogin(){
+        var appid="wx06693892f83ef14c";  //企业的CorpID
+        var redirect_url=encodeURI("http://dd.scetc.edu.cn/teacher/index/auth2"); //授权后重定向的回调链接地址，请使用urlencode对链接进行处理
+        var  response_type="code"; //返回类型，此时固定为：code
+        var scope="snsapi_base"; //应用授权作用域，此时固定为：snsapi_base
+        var state="123456"; //重定向后会带上state参数，企业可以填写a-zA-Z0-9的参数值，长度不可超过128个字节
+        var param ="#wechat_redirect";  //微信终端使用此参数判断是否需要带上身份信息
+        var url="https://open.weixin.qq.com/connect/oauth2/authorize?";
+        url=url+"appid=wx06693892f83ef14c";
+        url=url+"&redirect_uri="+redirect_url;
+        url=url+"&response_type=code&scope=snsapi_base&state=1234#wechat_redirect"
+        console.log(url);
+        window.location=url;
+        /*
+        企业或服务商网站引导用户进入登录授权页 企业或服务商可以在自己的网站首页中放置“微信企业号登录”的入口，引导用户（指企业号管理员或成员）进入登录授权页
+        网址为: https://open.weixin.qq.com/connect/oauth2/authorize?appid=CORPID&redirect_uri=REDIRECT_URI&response_type=code&scope=SCOPE&state=STATE#wechat_redirect
+        企业或服务商需要提供corp_id，跳转uri和state参数，其中uri需要经过一次urlencode作为参数，
+        state用于企业或服务商自行校验session，        防止跨域攻击。
+        */
+//        $.toast("还在拼命开发中... :)");
+    }
+
+    /**
+     *
+     * @param name
+     */
+    function delCookie(name)
+    {
+        var exp = new Date();
+        exp.setTime(exp.getTime() - 1);
+        var cval=getCookie(name);
+        if(cval!=null)
+            document.cookie= name + "="+cval+";expires="+exp.toGMTString();
+    }
+    /**
+     *
+     * @param name
+     * @param value
+     * @param time
+     */
+    function setCookie(name,value,time)
+    {
+        var strsec = getsec(time);
+        var exp = new Date();
+        exp.setTime(exp.getTime() + strsec*1);
+        document.cookie = name + "="+ escape (value) + ";expires=" + exp.toGMTString();
+    }
+    function getsec(str)
+    {
+
+        var str1=str.substring(1,str.length)*1;
+        var str2=str.substring(0,1);
+        if (str2=="s")
+        {
+            return str1*1000;
+        }
+        else if (str2=="h")
+        {
+            return str1*60*60*1000;
+        }
+        else if (str2=="d")
+        {
+            return str1*24*60*60*1000;
+        }
+    }
+
     function login(){
         var id=document.getElementById("id");
         var pass=document.getElementById("password");
@@ -95,6 +207,11 @@
                 alert("请输入密码")
             }
         }else{
+            //这是有设定过期时间的使用示例：
+            //s20是代表20秒
+            //h是指小时，如12小时则是：h12
+            //d是天数，30天则：d30
+            setCookie("name","hayden","s20");
 //			$.ajax({
 //			  type: 'GET',
 //			  url: '/projects',
