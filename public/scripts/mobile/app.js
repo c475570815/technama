@@ -1,3 +1,6 @@
+/**
+ * 定义闭包函数
+ */
 $(function () {
   'use strict';
 
