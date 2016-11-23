@@ -24,7 +24,20 @@ var columns_def = [[
     {field: 'teacher', title: '教师', sortable: true},
     {field: 'dept_name', title: '系部', sortable: true},
     {field: 'listener', title: '听课人', sortable: true},
-    {field: 'last_evaluate', title: '总体评价', sortable: true},
+    {field: 'last_evaluate', title: '总体评价', sortable: true,formatter:function(val,row,index){
+    var opt_formatter="";
+        if(val=="优"){
+            color="green";
+        }else if(val=="良"){
+            color="blue";
+        }else if(val=="合格"){
+            color="indigo";
+        }else if(val=="不合格"){
+            color="red";
+        }
+    opt_formatter=opt_formatter+"<a class='' style='color:"+color +"' href='#' target='_self' title='"+row.comments+"'>"+val+" </a>";
+    return opt_formatter;
+}},
     {field: 'score', title: '得分', sortable: true},
     {field:"operation", title: '操作', formatter:formatOptColumn }
 ]];
@@ -36,6 +49,10 @@ function initGrid(grid, url, columns_def) {
         method: 'post',
         title: "详细信息",
         singleSelect: false,
+        checkOnSelect: true,
+        ctrlSelect:true,
+        pageSize:100,
+        pageList:[20,40,50,100],
         collapsible: false,
         pagination: true,
         fitColumns:true,
@@ -51,6 +68,9 @@ $(document).ready(function () {
     initTermCombo();
 });
 
+/**
+ * 学期初始化
+ */
 function initTermCombo(){
     // 学期列表初始化
     var dept=$("input[name=dict\\[term\\]]").val();
@@ -72,7 +92,7 @@ function initTermCombo(){
 function formatOptColumn(val,row,index){
     var updateUrl = url_update + "/pk/" + row.class_name;
 
-       return "<a href='"+updateUrl+"' target='_self'> 操作 </a>";
+       return "<a href='"+updateUrl+"' class='link-edit' target='_self'> 操作 </a>";
 
 }
 /**
