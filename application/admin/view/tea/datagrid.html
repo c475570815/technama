@@ -10,6 +10,7 @@
     <script type="text/javascript" src="/static/jquery-easyui/locale/easyui-lang-zh_CN.js"></script>
     <script type="text/javascript" src="/scripts/comm.js"></script>
     <script type="text/javascript" src="/scripts/admin/tea.datagrid.js"></script>
+    <script type="text/javascript" src="/scripts/custom_editor.js"></script>
 </head>
 <body>
 <div class="easyui-layout" fit="true">
@@ -52,19 +53,33 @@
     <div data-options="region:'center'" border="false" style="padding:10px;">
         <!-- 操作工具栏 -->
         <div id="editToolbar" style="clear: both">
-            <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true" onclick="edit()">编辑</a>
-            <a href="/index.php/admin/tea/add" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true">添加</a>
-            <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true" onclick="removeRecord()">删除</a>
-            <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-reload',plain:true" onclick="reload()">刷新</a>
-            <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-help',plain:true">帮助</a>
-            <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-upload',plain:true" onclick="importDialog()">导入</a>
-            <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-download',plain:true" onclick="exportXls()">导出</a>
-            <a href="/index.php/admin/Tea/pt" class="easyui-linkbutton" data-options="iconCls:'icon-print',plain:true">打印</a>
-            <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-mail',plain:true" onclick="email()">邮件通知</a>
-            <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-trashcan',plain:true" onclick="removeall()">清除所有记录</a>
+            <a href="#"  id="btn_edit" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true" onclick="edit()">编辑</a>
+            <a href="/index.php/admin/tea/add" id="btn_new" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true">添加</a>
+            <a href="#" id="btn_remove" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true" onclick="removeRecord()">删除</a>
+            <a href="#" id="btn_course_table" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true" onclick="showCourseTable()">查看教师课表</a>
+            <a href="#" id="btn_listener" class="easyui-linkbutton" data-options="iconCls:'icon-man',plain:true" onclick="setfinish(1)">设置为督导</a>
+            <a href="#" id="btn_free" class="easyui-linkbutton" data-options="iconCls:'icon-verified',plain:true" onclick="setfinish(1)">设置为免听</a>
+            <a href="javascript:void(0)"  id="btn_action" class="easyui-menubutton"  data-options="menu:'#mm_finished',iconCls:'icon-menu'">操作</a>
+            <div id="mm_finished" style="width:150px;">
+                <div data-options="iconCls:'icon-upload'" onclick="importDialog()">导入</div>
+                <div data-options="iconCls:'icon-download'" onclick="exportXls()">导出</div>
+                <div data-options="iconCls:'icon-sync'" onclick="sync(0)">同步教务数据</div>
+                <div data-options="iconCls:'icon-trashcan'" onclick="removeall()">清除所有记录</div>
+            </div>
+            <a href="/index.php/admin/Tea/pt" id="btn_print" class="easyui-linkbutton" data-options="iconCls:'icon-print',plain:true">打印</a>
+            <a href="#" id="btn_refresh" class="easyui-linkbutton" data-options="iconCls:'icon-reload',plain:true" onclick="reload()">刷新</a>
+            <a href="#" id="btn_help" class="easyui-linkbutton" data-options="iconCls:'icon-help',plain:true">帮助</a>
+
+            <select id="combo_columns" class="easyui-combobox" multiple="multiple" name="dept" style="width:100px;">
+                <option value="location" selected>职位</option>
+                <option value="sub_dept" selected>子部门</option>
+                <option value="email" selected>电子邮箱</option>
+                <option value="qq" selected>QQ号</option>
+            </select>
+
         </div>
         <!-- DataGrid -->
-        <table id="datagrd" class="easyui-datagrid" title="Basic DataGrid" style="width:100%;height:500px;"
+        <table id="datagrd" class="easyui-datagrid"  style="width:100%;height:500px;"
                toolbar="#editToolbar"
                data-options="iconCls:'icon-more',plain:true" fit="true">
         </table>
@@ -87,6 +102,9 @@
             </div>
         </form>
     </div>
+</div>
+<div id="dialog_course_table">
+
 </div>
 </body>
 </html>

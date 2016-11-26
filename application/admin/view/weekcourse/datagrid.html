@@ -27,7 +27,7 @@
         <!-- 查找工具栏 -->
         <div id="searchToolbar" class="easyui-panel" fit="true" title="筛选条件" data-options="iconCls:'icon-search',plain:true"  style="padding:5px;margin-bottom: 10px">
             <form id="frm_search" action="" method="post">
-                学期: <input class="easyui-text" style="width:80px" name="dict[term]"  value="{$current_term?$current_term:''}">
+                学期: <input class="easyui-text" style="width:120px" name="dict[term]"  value="{$current_term}" />
                 系部:
                 <select id="a" class="easyui-combobox" style="width:150px" name="dict[dept_name]">
                     <option value="全部" selected>全部</option>
@@ -35,30 +35,10 @@
                     <option value="{$vo.dept_name}">{$vo.dept_name}</option>
                     {/volist}
                 </select>
-                周次:
-                <select class="easyui-combobox" name="dict[week]" style="width:50px;overflow: auto">
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                    <option value="6">6</option>
-                    <option value="7">7</option>
-                    <option value="8">8</option>
-                    <option value="9">9</option>
-                    <option value="10">10</option>
-                    <option value="11">11</option>
-                    <option value="12">12</option>
-                    <option value="13">13</option>
-                    <option value="14">14</option>
-                    <option value="15">15</option>
-                    <option value="16">16</option>
-                    <option value="17">17</option>
-                    <option value="18">18</option>
-                    <option value="19">19</option>
-                    </select>
-                星期:
-                <select class="easyui-combobox" name="dict[xing_qi_ji]" style="width:80px;">
+                周次:<input id="cbo_week" name="dict[week]" style="width:80px;overflow: auto" value="{$current_week}"/>
+
+                <label for="select_weekday" title="">星期:</label>
+                <select title="选择星期" id="select_weekday" class="easyui-combobox" name="dict[xing_qi_ji]" style="width:80px;">
                     <option value="全部" selected>不限</option>
                     <option value="1">星期1</option>
                     <option value="2">星期2</option>
@@ -75,13 +55,14 @@
                     <option value="4">第4大节</option>
                     <option value="5">第5大节</option>
                 </select>
-                教师: <input class="easyui-text" style="width:110px" name="dict[teach_id]" />
+                教师: <input class="easyui-text" style="width:110px" name="dict[teach_name]" />
                 听课状态：<select class="easyui-combobox" name="dict[status]" style="width:80px;">
-                    <option value="全部" selected>全部</option>
+                    <option value="全部">全部</option>
                     <option value="已安排" >已安排</option>
-                    <option value="未安排">未安排</option>
+                    <option value="未安排" selected>未安排</option>
                 </select>
-
+                <!--<label>已被听此时：</label>-->
+                <!--<input id="txt_listen_times" class="easyui-text" name="dict[week]" style="width:50px;" value="2"/>-->
                 没有调课/停课
                 <select class="easyui-combobox" name="dict[onduty]" style="width:150px;">
                     <option value="是" selected>没有调课/没有停课</option>
@@ -96,34 +77,62 @@
     <div data-options="region:'center'"  border="false" style="padding:10px">
         <!-- 操作工具栏 -->
         <div id="editToolbar" style="clear: both">
-            <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-download',plain:true" onclick="exportXls()">导出</a>
-            <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-download',plain:true" onclick="autoplan()">自动安排听课</a>
-            <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-trashcan',plain:true"
-               onclick="removeall()">清除所有记录</a>
+            <a href="#" id="btn_autoplan" class="easyui-linkbutton" data-options="iconCls:'icon-auto',plain:true" onclick="autoplan()">自动安排听课</a>
+            <a href="#" id="btn_scedule" class="easyui-linkbutton" data-options="iconCls:'icon-hearing',plain:true" onclick="selectTech()">安排听课</a>
+            <a href="#" id="btn_rescedule" class="easyui-linkbutton" data-options="iconCls:'icon-man',plain:true" onclick="rescedule()">重新安排</a>
+            <a href="javascript:void(0)" id="btn_action" class="easyui-menubutton"  data-options="menu:'#mm_lock',iconCls:'icon-menu'">操作</a>
+            <div id="mm_lock" style="width:150px;">
+                <div data-options="iconCls:'icon-download'" onclick="exportXls()">导出</div>
+                <div data-options="iconCls:'icon-trashcan'" onclick="removeall()">清除所有记录</div>
+            </div>
             <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-reload',plain:true" onclick="reload()">刷新</a>
             <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-help',plain:true">帮助</a>
-
+            <div style="float:left;text-align: center;margin-left: 20px;"></div>
+            <strong><a href="#" id="btn_selected" class="easyui-linkbutton" data-options="plain:true" >共选中0条记录</a></strong>
+            <select id="combo_columns" class="easyui-combobox" multiple="multiple" name="dept" title="选择显示的列" style="width:100px;">
+                <option value="term" selected>学期</option>
+                <option value="class_name" selected>班级</option>
+                <option value="course_name" selected>课程名</option>
+                <option value="class_room" selected>教师</option>
+                <option value="dept_name" selected>开课单位</option>
+            </select>
         </div>
         <!-- DataGrid -->
-        <table id="datagrd" class="easyui-datagrid" title="数据表格" toolbar="#editToolbar"
+        <table id="datagrd" class="easyui-datagrid"  toolbar="#editToolbar"
                data-options="iconCls:'icon-more',plain:true" fit="true" style="width:500px;padding:10px">
         </table>
     </div>
    <!--<div data-options="region:'east'" border="false" style="width:400px;padding:10px;">-->
         <!--<div id="panel_detail" class="easyui-panel" title="详细信息"-->
                <!--data-options="iconCls:'icon-more',plain:true" fit="true" style="padding:10px">-->
+             <!---->
         <!--</div>-->
+       <!--<div class="easyui-layout" data-options="fit:true">-->
+           <!--<div data-options="region:'center'" style="">-->
+               <!--<table id="grid_listener" class="easyui-datagrid" title="数据表格"  noheader="true"-->
+                      <!--data-options="iconCls:'icon-more',plain:true" fit="true" >-->
+               <!--</table>-->
+           <!--</div>-->
+           <!--<div data-options="region:'south',border:false" style="text-align:right;padding:5px 0 0;">-->
+               <!--<a class="easyui-linkbutton" data-options="iconCls:'icon-ok'" href="#" onclick="affirm()" style="width:80px">确定</a>-->
+               <!--<a class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" href="#" onclick="closeDialog()" style="width:80px">取消</a>-->
+           <!--</div>-->
+       <!--</div>-->
     <!--</div>-->
 </div>
 <!-- 选择听课教师对话框   -->
 <div id="dialog_listen" class="easyui-window" title="请选择听课教师"  >
     <div class="easyui-layout" data-options="fit:true">
+        <div data-options="region:'north',border:false" style="text-align:right;padding:5px 0 0;">
+            被听课人信息：
+        </div>
         <div data-options="region:'center'" style="">
             <table id="listen" class="easyui-datagrid" title="数据表格"  noheader="true"
                    data-options="iconCls:'icon-more',plain:true" fit="true" >
             </table>
         </div>
         <div data-options="region:'south',border:false" style="text-align:right;padding:5px 0 0;">
+            <span id="tips"><span id="index"></span><span id="num"></span></span>
             <a class="easyui-linkbutton" data-options="iconCls:'icon-ok'" href="#" onclick="affirm()" style="width:80px">确定</a>
             <a class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" href="#" onclick="closeDialog()" style="width:80px">取消</a>
         </div>
@@ -133,8 +142,8 @@
 <!-- 自动安排对话框   -->
 <div id="dialog_autoplan" class="easyui-window" title="设置自动安排参数"  >
     <div class="easyui-layout" data-options="fit:true">
-        <div data-options="region:'center'" style="">
 
+        <div data-options="region:'center'" style="">
         </div>
         <div data-options="region:'south',border:false" style="text-align:right;padding:5px 0 0;">
             <a class="easyui-linkbutton" data-options="iconCls:'icon-ok'" href="#" onclick="affirm()" style="width:80px">确定</a>
