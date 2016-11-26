@@ -17,15 +17,14 @@ var columns_def=[[
     {field:'teach_id',title:'教师工号',sortable:true},
     {field:'teach_name',title:'教师',sortable:true},
     {field:'course_name',title:'课程名称',sortable:true},
-    // {field:'teacher_info',title:'教师信息',sortable:true},
     {field:'dept_name',title:'系部名称',sortable:true},
     {field:'stu_due_number',title:'学生人数',sortable:true},
     {field:'conuncilor',title:'督导',sortable:true},
     {field:'notified',title:'通知情况',sortable:true},
     {field:'finished',title:'完成情况',sortable:true},
+    {field:'passed',title:'发布情况',sortable:true},
     {field:'locked',title:'锁定',sortable:true},
     {field:'operation',title:'操作',formatter:function(val,row,index){
-
         var opt_formatter="";
         if(row.finished !=="完成"){
             var updateUrl = url_record + "/pk/" + row.id;
@@ -34,7 +33,6 @@ var columns_def=[[
             var url_detail="";
             opt_formatter="<a class='link-edit' href='"+url_detail+"' target='_self' title='查看详细结果'> 查看结果 </a>";
         }
-
         return opt_formatter;
     }}
 
@@ -47,13 +45,56 @@ function initGrid(grid,url,columns_def){
         title:"详细信息",
         singleSelect:false,
         checkOnSelect:true,
-        selectOnCheck:true,
+        // selectOnCheck:true,
+        ctrlSelect:true,
+        pageSize:20,
         collapsible:false,
         pagination:true,
         rownumbers:true,
-        columns:columns_def
+        columns:columns_def,
         //onLoadSuccess:loadSuccessHandler
+        onSelect: function (rowIndex, rowData) {
+            buttonStatus(this);
+        },
+        onUnselect: function (rowIndex, rowData) {
+            buttonStatus(this);
+        },
+        onCheck: function (rowIndex, rowData) {
+            buttonStatus(this);
+        },
+        onUncheck: function (rowIndex, rowData) {
+            buttonStatus(this);
+        },
+        onLoadSuccess: function (data) {
+            var queryParams = $(this).datagrid('options').queryParams;
+            queryParams.action = '';
+        }
     });
+}
+/**
+ * 更新按钮状态
+ * @param oGrid  网格对象
+ */
+function buttonStatus(oGrid) {
+    var checkedItems = $(oGrid).datagrid('getChecked');
+    $("#btn_selected").linkbutton({text:"共选中"+checkedItems.length+"条记录" });
+    if (checkedItems.length > 0) {
+        $("#btn_remove").linkbutton({disabled: false});
+        $("#btn_email").linkbutton({disabled: false});
+        $("#btn_sms").linkbutton({disabled: false});
+        $("#btn_weichat").linkbutton({disabled: false});
+        $("#btn_publish").linkbutton({disabled: false});
+        $("#btn_finish").linkbutton({disabled: false});
+        $("#btn_lock").linkbutton({disabled: false});
+    } else {
+        $("#btn_remove").linkbutton({disabled: true});
+        $("#btn_email").linkbutton({disabled: true});
+        $("#btn_sms").linkbutton({disabled: true});
+        $("#btn_weichat").linkbutton({disabled: true});
+        $("#btn_publish").linkbutton({disabled: true});
+        $("#btn_finish").linkbutton({disabled: true});
+        $("#btn_lock").linkbutton({disabled: true});
+    }
 }
 function loadSuccessHandler(data){
     $(".note").tooltip({
@@ -99,6 +140,28 @@ $(document).ready(function () {
         valueField: 'term_name',
         textField: 'term_name',
         limitToList:false
+    });
+
+    // 督导列表初始化
+    $("#cbo_conuncilor").combobox({
+        url: '/index.php/admin/schedule/getListeners',
+        method:'POST',
+        valueField: 'teach_id',
+        textField: 'teach_name',
+        limitToList:true
+    });
+
+    //绑定显示隐藏列
+    $('#combo_columns').combobox({
+        limitToList:true,
+        onSelect:function(record){
+            $("#datagrd").datagrid('showColumn',record.value);
+            console.log(record);
+        },
+        onUnselect:function(record){
+            $("#datagrd").datagrid('hideColumn',record.value);
+            console.log("unselect"+record.text);
+        }
     });
 });
 
@@ -258,6 +321,40 @@ function sms(){
     });
 }
 /**
+ * 发送微信通知
+ */
+function weixin(){
+    var url_email="/index.php/admin/schedule/wxmsg";
+    var checkedItems = $(grid).datagrid('getChecked');
+    if (checkedItems.length == 0) {
+        $.messager.alert("提示", "请选择需要操作的行！", "info");
+        return;
+    }
+    //将选中行的主健值放到一个数组中
+    var selectedRowsID = [];
+    $.each(checkedItems, function (index, item) {
+        selectedRowsID.push(item.id);
+    });
+    $.messager.confirm('提示', '共选中 '+checkedItems.length+' 条，是否发送微信通知?', function (ans) {
+        if (!ans) {
+            return;
+        }
+        $.ajax({
+            type: "POST",
+            url: url_email,
+            data: {id: selectedRowsID},//传递给服务器的参数
+            success: function (jsonresult) {
+                if (jsonresult.isSuccess == true) {
+                    $.messager.alert("提示", jsonresult.message, "info");
+                } else {
+                    $.messager.alert("提示", jsonresult.message, "info");
+                    return;
+                }
+            }
+        });
+    });
+}
+/**
  删除
  */
 function removeRecord() {
@@ -369,6 +466,18 @@ function setfinish(value) {
     ajaxAction(
         {
             url:"/index.php/admin/schedule/setfinish?v="+value,
+            grid_id:"#datagrd",
+            idField:"id"
+        }
+    )
+}
+/**
+ 发布
+ */
+function setPublish(value) {
+    ajaxAction(
+        {
+            url:"/index.php/admin/schedule/setpublish?v="+value,
             grid_id:"#datagrd",
             idField:"id"
         }

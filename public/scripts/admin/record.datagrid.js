@@ -66,6 +66,25 @@ function initGrid(grid, url, columns_def) {
 $(document).ready(function () {
     initGrid(grid_id, url_get, columns_def);
     initTermCombo();
+
+    // 督导列表初始化
+    $("#cbo_conuncilor").combobox({
+        url: '/index.php/admin/schedule/getListeners',
+        method:'POST',
+        valueField: 'teach_id',
+        textField: 'teach_name',
+        limitToList:true
+    });
+
+    //教师名单列表
+    $("#cbogrid_of_teacher").combobox({
+        url: '/index.php/admin/tea/getCboTeacherData',
+        method:'POST',
+        valueField: 'teach_id',
+        textField: 'teach_name',
+        limitToList:true
+    });
+
 });
 
 /**

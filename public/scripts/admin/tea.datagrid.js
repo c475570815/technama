@@ -18,6 +18,7 @@ var columns_def=[[
     {field:'teach_name',title:'教师名',sortable:true,},
     {field:'sex',title:'性别',sortable:true},
     {field:'teach_id',title:'教师编号',sortable:true},
+    {field:'teach_jw_name',title:'教务姓名',sortable:true},
     {field:'profess_duty',title:'专业技术职务',sortable:true},
     {field:'teach_phone',title:'电话',sortable:true},
     {field:'email',title:'电子邮箱',sortable:true},
@@ -34,21 +35,66 @@ function initGrid(grid_id,url_get,columns_def){
         url:url_get,
         method:'post',
         title:"详细信息",
+        idField:"teach_id",
         singleSelect:false,
+        checkOnSelect: true,
+        ctrlSelect:true,
         collapsible:false,
         pagination:true,
         rownumbers:true,
-        checkOnSelect: true,
-        ctrlSelect:true,
-        pageSize:20,
+        pageSize:50,
+        pageList:[20,40,50,80,100],
         iconCls:'icon-more',
-        columns:columns_def
+        columns:columns_def,
+        onSelect: function (rowIndex, rowData) {
+            buttonStatus(this);
+        },
+        onUnselect: function (rowIndex, rowData) {
+            buttonStatus(this);
+        },
+        onCheck: function (rowIndex, rowData) {
+            buttonStatus(this);
+        },
+        onUncheck: function (rowIndex, rowData) {
+            buttonStatus(this);
+        },
+        onLoadSuccess: function (data) {
+            // $('.editcls').linkbutton({text: '听课', plain: true, width: '100%', iconCls: 'icon-edit'});
+            var queryParams = $(this).datagrid('options').queryParams;
+            queryParams.action = '';
+            //console.log(queryParams);
+        },
+        onClickRow:function(index,row){
+            detail(row.teach_id);
+        }
     });
+}
+/**
+ * 更新按钮状态
+ * @param oGrid  网格对象
+ */
+function buttonStatus(oGrid) {
+    var checkedItems = $(oGrid).datagrid('getChecked');
+    if (checkedItems.length > 0) {
+
+        $("#btn_remove").linkbutton({disabled: false});
+        $("#btn_edit").linkbutton({disabled: false});
+        $("#btn_listener").linkbutton({disabled: false});
+        $("#btn_free").linkbutton({disabled: false});
+    } else {
+
+        $("#btn_remove").linkbutton({disabled: true});
+        $("#btn_edit").linkbutton({disabled: true});
+        $("#btn_listener").linkbutton({disabled: true});
+        $("#btn_free").linkbutton({disabled: true});
+
+    }
 }
 //当整个页面全部载入后才执行
 $(document).ready(function () {
+
     initGrid(grid_id,url_get,columns_def);
-    // comboxtree
+    // 部门树
     $(cc).combotree({
         method: 'post',
         url:"/index.php/admin/dept/deptTree",
@@ -58,6 +104,21 @@ $(document).ready(function () {
         panelWidth:300,
         panelHeight:400
     });
+    //绑定显示隐藏列
+    $('#combo_columns').combobox({
+        limitToList:true,
+        onSelect:function(record){
+           $("#datagrd").datagrid('showColumn',record.value);
+            console.log(record);
+        },
+        onUnselect:function(record){
+            $("#datagrd").datagrid('hideColumn',record.value);
+            console.log("unselect"+record.text);
+        }
+    });
+
+
+
     // $('#pg').propertygrid({
     //     url: '/index.php/admin/tea/property',
     //     showGroup: false,
@@ -66,7 +127,11 @@ $(document).ready(function () {
     // $.getJSON("/index.php/admin/Tea/treejosn",function(data) {
     //     $(cc).combotree('loadData', data);
     // });
-    //console.log(111111111111);
+    // 初始化按钮状态
+    $("#btn_listener").linkbutton({disabled: true});
+    $("#btn_free").linkbutton({disabled: true});
+    $("#btn_remove").linkbutton({disabled: true});
+    $("#btn_edit").linkbutton({disabled: true});
 });
 /**
  * 查询
@@ -187,15 +252,24 @@ function formatOptColumn(val,row,index){
     opt_formatter=opt_formatter+" | <a href='#' onclick=\"detail(\'"+row.teach_id+"\')\" target='_self' title='查看当前记录的详细信息'> 查看详细信息  </a>";
     return opt_formatter;
 }
+/**
+ * 属性网格初始化
+ * @param id
+ */
 function detail(id){
+    var mycolumns = [[
+        {field:'name',title:'字段',width:100,sortable:true},
+        {field:'value',title:'值',width:100,resizable:false}
+    ]];
     $('#pg').propertygrid({
         url: '/index.php/admin/tea/property',
         method:"post",
         queryParams:{"id":id},
-        showGroup: false,
-        scrollbarSize: 0
+        showGroup: true,
+        scrollbarSize: 0,
+        columns: mycolumns
     });
-    $('#pg').propertygrid('reload', {'nnn': 'aaa'});
+    // $('#pg').propertygrid('reload', {'nnn': 'aaa'});
 }
 /**
  * 清空
@@ -312,4 +386,27 @@ function email(){
             }
         });
     });
+}
+/**
+ * 显示教师课表
+ */
+function showCourseTable(){
+    var url='/index.php/admin/tea/lessontable?id=';
+
+    var checkedItems = $(grid_id).datagrid('getChecked');
+    if (checkedItems.length != 1) {
+        $.messager.alert("提示", "请选择需要操作的行！", "info");
+        return;
+    }
+    var tid=checkedItems[0].teach_id;
+    url=url+tid;
+    $('#dialog_course_table').dialog({
+        title: '教师课表',
+        width: 600,
+        height: 500,
+        closed: false,
+        cache: false,
+        modal: true
+    });
+    $('#dialog_course_table').dialog('refresh', url);
 }
