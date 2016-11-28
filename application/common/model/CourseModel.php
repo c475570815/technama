@@ -14,7 +14,9 @@ class CourseModel extends \app\common\model\CommonModel
 {
     protected $table = 'tbl_course';
 
-    protected $defaults = [
+     protected $defaults = [
+    'teach_name' => 'like'
 
-    ];
+];
+
 }
